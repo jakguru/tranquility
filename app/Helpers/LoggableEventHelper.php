@@ -29,7 +29,13 @@ class LoggableEventHelper
                     'new' => $new_value,
                 ];
             }
-            self::saveActivity($model, 'Update', $changes);
+            $hidden = $model->getHiddenFields();
+            foreach ($hidden as $field) {
+                unset($changes[$field]);
+            }
+            if (count($changes) > 0) {
+                self::saveActivity($model, 'Update', $changes);
+            }
         }
     }
 

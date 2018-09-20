@@ -8,4 +8,9 @@ trait Loggable
     {
         return $this->morphMany('App\Activity', 'model');
     }
+
+    public function getHiddenFields()
+    {
+    	return $this->hidden;
+    }
 }
