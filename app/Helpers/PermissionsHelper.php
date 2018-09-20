@@ -64,9 +64,30 @@ class PermissionsHelper
         return self::ModelHasTrait($model, 'UserOwnable');
     }
 
+    // \App\Helpers\PermissionsHelper::addFieldsForOwnable($table);
     public static function addFieldsForOwnable(Blueprint &$table)
     {
-        
+        $table->integer('creator_id')->unsigned()->nullable();
+        $table->integer('owner_id')->unsigned()->nullable();
+        $table->integer('group_id')->unsigned()->nullable();
+        $table->foreign('creator_id')->references('id')->on('users')
+              ->onDelete('cascade')
+              ->onUpdate('cascade');
+        $table->foreign('owner_id')->references('id')->on('users')
+              ->onDelete('cascade')
+              ->onUpdate('cascade');
+        $table->foreign('group_id')->references('id')->on('groups')
+              ->onDelete('cascade')
+              ->onUpdate('cascade');
+    }
+
+    // \App\Helpers\PermissionsHelper::removeFieldsForOwnable($table);
+    public static function removeFieldsForOwnable(Blueprint &$table)
+    {
+        $table = $table->getTable();
+        $table->dropForeign(sprintf('%s_creator_id_foreign', $table));
+        $table->dropForeign(sprintf('%s_owner_id_foreign', $table));
+        $table->dropForeign(sprintf('%s_group_id_foreign', $table));
     }
 
     protected static function modelHasTrait($model, $trait)

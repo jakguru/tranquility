@@ -15,6 +15,7 @@ class CreateNotesTable extends Migration
     {
         Schema::create('notes', function (Blueprint $table) {
             $table->increments('id');
+            \App\Helpers\PermissionsHelper::addFieldsForOwnable($table);
             $table->timestamps();
         });
     }

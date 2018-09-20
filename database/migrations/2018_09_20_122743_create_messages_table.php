@@ -15,6 +15,7 @@ class CreateMessagesTable extends Migration
     {
         Schema::create('messages', function (Blueprint $table) {
             $table->increments('id');
+            \App\Helpers\PermissionsHelper::addFieldsForOwnable($table);
             $table->timestamps();
         });
     }
