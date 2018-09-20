@@ -48,4 +48,14 @@ class LoginController extends Controller
     {
         LoggableEventHelper::saveActivity($user, 'Login');
     }
+
+    public function logout(Request $request)
+    {
+        LoggableEventHelper::saveActivity($request->user(), 'Logout');
+        $this->guard()->logout();
+
+        $request->session()->invalidate();
+
+        return $this->loggedOut($request) ?: redirect('/');
+    }
 }

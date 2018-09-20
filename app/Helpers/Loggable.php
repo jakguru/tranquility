@@ -11,6 +11,6 @@ trait Loggable
 
     public function getHiddenFields()
     {
-    	return $this->hidden;
+        return $this->hidden;
     }
 }

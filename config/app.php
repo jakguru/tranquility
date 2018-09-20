@@ -232,4 +232,16 @@ return [
         'pass' => env('ELASTICSEARCH_PASS', null),
     ],
 
+    /*
+    |--------------------------------------------------------------------------
+    | Real-Time Updates
+    |--------------------------------------------------------------------------
+    |
+    | This section defines how the Real-Time Update Mechanism will work
+    |
+    */
+    'rtu' => [
+        'method' => env('RTU_METHOD', 'polling'),
+        'storage' => env('RTU_STORAGE', 'database'),
+    ],
 ];
