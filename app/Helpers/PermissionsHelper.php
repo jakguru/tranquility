@@ -64,6 +64,11 @@ class PermissionsHelper
         return self::ModelHasTrait($model, 'UserOwnable');
     }
 
+    public static function addFieldsForOwnable(Blueprint &$table)
+    {
+        
+    }
+
     protected static function modelHasTrait($model, $trait)
     {
         $uses = class_uses($model);
