@@ -1,0 +1,74 @@
+{
+    "name": "jakguru/tranquility",
+    "description": "Tranquility Call-Center CRM.",
+    "keywords": ["crm", "dialer"],
+    "license": "proprietary",
+    "type": "project",
+    "authors":[
+        {
+            "name": "Jak Guru",
+            "email": "jak@jak.guru"
+        }
+    ],
+    "require": {
+        "php": "^7.1.3",
+        "aws/aws-sdk-php": "^3.67",
+        "elasticsearch/elasticsearch": "^6.0",
+        "fideloper/proxy": "^4.0",
+        "giggsey/libphonenumber-for-php": "^8.9",
+        "google/apiclient": "^2.0",
+        "laravel/framework": "5.7.*",
+        "laravel/tinker": "^1.0",
+        "phpseclib/mcrypt_compat": "^1.0",
+        "predis/predis": "^1.1",
+        "twilio/sdk": "^5.21"
+    },
+    "require-dev": {
+        "barryvdh/laravel-debugbar": "^3.2",
+        "beyondcode/laravel-dump-server": "^1.0",
+        "filp/whoops": "^2.0",
+        "fzaninotto/faker": "^1.4",
+        "mockery/mockery": "^1.0",
+        "nunomaduro/collision": "^2.0",
+        "phpunit/phpunit": "^7.0"
+    },
+    "autoload": {
+        "classmap": [
+            "database/seeds",
+            "database/factories"
+        ],
+        "psr-4": {
+            "App\\": "app/"
+        }
+    },
+    "autoload-dev": {
+        "psr-4": {
+            "Tests\\": "tests/"
+        }
+    },
+    "extra": {
+        "laravel": {
+            "dont-discover": [
+            ]
+        }
+    },
+    "scripts": {
+        "post-root-package-install": [
+            "@php -r \"file_exists('.env') || copy('.env.example', '.env');\""
+        ],
+        "post-create-project-cmd": [
+            "@php artisan key:generate"
+        ],
+        "post-autoload-dump": [
+            "Illuminate\\Foundation\\ComposerScripts::postAutoloadDump",
+            "@php artisan package:discover"
+        ]
+    },
+    "config": {
+        "preferred-install": "dist",
+        "sort-packages": true,
+        "optimize-autoloader": true
+    },
+    "minimum-stability": "dev",
+    "prefer-stable": true
+}

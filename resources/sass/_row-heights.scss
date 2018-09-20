@@ -1,0 +1,14 @@
+@for $i from 12 through 1 {
+	$percent: ( $i / 12 ) * 100;
+	@each $breakpoint in map-keys($grid-breakpoints) {
+		$infix: breakpoint-infix($breakpoint, $grid-breakpoints);
+		@include media-breakpoint-up($breakpoint, $grid-breakpoints) {
+			.row#{$infix}-#{$i} {
+				height: #{$percent}vh;
+			}
+			.row-offset#{$infix}-#{$i} {
+				margin-top: #{$percent}vh;	
+			}
+		}
+	}
+}
