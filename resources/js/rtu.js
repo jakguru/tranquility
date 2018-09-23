@@ -44,27 +44,120 @@ var notificationIndicator = function(identifier) {
 		return notifications;
 	}
 	this.addNotification = function(event, info) {
-		notifications = obj.getNotifications();
+		var notifications = obj.getNotifications();
 		notifications.push(info);
 		obj.obj.attr('items', JSON.stringify(notifications));
 		obj.obj.find('.indicator-label').text(notifications.length);
 		if ( notifications.length > 0 ) {
 			obj.obj.find('.indicator-label').addClass('indicator-label-danger');
 		}
+		if (jQuery('.notification-popover').is(':visible')) {
+			jQuery('.notification-popover').find('span.text-primary').remove();
+			html = jQuery(sprintf(
+				'<div class="notification-area-item alert alert-%s"><a href="%s"><span class="notification-area-item-message"><span class="%s"></span>%s</span><span class="notification-area-item-date">%s</span></a><a href="#" class="notification-area-item-dismiss" data-hash="%s" title="Dismiss Notification"><span class="fas fa-times"></span></a></div>',
+				info.content.type,
+				info.content.url,
+				info.content.icon_class,
+				info.content.message,
+				info.created_at.date,
+				info.hash,
+			));
+			dismissButton = html.find('[data-hash]');
+			dismissButton.on('click', function(e) {
+				e.preventDefault();
+				var popover = jQuery(this).closest('.popover');
+				var removed = obj.removeNotification(jQuery(this).attr('data-hash'));
+				if ( true == removed ) {
+					var item = jQuery(this).closest('.notification-area-item');
+					item.fadeOut(300, function() {
+						item.slideUp(300, function() {
+							item.remove();
+						});
+					});
+					notifications = obj.getNotifications();
+					if ( 0 === notifications.length ) {
+						setTimeout(function() {
+							popover.find('.notification-popover').append('<span class="text-primary">You do not have any notifications.</span>');
+						}, 300);
+					}
+				}
+			});
+			jQuery('.notification-popover').append(html);
+		}
+	}
+	this.removeNotification = function(hash) {
+		var notifications = obj.getNotifications(),
+			filtered_notifications = [],
+			success = false;
+		for (var i = 0; i < notifications.length; i++) {
+			if (notifications[i].hash !== hash ) {
+				filtered_notifications.push(notifications[i])
+			} else {
+				success = true;
+			}
+		}
+		notifications = filtered_notifications;
+		obj.obj.attr('items', JSON.stringify(notifications));
+		obj.obj.find('.indicator-label').text(notifications.length);
+		if ( notifications.length > 0 ) {
+			obj.obj.find('.indicator-label').addClass('indicator-label-danger');
+		} else {
+			obj.obj.find('.indicator-label').removeClass('indicator-label-danger');
+		}
+		return success;
 	}
 	this.showNotifications = function() {
 		html = '';
-		return 'test' + Math.floor( Math.random() * 100000 );
+		var notifications = obj.getNotifications();
+		if ( 0 === notifications.length ) {
+			html += '<span class="text-primary">You do not have any notifications.</span>';
+		} else {
+			for (var i = 0; i < notifications.length; i++) {
+				var n = notifications[i];
+				html += sprintf(
+					'<div class="notification-area-item alert alert-%s"><a href="%s"><span class="notification-area-item-message"><span class="%s"></span>%s</span><span class="notification-area-item-date">%s</span></a><a href="#" class="notification-area-item-dismiss" data-hash="%s" title="Dismiss Notification"><span class="fas fa-times"></span></a></div>',
+					n.content.type,
+					n.content.url,
+					n.content.icon_class,
+					n.content.message,
+					n.created_at.date,
+					n.hash,
+				);
+			}
+		}
+		return html;
 	}
 	var obj = this;
 	this.obj.popover({
 		content: obj.showNotifications,
 		placement: 'bottom',
-		template: '<div class="popover" role="tooltip"><div class="arrow"></div><div class="popover-body"></div></div>',
+		template: '<div class="popover" role="tooltip"><div class="arrow"></div><div class="popover-body notification-popover"></div></div>',
 		trigger: 'click',
 		html: true,
 	});
-	jQuery(window).on('notification', obj.addNotification);
+	this.obj.on('inserted.bs.popover', function() {
+		var id = jQuery(this).attr('aria-describedby'),
+			popover = jQuery('#' + id),
+			notifications = popover.find('[data-hash]');
+			notifications.on('click', function(e) {
+				e.preventDefault();
+				var removed = obj.removeNotification(jQuery(this).attr('data-hash'));
+				if ( true == removed ) {
+					var item = jQuery(this).closest('.notification-area-item');
+					item.fadeOut(300, function() {
+						item.slideUp(300, function() {
+							item.remove();
+						});
+					});
+					notifications = obj.getNotifications();
+					if ( 0 === notifications.length ) {
+						setTimeout(function() {
+							popover.find('.notification-popover').append('<span class="text-primary">You do not have any notifications.</span>');
+						}, 300);
+					}
+				}
+			});
+	});
 	jQuery(window).on('alert', obj.addNotification);
 	jQuery( document ).on( 'mouseup', function(e) {
 		var tgt = e.target,

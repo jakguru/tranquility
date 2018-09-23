@@ -286,3 +286,71 @@ html, body {
 	    }
 	}
 }
+
+.notification-popover {
+	padding: 0px;
+	border-radius: 0;
+
+	> span {
+		display: block;
+		padding: 0.75rem 1.25rem;
+	}
+
+	> .notification-area-item {
+		display: flex;
+		flex-direction: row;
+		flex-wrap: nowrap;
+		justify-content: space-between;
+		align-items: stretch;
+		align-content: stretch;
+		border-radius: 0;
+		margin-bottom: 0;
+		padding: 0.75rem;
+
+		> * {
+			display: inline-block;
+		}
+
+		> a:not(.notification-area-item-dismiss) {
+			color: $primary;
+
+			&:hover,
+			&:focus,
+			&:active {
+				text-decoration: none;
+			}
+
+			> span {
+				display: block;
+			}
+
+			> .notification-area-item-message {
+				font-size: 0.9rem;
+				line-height: 1.2rem;
+
+				> span[class] {
+					margin-right: 10px;
+				}
+			}
+
+			> .notification-area-item-date {
+				color: $secondary;
+			}
+		}
+
+		> .notification-area-item-dismiss {
+			text-align: right;
+			padding: 0 0.75rem;
+			padding-right: 0;
+			color: $secondary;
+		}
+	}
+
+	@each $color, $value in $theme-colors {
+	  > .notification-area-item.alert-#{$color} {
+	  	> a:not(.notification-area-item-dismiss) {
+	  		color: $value;
+	  	}
+	  }
+	}
+}

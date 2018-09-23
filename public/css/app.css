@@ -15682,6 +15682,109 @@ body {
   opacity: 1;
 }
 
+.notification-popover {
+  padding: 0px;
+  border-radius: 0;
+}
+
+.notification-popover > span {
+  display: block;
+  padding: 0.75rem 1.25rem;
+}
+
+.notification-popover > .notification-area-item {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-orient: horizontal;
+  -webkit-box-direction: normal;
+      -ms-flex-direction: row;
+          flex-direction: row;
+  -ms-flex-wrap: nowrap;
+      flex-wrap: nowrap;
+  -webkit-box-pack: justify;
+      -ms-flex-pack: justify;
+          justify-content: space-between;
+  -webkit-box-align: stretch;
+      -ms-flex-align: stretch;
+          align-items: stretch;
+  -ms-flex-line-pack: stretch;
+      align-content: stretch;
+  border-radius: 0;
+  margin-bottom: 0;
+  padding: 0.75rem;
+}
+
+.notification-popover > .notification-area-item > * {
+  display: inline-block;
+}
+
+.notification-popover > .notification-area-item > a:not(.notification-area-item-dismiss) {
+  color: #3490dc;
+}
+
+.notification-popover > .notification-area-item > a:not(.notification-area-item-dismiss):hover,
+.notification-popover > .notification-area-item > a:not(.notification-area-item-dismiss):focus,
+.notification-popover > .notification-area-item > a:not(.notification-area-item-dismiss):active {
+  text-decoration: none;
+}
+
+.notification-popover > .notification-area-item > a:not(.notification-area-item-dismiss) > span {
+  display: block;
+}
+
+.notification-popover > .notification-area-item > a:not(.notification-area-item-dismiss) > .notification-area-item-message {
+  font-size: 0.9rem;
+  line-height: 1.2rem;
+}
+
+.notification-popover > .notification-area-item > a:not(.notification-area-item-dismiss) > .notification-area-item-message > span[class] {
+  margin-right: 10px;
+}
+
+.notification-popover > .notification-area-item > a:not(.notification-area-item-dismiss) > .notification-area-item-date {
+  color: #6c757d;
+}
+
+.notification-popover > .notification-area-item > .notification-area-item-dismiss {
+  text-align: right;
+  padding: 0 0.75rem;
+  padding-right: 0;
+  color: #6c757d;
+}
+
+.notification-popover > .notification-area-item.alert-primary > a:not(.notification-area-item-dismiss) {
+  color: #3490dc;
+}
+
+.notification-popover > .notification-area-item.alert-secondary > a:not(.notification-area-item-dismiss) {
+  color: #6c757d;
+}
+
+.notification-popover > .notification-area-item.alert-success > a:not(.notification-area-item-dismiss) {
+  color: #38c172;
+}
+
+.notification-popover > .notification-area-item.alert-info > a:not(.notification-area-item-dismiss) {
+  color: #6cb2eb;
+}
+
+.notification-popover > .notification-area-item.alert-warning > a:not(.notification-area-item-dismiss) {
+  color: #ffed4a;
+}
+
+.notification-popover > .notification-area-item.alert-danger > a:not(.notification-area-item-dismiss) {
+  color: #e3342f;
+}
+
+.notification-popover > .notification-area-item.alert-light > a:not(.notification-area-item-dismiss) {
+  color: #f8f9fa;
+}
+
+.notification-popover > .notification-area-item.alert-dark > a:not(.notification-area-item-dismiss) {
+  color: #343a40;
+}
+
 body.with-bg.bright-bg .dynamic-bg {
   background: rgba(52, 58, 64, 0.85);
   background-color: rgba(52, 58, 64, 0.85);

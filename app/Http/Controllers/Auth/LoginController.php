@@ -47,10 +47,14 @@ class LoginController extends Controller
 
     protected function authenticated(Request $request, $user)
     {
+        $hasher = app('hash');
         AuthenticatedSessionController::onLogin();
         LoggableEventHelper::saveActivity($user, 'Login');
         if ($user->email == 'sudo@localhost.local') {
-            \App\Realtime\Events\RealtimeAlert::emitAlert($user, 'You are using the default email.', '#', 'danger', 'fas fa-exclamation-triangle', 1);
+            \App\Realtime\Events\RealtimeAlert::emitAlert($user, 'You are using the default installation email. Please consider changing it.', '#', 'danger', 'fas fa-exclamation-triangle', 1);
+            if ($hasher->check('admin', $user->password)) {
+                \App\Realtime\Events\RealtimeAlert::emitAlert($user, 'You are using the default installation password. Please consider changing it.', '#', 'danger', 'fas fa-exclamation-triangle', 1);
+            }
         }
     }
 
