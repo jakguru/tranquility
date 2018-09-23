@@ -13,6 +13,7 @@ class UpdateOwnedUserIdsForRole implements ShouldQueue
     use Dispatchable, InteractsWithQueue, Queueable, SerializesModels;
 
     protected $role_id;
+    public $tries = 2;
 
     /**
      * Create a new job instance.

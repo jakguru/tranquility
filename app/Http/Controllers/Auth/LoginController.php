@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use Illuminate\Foundation\Auth\AuthenticatesUsers;
 use Illuminate\Http\Request;
 use \App\Helpers\LoggableEventHelper;
+use \App\Http\Controllers\AuthenticatedSessionController;
 
 class LoginController extends Controller
 {
@@ -46,11 +47,16 @@ class LoginController extends Controller
 
     protected function authenticated(Request $request, $user)
     {
+        AuthenticatedSessionController::onLogin();
         LoggableEventHelper::saveActivity($user, 'Login');
+        if ($user->email == 'sudo@localhost.local') {
+            \App\Realtime\Events\RealtimeAlert::emitAlert($user, 'You are using the default email.', '#', 'danger', 'fas fa-exclamation-triangle', 1);
+        }
     }
 
     public function logout(Request $request)
     {
+        AuthenticatedSessionController::onLogout();
         LoggableEventHelper::saveActivity($request->user(), 'Logout');
         $this->guard()->logout();
 

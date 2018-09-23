@@ -7,14 +7,17 @@ use Illuminate\Queue\SerializesModels;
 use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Foundation\Bus\Dispatchable;
-use App\User;
-use App\Role;
+use \App\User;
+use \App\Realtime\RealtimeEvent;
+use \App\AuthenticatedSession;
+use \App\Http\Controllers\AuthenticatedSessionController;
 
-class UpdateOwnedUserIds implements ShouldQueue
+class RemoveEventsFromQueue implements ShouldQueue
 {
     use Dispatchable, InteractsWithQueue, Queueable, SerializesModels;
 
     protected $user;
+    protected $events;
     public $tries = 2;
 
     /**
@@ -22,9 +25,10 @@ class UpdateOwnedUserIds implements ShouldQueue
      *
      * @return void
      */
-    public function __construct(User $user)
+    public function __construct(User $user, array $events = [])
     {
         $this->user = $user;
+        $this->events = $events;
     }
 
     /**
@@ -34,8 +38,8 @@ class UpdateOwnedUserIds implements ShouldQueue
      */
     public function handle()
     {
-        $this->user->getOwnerIds(true);
-        $this->user->getPeerIds(true);
-        $this->user->getParentIds(true);
+        foreach ($this->events as $event) {
+            AuthenticatedSessionController::removeEventFromSessions($this->user, $event);
+        }
     }
 }

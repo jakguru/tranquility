@@ -21,13 +21,16 @@ class LoggableEventHelper
     {
         $changes = [];
         if ($model->wasChanged()) {
+            $hidden = $model->getHiddenFields();
             $new_values = $model->getChanges();
             foreach ($new_values as $key => $new_value) {
-                $old_value = $model->getOriginal($key);
-                $changes[$key] = [
-                    'old' => $old_value,
-                    'new' => $new_value,
-                ];
+                if (!in_array($key, $hidden)) {
+                    $old_value = $model->getOriginal($key);
+                    $changes[$key] = [
+                        'old' => $old_value,
+                        'new' => $new_value,
+                    ];
+                }
             }
             $hidden = $model->getHiddenFields();
             foreach ($hidden as $field) {

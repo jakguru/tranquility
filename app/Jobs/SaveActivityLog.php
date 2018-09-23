@@ -19,6 +19,7 @@ class SaveActivityLog implements ShouldQueue
     protected $changes = [];
     protected $user;
     protected $ip;
+    public $tries = 2;
 
     /**
      * Create a new job instance.

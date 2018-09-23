@@ -20,6 +20,7 @@
         "vue": "^2.5.7"
     },
     "dependencies": {
-        "@fortawesome/fontawesome-free-webfonts": "^1.0.9"
+        "@fortawesome/fontawesome-free-webfonts": "^1.0.9",
+        "sprintf-js": "^1.1.1"
     }
 }

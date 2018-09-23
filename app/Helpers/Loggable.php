@@ -11,6 +11,11 @@ trait Loggable
 
     public function getHiddenFields()
     {
-        return $this->hidden;
+        return array_merge($this->hidden, $this->getNotLoggableFields());
+    }
+
+    public function getNotLoggableFields()
+    {
+        return (is_array($this->notLoggable)) ? $this->notLoggable : [];
     }
 }

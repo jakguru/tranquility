@@ -28,6 +28,7 @@ class Kernel extends ConsoleKernel
         $schedule->call(function () {
             BackgroundImageHelper::getRandomBackgroundImage();
         })->everyMinute();
+        $schedule->call('\App\Http\Controllers\AuthenticatedSessionController::updateAFKStatuses')->everyMinute();
         // $schedule->command('inspire')
         //          ->hourly();
     }

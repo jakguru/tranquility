@@ -7,24 +7,27 @@ use Illuminate\Queue\SerializesModels;
 use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Foundation\Bus\Dispatchable;
-use App\User;
-use App\Role;
+use \App\User;
+use \App\Realtime\RealtimeEvent;
+use \App\AuthenticatedSession;
+use \App\Http\Controllers\AuthenticatedSessionController;
 
-class UpdateOwnedUserIds implements ShouldQueue
+class EmitEventToUser implements ShouldQueue
 {
     use Dispatchable, InteractsWithQueue, Queueable, SerializesModels;
 
     protected $user;
-    public $tries = 2;
+    protected $event;
 
     /**
      * Create a new job instance.
      *
      * @return void
      */
-    public function __construct(User $user)
+    public function __construct(User $user, RealtimeEvent $event)
     {
         $this->user = $user;
+        $this->event = $event;
     }
 
     /**
@@ -34,8 +37,6 @@ class UpdateOwnedUserIds implements ShouldQueue
      */
     public function handle()
     {
-        $this->user->getOwnerIds(true);
-        $this->user->getPeerIds(true);
-        $this->user->getParentIds(true);
+        AuthenticatedSessionController::emitToUserSessions($this->user, $this->event);
     }
 }

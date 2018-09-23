@@ -14,6 +14,7 @@ class SaveElasticSearchableModel implements ShouldQueue
 
     protected $model;
     protected $action;
+    public $tries = 2;
 
     /**
      * Create a new job instance.

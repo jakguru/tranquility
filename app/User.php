@@ -29,7 +29,11 @@ class User extends Authenticatable
      * @var array
      */
     protected $hidden = [
-        'password', 'remember_token', 'name', 'owner_ids', 'peer_ids', 'parent_ids'
+        'password', 'remember_token', 'name', 'role_id', 'owner_ids', 'peer_ids', 'parent_ids'
+    ];
+
+    protected $notLoggable = [
+        'created_at', 'updated_at',
     ];
 
     protected $casts = [

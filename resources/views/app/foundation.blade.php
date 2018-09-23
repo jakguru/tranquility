@@ -10,7 +10,21 @@
     <meta name="csrf-token" content="{{ csrf_token() }}">
     <title>{{ config('app.name', 'Tranquility CRM') }}</title>
     <meta name="application-name" content="{{ config('app.name', 'Tranquility CRM') }}"/>
-    <script src="{{ asset('js/app.js') }}" defer></script>
+    <script type="text/javascript">
+        var runWhenTrue = function(condition, callback, timeout ) {
+            if ('number' !== timeout ) {
+                timeout = 100;
+            }
+            if ( true == eval(condition) ) {
+                callback();
+            } else {
+                setTimeout(function(){
+                    runWhenTrue(condition, callback, timeout);
+                }, timeout);
+            }
+        }
+    </script>
+    <script type="text/javascript" src="{{ asset('js/app.js') }}" async defer></script>
     <link href="{{ asset('css/app.css') }}" rel="stylesheet">
     <link rel="apple-touch-icon" sizes="114x114" href="{{ asset( 'img/favicon.png' ) }}" />
     <link rel="apple-touch-icon" sizes="72x72" href="{{ asset( 'img/favicon.png' ) }}" />
@@ -23,5 +37,6 @@
 </head>
     <body>
         @yield('blueprint')
+        {{ \App\Http\Controllers\AuthenticatedSessionController::initializeRealtimeClient() }}
     </body>
 </html>

@@ -54,3 +54,112 @@ if (token) {
 //     cluster: process.env.MIX_PUSHER_APP_CLUSTER,
 //     encrypted: true
 // });
+
+
+try {
+	window.sprintf = require('sprintf-js').sprintf;
+	window.vsprintf = require('sprintf-js').vsprintf;
+}
+catch (e) {}
+
+try {
+	window.ajax = function(url, method, data, success, error, pending, redirect, progress) {
+	    if ( 'undefined' == typeof( url ) ) {
+	        url = '';
+	    }
+	    if ( 'undefined' == typeof( method ) ) {
+	        method = 'GET';
+	    }
+	    if ( 'undefined' == typeof( data ) ) {
+	        data = {};
+	    }
+	    if ( 'undefined' == typeof( success ) ) {
+	        success = function(){};
+	    }
+	    if ( 'undefined' == typeof( error ) ) {
+	        error = function(){};
+	    }
+	    if ( 'undefined' == typeof( pending ) ) {
+	        pending = function(){};
+	    }
+	    if ( 'undefined' == typeof( redirect ) ) {
+	        redirect = function( location ){
+	            window.location.href = location;
+	        };
+	    }
+	    if ( 'undefined' == typeof( progress ) ) {
+	        progress = function( decimal ){};
+	    }
+	    var fbh = function( fb ) {
+	        switch ( fb.status ) {
+	            case 'SUCCESS':
+	                success( fb.data );
+	                break;
+
+	            case 'FAILURE':
+	                error( fb.errors );
+	                break;
+
+	            case 'DEBUG':
+	                console.log( fb );
+	                success( fb.data );
+	                break;
+
+	            case 'REDIRECT':
+	                redirect( fb.data );
+	                break;
+	        }
+	    }
+		jQuery.ajax({
+			async: true,
+			beforeSend: function() {
+				pending();
+			},
+			cache: true,
+			crossDomain: false,
+			data: {},
+			error: function(jqXHR, textStatus, errorThrown) {
+				var redata = jqXHR.responseJSON;
+	            if ( 'object' !== typeof( redata ) || 'undefined' == typeof( redata.status ) ) {
+	                error( sprintf( 'AJAX Error: %s', errorThrown ) );
+	                return;
+	            }
+	            fbh( redata );
+			},
+			headers: {
+	            'Accept': 'application/json',
+	        },
+			method: 'GET',
+			success: function(redata, textStatus, jqXHR) {
+				if ( 'object' !== typeof( redata ) ) {
+	                error( 'Invalid AJAX Feedback' );
+	            }
+	            if ( 'undefined' == typeof( redata.status ) ) {
+	                error( 'Invalid AJAX Feedback' );
+	            }
+	            fbh( redata );
+			},
+			timeout: 10000,
+			url: url,
+			xhr: function() {
+	            var xhr = new window.XMLHttpRequest();
+	            var completeDouble = 0;
+	            xhr.upload.addEventListener("progress", function(evt) {
+	                if (evt.lengthComputable) {
+	                    var decComplete = evt.loaded / evt.total;
+	                    completeDouble = completeDouble + decComplete
+	                    progress( completeDouble );
+	                }
+	            }, false );
+	            xhr.addEventListener("progress", function(evt) {
+	                if (evt.lengthComputable) {
+	                    var decComplete = evt.loaded / evt.total;
+	                    completeDouble = completeDouble + decComplete
+	                    progress( completeDouble );
+	                }
+	            }, false );
+	            return xhr;
+	        },
+		});   
+	}
+} catch (e) {}

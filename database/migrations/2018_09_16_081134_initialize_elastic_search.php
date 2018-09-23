@@ -64,12 +64,13 @@ class InitializeElasticSearch extends Migration
                 $result = json_decode($result = $e->getMessage());
                 Log::critical('Failed to create index.');
                 Log::critical(print_r($result, true));
+                return false;
                 throw new \Exception('Failed to create index. See logs for more information.', 1);
                 
             }
         } else {
+            return false;
             throw new \Exception('ElasticSearch is not enabled or service is unreachable', 1);
-            
         }
     }
 
@@ -92,11 +93,12 @@ class InitializeElasticSearch extends Migration
                 $result = json_decode($result = $e->getMessage());
                 Log::critical('Failed to delete index.');
                 Log::critical(print_r($result, true));
+                return false;
                 throw new \Exception('Failed to delete index. See logs for more information.', 1);
             }
         } else {
+            return false;
             throw new \Exception('ElasticSearch is not enabled or service is unreachable', 1);
-            
         }
     }
 }
