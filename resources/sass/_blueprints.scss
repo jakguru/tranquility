@@ -96,7 +96,11 @@ html, body {
 
 				&:hover,
 				&:focus,
-				&:active {
+				&:active,
+				&.active,
+				&.active:hover,
+				&.active:focus,
+				&.active:active {
 					color: $light;
 					background: $dark;
 					background-color: $dark;
@@ -230,6 +234,49 @@ html, body {
 		#left-menu-search {
 			display: none;
 		}
+
+		#left-nav-items {
+			width: 100%;
+			list-style-type: none;
+			padding: 0;
+			display: block;
+			overflow-x: hidden;
+
+			> li > a {
+				display: flex;
+				flex-direction: row;
+				flex-wrap: nowrap;
+				justify-content: flex-start;
+				align-items: stretch;
+				align-content: stretch;
+				padding: 0.75rem 10px;
+				line-height: 1.2rem;
+				color: $dark;
+
+				&:hover,
+				&:focus,
+				&:active,
+				&.active {
+					text-decoration: none;
+					color: rgba($dark,0.75);
+					background: rgba($dark,0.25);
+				}
+
+				> span {
+					display: inline-block;
+
+					&:first-child {
+						margin-right: 10px;
+						font-size: 1.2rem;
+					}
+
+					&:last-child {
+						position: relative;
+						top: 2px;
+					}
+				}
+			}
+		}
 	}
 
 	> main {
@@ -241,6 +288,11 @@ html, body {
 		overflow-y: auto;
 		overflow-x: hidden;
 		transition: width 300ms , left 300ms, right 300ms;
+
+		> .alert {
+			border-radius: 0;
+			margin-bottom: 0;
+		}
 	}
 
 	&.expanded-sidebar {
@@ -353,8 +405,19 @@ html, body {
 	@each $color, $value in $theme-colors {
 	  > .notification-area-item.alert-#{$color} {
 	  	> a:not(.notification-area-item-dismiss) {
-	  		color: $value;
+	  		color: color-yiq($value);
+
+	  		> .notification-area-item-date {
+				color: rgba(color-yiq($value), 0.85);
+			}
 	  	}
+
+	  	> .notification-area-item-dismiss {
+			text-align: right;
+			padding: 0 0.75rem;
+			padding-right: 0;
+			color: rgba(color-yiq($value), 0.85);
+		}
 	  }
 	}
 }

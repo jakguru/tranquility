@@ -1,5 +1,9 @@
 @extends('app.blueprints.framed')
 
+@section('title')
+	Search
+@endsection
+
 @section('main')
 	@include('app.shared.breadcrumbs',['crumbs' => [
 		[

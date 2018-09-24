@@ -18,3 +18,12 @@
 
 // Settings for Dynamic Background
 @import 'dynamic-bg';
+
+// Alert Sections
+@each $color, $value in $theme-colors {
+  .alert.alert-#{$color} {
+    color: color-yiq($value);
+    background: $value;
+    background-color: $value;
+  }
+}

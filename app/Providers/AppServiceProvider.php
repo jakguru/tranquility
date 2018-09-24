@@ -9,6 +9,7 @@ use \App\Helpers\AppServiceProviderEventHandlerHelper;
 use \App\Helpers\BackgroundImageHelper;
 use Illuminate\Support\Facades\Blade;
 use Illuminate\Support\Facades\Cache;
+use Illuminate\Support\Facades\Config;
 
 class AppServiceProvider extends ServiceProvider
 {
@@ -38,6 +39,16 @@ class AppServiceProvider extends ServiceProvider
             $css = 'body.%s{background-image:url(%s);background-repeat:no-repeat;background-size:cover}';
             return '<?php echo sprintf("<style>' . $css . '</style>\n<script type=\"text/javascript\">setTimeout(function(){document.body.className += \' with-bg \' + \'%s\';},100);</script>", Cache::get(\'random-bg-body-class\'), asset(Cache::get(\'random-bg-asset-path\')), Cache::get(\'random-bg-body-class\')); ?>';
         });
+        $mail_options = \App\Options::get('mail');
+        if (is_object($mail_options)) {
+            Config::set('mail.host', $mail_options->hostname);
+            Config::set('mail.port', $mail_options->port);
+            Config::set('mail.encryption', $mail_options->encryption);
+            Config::set('mail.username', $mail_options->username);
+            Config::set('mail.password', $mail_options->password);
+            Config::set('mail.from.address', $mail_options->sendermail);
+            Config::set('mail.from.name', $mail_options->sendername);
+        }
     }
 
     /**
@@ -47,6 +58,6 @@ class AppServiceProvider extends ServiceProvider
      */
     public function register()
     {
-        //
+        // do something?
     }
 }

@@ -237,7 +237,7 @@ class AuthenticatedSessionController extends Controller
                     }
                     $session->events = $events;
                     $session->save();
-                    return $success;
+                    $success = true;
                     break;
             }
         }

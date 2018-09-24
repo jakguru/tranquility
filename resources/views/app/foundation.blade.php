@@ -8,7 +8,7 @@
     <meta name="apple-mobile-web-app-status-bar-style" content="black">
     <meta name="format-detection" content="telephone=no">
     <meta name="csrf-token" content="{{ csrf_token() }}">
-    <title>{{ config('app.name', 'Tranquility CRM') }}</title>
+    <title>@if (trim($__env->yieldContent('title')))@yield('title') | {{ config('app.name', 'Tranquility CRM') }}@else{{ config('app.name', 'Tranquility CRM') }}@endif</title>
     <meta name="application-name" content="{{ config('app.name', 'Tranquility CRM') }}"/>
     <script type="text/javascript">
         var runWhenTrue = function(condition, callback, timeout ) {

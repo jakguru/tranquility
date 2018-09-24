@@ -31,7 +31,6 @@
 		</form>
 		@auth
 		<div id="user-bar" class="text-right">
-			<a href="#" id="chat-indicator" class="text-danger"><span class="fas fa-comment"></span></a>
 			<a href="#" id="messages-indicator" class="indicator-with-label">
 				<span class="fas fa-envelope"></span>
 				<span class="indicator-label">0</span>
@@ -47,7 +46,9 @@
 					{{ Auth::user()->name }}
 				</button>
 				<div class="dropdown-menu">
-					<a class="dropdown-item" href="#">{{ __('My Settings') }}</a>
+					<a class="dropdown-item @if(Request::route()->getName() == 'my-inbox') active @endif" href="{{ route('my-inbox') }}">{{ __('My Inbox') }}</a>
+					<a class="dropdown-item @if(Request::route()->getName() == 'my-calendar') active @endif" href="{{ route('my-calendar') }}">{{ __('My Calendar') }}</a>
+					<a class="dropdown-item @if(Request::route()->getName() == 'my-preferences') active @endif" href="{{ route('my-preferences') }}">{{ __('My Preferences') }}</a>
 					<a class="dropdown-item" href="{{ route('logout') }}">{{ __('Log Out') }}</a>
 				</div>
 			</div>
@@ -78,8 +79,29 @@
 				</div>
 			</div>
 		</form>
+		<ul id="left-nav-items">
+			@if(Auth::user()->isSudo())
+			<li>
+				<a href="{{ route('settings') }}" class="@if(Request::route()->getName() == 'settings' || request()->is('settings/*')) active @endif" title="{{ __('Settings') }}">
+					<span>
+						<span class="fas fa-sliders-h"></span>
+					</span>
+					<span>{{ __('Settings') }}</span>
+				</a>
+			</li>
+			@endif
+		</ul>
 	</aside>
 	<main>
+		@if(Session::has('globalerrormessage'))
+		<div class="alert alert-danger">
+			{{ Session::get('globalerrormessage') }}
+		</div>
+		@elseif(Session::has('globalsuccessmessage'))
+		<div class="alert alert-success">
+			{{ Session::get('globalsuccessmessage') }}
+		</div>
+		@endif
 		@yield('main')
 	</main>
 </div>

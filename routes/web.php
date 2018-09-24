@@ -1,4 +1,5 @@
 <?php
+use Illuminate\Support\Facades\Auth;
 
 /*
 |--------------------------------------------------------------------------
@@ -30,6 +31,31 @@ Route::group(['middleware' => ['auth']], function () {
     Route::get('/dashboard', '\App\Http\Controllers\DashboardController@index')->name('dashboard');
     Route::get('/logout', '\App\Http\Controllers\Auth\LoginController@logout')->name('logout');
     Route::get('/search', '\App\Http\Controllers\DashboardController@search')->name('search');
+
+    Route::get('/my/inbox', function () {
+        abort(501);
+    })->name('my-inbox');
+    Route::get('/my/calendar', function () {
+        abort(501);
+    })->name('my-calendar');
+    Route::get('/my/preferences', function () {
+        abort(501);
+    })->name('my-preferences');
+
+    Route::get('/settings', '\App\Http\Controllers\SettingsController@lobby')->name('settings');
+    Route::post('/settings', '\App\Http\Controllers\SettingsController@saveSettings')->name('save-settings');
+    Route::get('/settings/users', function () {
+        abort(501);
+    })->name('settings-users');
+    Route::get('/settings/groups', function () {
+        abort(501);
+    })->name('settings-groups');
+    Route::get('/settings/roles', function () {
+        abort(501);
+    })->name('settings-roles');
+    Route::get('/settings/email', '\App\Http\Controllers\SettingsController@email')->name('settings-email');
+    Route::get('/settings/google', '\App\Http\Controllers\SettingsController@google')->name('settings-google');
+    Route::get('/settings/twilio', '\App\Http\Controllers\SettingsController@twilio')->name('settings-twilio');
 
     if ('polling' == config('app.rtu.method')) {
         Route::get('/rtu', '\App\Http\Controllers\AuthenticatedSessionController@onPolling')->name('rtu');

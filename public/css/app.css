@@ -15438,7 +15438,11 @@ body {
 
 #app > header #user-bar a:hover,
 #app > header #user-bar a:focus,
-#app > header #user-bar a:active {
+#app > header #user-bar a:active,
+#app > header #user-bar a.active,
+#app > header #user-bar a.active:hover,
+#app > header #user-bar a.active:focus,
+#app > header #user-bar a.active:active {
   color: #f8f9fa;
   background: #343a40;
   background-color: #343a40;
@@ -15619,6 +15623,60 @@ body {
   display: none;
 }
 
+#app > aside #left-nav-items {
+  width: 100%;
+  list-style-type: none;
+  padding: 0;
+  display: block;
+  overflow-x: hidden;
+}
+
+#app > aside #left-nav-items > li > a {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-orient: horizontal;
+  -webkit-box-direction: normal;
+      -ms-flex-direction: row;
+          flex-direction: row;
+  -ms-flex-wrap: nowrap;
+      flex-wrap: nowrap;
+  -webkit-box-pack: start;
+      -ms-flex-pack: start;
+          justify-content: flex-start;
+  -webkit-box-align: stretch;
+      -ms-flex-align: stretch;
+          align-items: stretch;
+  -ms-flex-line-pack: stretch;
+      align-content: stretch;
+  padding: 0.75rem 10px;
+  line-height: 1.2rem;
+  color: #343a40;
+}
+
+#app > aside #left-nav-items > li > a:hover,
+#app > aside #left-nav-items > li > a:focus,
+#app > aside #left-nav-items > li > a:active,
+#app > aside #left-nav-items > li > a.active {
+  text-decoration: none;
+  color: rgba(52, 58, 64, 0.75);
+  background: rgba(52, 58, 64, 0.25);
+}
+
+#app > aside #left-nav-items > li > a > span {
+  display: inline-block;
+}
+
+#app > aside #left-nav-items > li > a > span:first-child {
+  margin-right: 10px;
+  font-size: 1.2rem;
+}
+
+#app > aside #left-nav-items > li > a > span:last-child {
+  position: relative;
+  top: 2px;
+}
+
 #app > main {
   position: fixed;
   top: 50px;
@@ -15629,6 +15687,11 @@ body {
   overflow-x: hidden;
   -webkit-transition: width 300ms , left 300ms, right 300ms;
   transition: width 300ms , left 300ms, right 300ms;
+}
+
+#app > main > .alert {
+  border-radius: 0;
+  margin-bottom: 0;
 }
 
 #app.expanded-sidebar > aside {
@@ -15758,35 +15821,123 @@ body {
 }
 
 .notification-popover > .notification-area-item.alert-primary > a:not(.notification-area-item-dismiss) {
-  color: #3490dc;
+  color: #fff;
+}
+
+.notification-popover > .notification-area-item.alert-primary > a:not(.notification-area-item-dismiss) > .notification-area-item-date {
+  color: rgba(255, 255, 255, 0.85);
+}
+
+.notification-popover > .notification-area-item.alert-primary > .notification-area-item-dismiss {
+  text-align: right;
+  padding: 0 0.75rem;
+  padding-right: 0;
+  color: rgba(255, 255, 255, 0.85);
 }
 
 .notification-popover > .notification-area-item.alert-secondary > a:not(.notification-area-item-dismiss) {
-  color: #6c757d;
+  color: #fff;
+}
+
+.notification-popover > .notification-area-item.alert-secondary > a:not(.notification-area-item-dismiss) > .notification-area-item-date {
+  color: rgba(255, 255, 255, 0.85);
+}
+
+.notification-popover > .notification-area-item.alert-secondary > .notification-area-item-dismiss {
+  text-align: right;
+  padding: 0 0.75rem;
+  padding-right: 0;
+  color: rgba(255, 255, 255, 0.85);
 }
 
 .notification-popover > .notification-area-item.alert-success > a:not(.notification-area-item-dismiss) {
-  color: #38c172;
+  color: #fff;
+}
+
+.notification-popover > .notification-area-item.alert-success > a:not(.notification-area-item-dismiss) > .notification-area-item-date {
+  color: rgba(255, 255, 255, 0.85);
+}
+
+.notification-popover > .notification-area-item.alert-success > .notification-area-item-dismiss {
+  text-align: right;
+  padding: 0 0.75rem;
+  padding-right: 0;
+  color: rgba(255, 255, 255, 0.85);
 }
 
 .notification-popover > .notification-area-item.alert-info > a:not(.notification-area-item-dismiss) {
-  color: #6cb2eb;
+  color: #212529;
+}
+
+.notification-popover > .notification-area-item.alert-info > a:not(.notification-area-item-dismiss) > .notification-area-item-date {
+  color: rgba(33, 37, 41, 0.85);
+}
+
+.notification-popover > .notification-area-item.alert-info > .notification-area-item-dismiss {
+  text-align: right;
+  padding: 0 0.75rem;
+  padding-right: 0;
+  color: rgba(33, 37, 41, 0.85);
 }
 
 .notification-popover > .notification-area-item.alert-warning > a:not(.notification-area-item-dismiss) {
-  color: #ffed4a;
+  color: #212529;
+}
+
+.notification-popover > .notification-area-item.alert-warning > a:not(.notification-area-item-dismiss) > .notification-area-item-date {
+  color: rgba(33, 37, 41, 0.85);
+}
+
+.notification-popover > .notification-area-item.alert-warning > .notification-area-item-dismiss {
+  text-align: right;
+  padding: 0 0.75rem;
+  padding-right: 0;
+  color: rgba(33, 37, 41, 0.85);
 }
 
 .notification-popover > .notification-area-item.alert-danger > a:not(.notification-area-item-dismiss) {
-  color: #e3342f;
+  color: #fff;
+}
+
+.notification-popover > .notification-area-item.alert-danger > a:not(.notification-area-item-dismiss) > .notification-area-item-date {
+  color: rgba(255, 255, 255, 0.85);
+}
+
+.notification-popover > .notification-area-item.alert-danger > .notification-area-item-dismiss {
+  text-align: right;
+  padding: 0 0.75rem;
+  padding-right: 0;
+  color: rgba(255, 255, 255, 0.85);
 }
 
 .notification-popover > .notification-area-item.alert-light > a:not(.notification-area-item-dismiss) {
-  color: #f8f9fa;
+  color: #212529;
+}
+
+.notification-popover > .notification-area-item.alert-light > a:not(.notification-area-item-dismiss) > .notification-area-item-date {
+  color: rgba(33, 37, 41, 0.85);
+}
+
+.notification-popover > .notification-area-item.alert-light > .notification-area-item-dismiss {
+  text-align: right;
+  padding: 0 0.75rem;
+  padding-right: 0;
+  color: rgba(33, 37, 41, 0.85);
 }
 
 .notification-popover > .notification-area-item.alert-dark > a:not(.notification-area-item-dismiss) {
-  color: #343a40;
+  color: #fff;
+}
+
+.notification-popover > .notification-area-item.alert-dark > a:not(.notification-area-item-dismiss) > .notification-area-item-date {
+  color: rgba(255, 255, 255, 0.85);
+}
+
+.notification-popover > .notification-area-item.alert-dark > .notification-area-item-dismiss {
+  text-align: right;
+  padding: 0 0.75rem;
+  padding-right: 0;
+  color: rgba(255, 255, 255, 0.85);
 }
 
 body.with-bg.bright-bg .dynamic-bg {
@@ -15918,5 +16069,53 @@ body.with-bg.dark-bg .form-control.disabled {
   cursor: not-allowed;
   background-color: rgba(108, 117, 125, 0.09);
   opacity: 1;
+}
+
+.alert.alert-primary {
+  color: #fff;
+  background: #3490dc;
+  background-color: #3490dc;
+}
+
+.alert.alert-secondary {
+  color: #fff;
+  background: #6c757d;
+  background-color: #6c757d;
+}
+
+.alert.alert-success {
+  color: #fff;
+  background: #38c172;
+  background-color: #38c172;
+}
+
+.alert.alert-info {
+  color: #212529;
+  background: #6cb2eb;
+  background-color: #6cb2eb;
+}
+
+.alert.alert-warning {
+  color: #212529;
+  background: #ffed4a;
+  background-color: #ffed4a;
+}
+
+.alert.alert-danger {
+  color: #fff;
+  background: #e3342f;
+  background-color: #e3342f;
+}
+
+.alert.alert-light {
+  color: #212529;
+  background: #f8f9fa;
+  background-color: #f8f9fa;
+}
+
+.alert.alert-dark {
+  color: #fff;
+  background: #343a40;
+  background-color: #343a40;
 }
 
