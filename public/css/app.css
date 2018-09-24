@@ -15733,6 +15733,10 @@ body {
   display: block;
 }
 
+.notification-popover > .notification-area-item > a:not(.notification-area-item-dismiss) > span:first-child {
+  margin-bottom: 5px;
+}
+
 .notification-popover > .notification-area-item > a:not(.notification-area-item-dismiss) > .notification-area-item-message {
   font-size: 0.9rem;
   line-height: 1.2rem;

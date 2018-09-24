@@ -19,6 +19,14 @@ try {
 						}
 					}
 				}
+				if ('number' == typeof(data.messages)) {
+					jQuery('#messages-indicator').find('.indicator-label').text(data.messages);
+					if ( data.messages > 0 ) {
+						jQuery('#messages-indicator').find('.indicator-label').addClass('indicator-label-danger');
+					} else {
+						jQuery('#messages-indicator').find('.indicator-label').removeClass('indicator-label-danger');
+					}
+				}
 				if ('string' == typeof(data.poll)) {
 					setTimeout(function() {
 						runRTU(data.poll);
@@ -28,6 +36,10 @@ try {
 		);
 	}
 } catch (e) {}
+
+window.playSound = function(name) {
+	document.getElementById(name).play();
+}
 
 var notificationIndicator = function(identifier) {
 	this.obj = jQuery(identifier);
@@ -51,6 +63,18 @@ var notificationIndicator = function(identifier) {
 		if ( notifications.length > 0 ) {
 			obj.obj.find('.indicator-label').addClass('indicator-label-danger');
 		}
+		Push.create(info.content.message, {
+			tag: info.hash,
+			vibrate: 200,
+			silent: false,
+			onClick: function() {
+				window.focus();
+				obj.obj.popover('show');
+			},
+			fallback: function(payload) {
+				console.log(payload);
+			}
+		});
 		if (jQuery('.notification-popover').is(':visible')) {
 			jQuery('.notification-popover').find('span.text-primary').remove();
 			html = jQuery(sprintf(
@@ -68,6 +92,7 @@ var notificationIndicator = function(identifier) {
 				var popover = jQuery(this).closest('.popover');
 				var removed = obj.removeNotification(jQuery(this).attr('data-hash'));
 				if ( true == removed ) {
+					Push.close(info.hash);
 					var item = jQuery(this).closest('.notification-area-item');
 					item.fadeOut(300, function() {
 						item.slideUp(300, function() {
@@ -141,8 +166,10 @@ var notificationIndicator = function(identifier) {
 			notifications = popover.find('[data-hash]');
 			notifications.on('click', function(e) {
 				e.preventDefault();
-				var removed = obj.removeNotification(jQuery(this).attr('data-hash'));
+				var hash = jQuery(this).attr('data-hash'),
+					removed = obj.removeNotification(hash);
 				if ( true == removed ) {
+					Push.close(hash);
 					var item = jQuery(this).closest('.notification-area-item');
 					item.fadeOut(300, function() {
 						item.slideUp(300, function() {
@@ -159,6 +186,9 @@ var notificationIndicator = function(identifier) {
 			});
 	});
 	jQuery(window).on('alert', obj.addNotification);
+	jQuery(window).on('login', function(event) {
+		playSound('loaded');
+	});
 	jQuery( document ).on( 'mouseup', function(e) {
 		var tgt = e.target,
 			descby = obj.obj.attr('aria-describedby'),
@@ -172,6 +202,13 @@ var notificationIndicator = function(identifier) {
 				obj.obj.popover('hide');
 			}
 	});
+	if (Push.Permission.get() == Push.Permission.DEFAULT) {
+		Push.Permission.request(function(){
+			// on granted
+		}, function() {
+			// on denied
+		});
+	}
 	return obj;
 }
 var ni = new notificationIndicator('#notifications-indicator');

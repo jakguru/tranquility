@@ -322,6 +322,10 @@ html, body {
 
 			> span {
 				display: block;
+
+				&:first-child {
+					margin-bottom: 5px;
+				}
 			}
 
 			> .notification-area-item-message {

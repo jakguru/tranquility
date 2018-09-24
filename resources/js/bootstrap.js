@@ -163,3 +163,8 @@ try {
 		});   
 	}
 } catch (e) {}
+
+try {
+	window.Push = require('push.js');
+}
+catch (e) {}

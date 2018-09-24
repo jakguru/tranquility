@@ -19,6 +19,12 @@ class RealtimeAlert extends \App\Realtime\RealtimeEvent
     public static function emitAlert($user, $message, $url = '#', $type = 'danger', $icon_class = 'fas fa-exclamation-triangle')
     {
         $e = self::alert($message, $url, $type, $icon_class);
-        $e->emitToUser($user);
+        $e->emitToUser($user, 1);
+    }
+
+    public static function emitAlertToSession($user, $message, $url = '#', $type = 'danger', $icon_class = 'fas fa-exclamation-triangle')
+    {
+        $e = self::alert($message, $url, $type, $icon_class);
+        $e->emitToCurrentSession(1);
     }
 }

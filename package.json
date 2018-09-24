@@ -21,6 +21,7 @@
     },
     "dependencies": {
         "@fortawesome/fontawesome-free-webfonts": "^1.0.9",
+        "push.js": "^1.0.7",
         "sprintf-js": "^1.1.1"
     }
 }

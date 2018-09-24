@@ -5,6 +5,7 @@ namespace App\Realtime;
 use Carbon\Carbon;
 use \App\User;
 use \App\Jobs\EmitEventToUser;
+use \App\Jobs\EmitEventToUserSession;
 
 class RealtimeEvent
 {
@@ -35,7 +36,18 @@ class RealtimeEvent
         if (0 == intval($delay)) {
             EmitEventToUser::dispatch($user, $this);
         } else {
-            EmitEventToUser::dispatch($user, $this)->delay(now()->addMinutes($delay));
+            EmitEventToUser::dispatch($user, $this)->delay(now()->addSeconds($delay));
+        }
+    }
+
+    public function emitToCurrentSession($delay = 0)
+    {
+        $session = \App\Http\Controllers\AuthenticatedSessionController::getCurrentUserSession();
+        $user = request()->user();
+        if (0 == intval($delay)) {
+            EmitEventToUserSession::dispatch($user, $this, $session);
+        } else {
+            EmitEventToUserSession::dispatch($user, $this, $session)->delay(now()->addSeconds($delay));
         }
     }
 

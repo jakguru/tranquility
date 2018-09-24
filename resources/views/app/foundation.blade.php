@@ -37,6 +37,21 @@
 </head>
     <body>
         @yield('blueprint')
+        <audio class="d-none" id="loaded">
+            <source src="{{ asset( 'sounds/loaded.wav' ) }}" type="audio/wav">
+        </audio>
+        <audio class="d-none" id="mt1">
+            <source src="{{ asset( 'sounds/mt1.mp3' ) }}" type="audio/mpeg">
+        </audio>
+        <audio class="d-none" id="mt2">
+            <source src="{{ asset( 'sounds/mt2.mp3' ) }}" type="audio/mpeg">
+        </audio>
+        <audio class="d-none" id="mt3">
+            <source src="{{ asset( 'sounds/mt3.wav' ) }}" type="audio/wav">
+        </audio>
+        <audio class="d-none" id="ringtone">
+            <source src="{{ asset( 'sounds/ringtone.mp3' ) }}" type="audio/mpeg">
+        </audio>
         {{ \App\Http\Controllers\AuthenticatedSessionController::initializeRealtimeClient() }}
     </body>
 </html>

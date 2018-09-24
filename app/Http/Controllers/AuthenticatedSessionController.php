@@ -12,6 +12,7 @@ use \App\Realtime\RealtimeEvent;
 use Illuminate\Support\Facades\URL;
 use \App\Helpers\AjaxFeedbackHelper;
 use \App\Jobs\RemoveEventsFromQueue;
+use Illuminate\Support\Facades\Log;
 
 class AuthenticatedSessionController extends Controller
 {
@@ -93,6 +94,9 @@ class AuthenticatedSessionController extends Controller
         if (!is_a($this->user, '\App\User')) {
             return [];
         }
+        if (!is_a($this->authsession, '\App\AuthenticatedSession')) {
+            return [];
+        }
         $return = $this->authsession->events;
         foreach ($return as $hash => $event) {
             $event['hash'] = $hash;
@@ -115,6 +119,7 @@ class AuthenticatedSessionController extends Controller
         $return = new \stdClass();
         $return->poll = URL::temporarySignedRoute('rtu', now()->addMinutes(1));
         $return->events = $obj->getCurrentSessionEvents(true);
+        $return->messages = 0;
         return AjaxFeedbackHelper::successResponse($return);
     }
 
@@ -151,36 +156,64 @@ class AuthenticatedSessionController extends Controller
         }
     }
 
+    public static function getCurrentUserSession()
+    {
+        $session = Session::getId();
+        $user = request()->user();
+        switch (config('app.rtu.storage')) {
+            case 'database':
+                $s = AuthenticatedSession::where([
+                    'user_id' => $user->id,
+                    'session_id' => $session,
+                ])->first();
+                break;
+        }
+        return (isset($s) && is_a($s, '\App\AuthenticatedSession')) ? $s : null;
+    }
+
     public static function getUserSessions(User $user)
     {
         switch (config('app.rtu.storage')) {
             case 'database':
                 return AuthenticatedSession::where('status', '<>', 'offline')
-                       ->where('user_id', '=', $user->id)
+                       ->where('user_id', 'like', $user->id)
                        ->get();
                 break;
         }
     }
 
+    public static function emitToUserSession(User $user, RealtimeEvent $event, AuthenticatedSession $session)
+    {
+        $success = false;
+        switch (config('app.rtu.storage')) {
+            case 'database':
+                $events = $session->events;
+                if (!is_array($events)) {
+                    $events = [];
+                }
+                $hash = $event->getHash();
+                $events[$hash] = $event;
+                $session->events = $events;
+                $session->save();
+                $success = true;
+                break;
+        }
+        return $success;
+    }
+
     public static function emitToUserSessions(User $user, RealtimeEvent $event)
     {
+        Log::info(sprintf('Emitting "%s" to user %d', json_encode($event), $user->id));
         $sessions = self::getUserSessions($user);
+        $success = false;
         foreach ($sessions as $session) {
             switch (config('app.rtu.storage')) {
                 case 'database':
-                    $events = $session->events;
-                    if (!is_array($events)) {
-                        $events = [];
-                    }
-                    $hash = $event->getHash();
-                    $events[$hash] = $event;
-                    $session->events = $events;
-                    $session->save();
-                    return true;
+                    self::emitToUserSession($user, $event, $session);
                     break;
             }
         }
-        return false;
+        return $success;
     }
 
     public static function removeEventFromSessions(User $user, $event)
@@ -191,6 +224,7 @@ class AuthenticatedSessionController extends Controller
             return false;
         }
         $sessions = self::getUserSessions($user);
+        $success = false;
         foreach ($sessions as $session) {
             switch (config('app.rtu.storage')) {
                 case 'database':
@@ -203,11 +237,11 @@ class AuthenticatedSessionController extends Controller
                     }
                     $session->events = $events;
                     $session->save();
-                    return true;
+                    return $success;
                     break;
             }
         }
-        return false;
+        return $success;
     }
 
     public static function initializeRealtimeClient()

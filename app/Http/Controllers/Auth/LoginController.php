@@ -51,11 +51,13 @@ class LoginController extends Controller
         AuthenticatedSessionController::onLogin();
         LoggableEventHelper::saveActivity($user, 'Login');
         if ($user->email == 'sudo@localhost.local') {
-            \App\Realtime\Events\RealtimeAlert::emitAlert($user, 'You are using the default installation email. Please consider changing it.', '#', 'danger', 'fas fa-exclamation-triangle', 1);
+            \App\Realtime\Events\RealtimeAlert::emitAlertToSession($user, 'You are using the default installation email. Please consider changing it.', '#', 'danger', 'fas fa-exclamation-triangle', 10);
             if ($hasher->check('admin', $user->password)) {
-                \App\Realtime\Events\RealtimeAlert::emitAlert($user, 'You are using the default installation password. Please consider changing it.', '#', 'danger', 'fas fa-exclamation-triangle', 1);
+                \App\Realtime\Events\RealtimeAlert::emitAlertToSession($user, 'You are using the default installation password. Please consider changing it.', '#', 'danger', 'fas fa-exclamation-triangle', 10);
             }
         }
+        $le = new \App\Realtime\RealtimeEvent('login');
+        $le->emitToCurrentSession(5);
     }
 
     public function logout(Request $request)
