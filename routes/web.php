@@ -42,6 +42,9 @@ Route::group(['middleware' => ['auth']], function () {
         abort(501);
     })->name('my-preferences');
 
+    Route::post('/my/preferences/google2fa', '\App\Http\Controllers\CurrentUserController@saveGoogle2FA')->name('save-google2fa');
+    Route::post('/google/authenticator', '\App\Http\Controllers\CurrentUserController@validateGoogle2FA')->name('validate-google2fa');
+
     Route::get('/settings', '\App\Http\Controllers\SettingsController@lobby')->name('settings');
     Route::post('/settings', '\App\Http\Controllers\SettingsController@saveSettings')->name('save-settings');
     Route::get('/settings/users', function () {

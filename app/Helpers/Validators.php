@@ -4,7 +4,7 @@ namespace App\Helpers;
 
 class Validators
 {
-    public static function is_cidr($cidr)
+    public static function is_cidr($cidr) // phpcs:ignore PSR1.Methods.CamelCapsMethodName.NotCamelCaps
     {
         $parts = explode('/', $cidr);
         if (count($parts) != 2) {
@@ -24,12 +24,12 @@ class Validators
         return false;
     }
 
-    public static function is_ip($ip)
+    public static function is_ip($ip) // phpcs:ignore PSR1.Methods.CamelCapsMethodName.NotCamelCaps
     {
         return (filter_var($ip, FILTER_VALIDATE_IP, FILTER_FLAG_IPV4) || filter_var($ip, FILTER_VALIDATE_IP, FILTER_FLAG_IPV6));
     }
 
-    public static function is_ipv4($ip)
+    public static function is_ipv4($ip) // phpcs:ignore PSR1.Methods.CamelCapsMethodName.NotCamelCaps
     {
         if (self::is_cidr($ip)) {
             list($ip, $netmask) = explode('/', $ip, 2);
@@ -37,7 +37,7 @@ class Validators
         return filter_var($ip, FILTER_VALIDATE_IP, FILTER_FLAG_IPV4);
     }
 
-    public static function is_ipv6($ip)
+    public static function is_ipv6($ip) // phpcs:ignore PSR1.Methods.CamelCapsMethodName.NotCamelCaps
     {
         if (self::is_cidr($ip)) {
             list($ip, $netmask) = explode('/', $ip, 2);
@@ -45,7 +45,7 @@ class Validators
         return filter_var($ip, FILTER_VALIDATE_IP, FILTER_FLAG_IPV6);
     }
 
-    public static function in_cidr($ip, $cidr)
+    public static function in_cidr($ip, $cidr) // phpcs:ignore PSR1.Methods.CamelCapsMethodName.NotCamelCaps
     {
         if (!self::is_cidr($cidr)) {
             return false;
@@ -70,7 +70,7 @@ class Validators
         return false;
     }
 
-    public static function ips_match($a, $b)
+    public static function ips_match($a, $b) // phpcs:ignore PSR1.Methods.CamelCapsMethodName.NotCamelCaps
     {
         $a = trim($a);
         $b = trim($b);
@@ -82,7 +82,7 @@ class Validators
         return false;
     }
 
-    protected static function inet_to_bits($inet)
+    protected static function inet_to_bits($inet) // phpcs:ignore PSR1.Methods.CamelCapsMethodName.NotCamelCaps
     {
         $unpacked = unpack('A16', $inet);
         $unpacked = str_split($unpacked[1]);

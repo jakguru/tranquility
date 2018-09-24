@@ -10,7 +10,7 @@ class AjaxFeedbackHelper
     protected $data = null;
     protected $errors = [];
 
-    protected $_statuses = ['SUCCESS', 'FAILURE', 'DEBUG', 'REDIRECT'];
+    protected $statuses = ['SUCCESS', 'FAILURE', 'DEBUG', 'REDIRECT'];
 
     public function __construct($status = 'FAILURE', $code = 0, $message = 'Nothing Happened', $data = null, $errors = [])
     {
@@ -26,7 +26,7 @@ class AjaxFeedbackHelper
     {
         switch ($key) {
             case 'status':
-                if (in_array(strtoupper($value), $this->_statuses)) {
+                if (in_array(strtoupper($value), $this->statuses)) {
                     $this->status = strtoupper($value);
                 } elseif (true === $value) {
                     $this->status = 'SUCCESS';

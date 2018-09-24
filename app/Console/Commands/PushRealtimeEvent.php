@@ -6,7 +6,7 @@ use Illuminate\Console\Command;
 use \App\Realtime\RealtimeEvent;
 use \App\User;
 
-class pushRealtimeEvent extends Command
+class PushRealtimeEvent extends Command
 {
     /**
      * The name and signature of the console command.

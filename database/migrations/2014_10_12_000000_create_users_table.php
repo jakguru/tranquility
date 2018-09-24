@@ -27,6 +27,7 @@ class CreateUsersTable extends Migration
             $table->json('owner_ids')->nullable();
             $table->json('peer_ids')->nullable();
             $table->json('parent_ids')->nullable();
+            $table->text('google2fa_secret')->nullable();
             $table->rememberToken();
             $table->timestamps();
         });

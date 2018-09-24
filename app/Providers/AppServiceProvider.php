@@ -37,7 +37,10 @@ class AppServiceProvider extends ServiceProvider
         });
         Blade::directive('rbg', function ($input) {
             $css = 'body.%s{background-image:url(%s);background-repeat:no-repeat;background-size:cover}';
-            return '<?php echo sprintf("<style>' . $css . '</style>\n<script type=\"text/javascript\">setTimeout(function(){document.body.className += \' with-bg \' + \'%s\';},100);</script>", Cache::get(\'random-bg-body-class\'), asset(Cache::get(\'random-bg-asset-path\')), Cache::get(\'random-bg-body-class\')); ?>';
+            return '<?php echo sprintf("<style>'
+                    . $css .
+                    '</style>\n<script type=\"text/javascript\">setTimeout(function(){document.body.className += \' with-bg \' + \'%s\';},100);</script>", Cache::get(\'random-bg-body-class\'), '
+                    . 'asset(Cache::get(\'random-bg-asset-path\')), Cache::get(\'random-bg-body-class\')); ?>';
         });
         $mail_options = \App\Options::get('mail');
         if (is_object($mail_options)) {
