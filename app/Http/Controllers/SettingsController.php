@@ -37,15 +37,7 @@ class SettingsController extends Controller
         if (!is_a($request->user(), '\App\User') || !$request->user()->isSudo()) {
             abort(401);
         }
-        return view('app.layouts.settings.google');
-    }
-
-    public function twilio(Request $request)
-    {
-        if (!is_a($request->user(), '\App\User') || !$request->user()->isSudo()) {
-            abort(401);
-        }
-        return view('app.layouts.settings.twilio');
+        return view('app.layouts.settings.google', ['settings' => \App\Options::get('google')]);
     }
 
     public function saveSettings(Request $request)
@@ -85,6 +77,52 @@ class SettingsController extends Controller
                     return Redirect::route('settings-email')->with('globalerrormessage', __('Failed to enqueue email.'));
                 }
                 return Redirect::route('settings-email')->with('globalsuccessmessage', __('Enqueued email successfully.'));
+                break;
+
+            case 'google-recapcha':
+                $data = $request->input('recapcha');
+                Validator::make($data, [
+                    'key' => 'string',
+                    'secret' => 'string|required_with:key',
+                    'enabled' => 'nullable|accepted',
+                ]);
+                $settings = \App\Options::get('google');
+                if (!is_object($settings)) {
+                    $settings = new \stdClass();
+                }
+                if (!property_exists($settings, 'recapcha')) {
+                    $settings->recapcha = [];
+                }
+                $settings->recapcha['key'] = $data['key'];
+                $settings->recapcha['secret'] = $data['secret'];
+                $settings->recapcha['enabled'] = array_key_exists('enabled', $data);
+                $saved = \App\Options::set('google', $settings);
+                if (true == $saved) {
+                    return Redirect::route('settings-google')->with('globalsuccessmessage', __('Updated Google ReCAPCHA Settings successfully.'));
+                }
+                return Redirect::route('settings-google')->with('globalerrormessage', __('Failed to updated Google ReCAPCHA Settings.'));
+                break;
+
+            case 'google-maps':
+                $data = $request->input('maps');
+                Validator::make($data, [
+                    'key' => 'string',
+                    'enabled' => 'nullable|accepted',
+                ]);
+                $settings = \App\Options::get('google');
+                if (!is_object($settings)) {
+                    $settings = new \stdClass();
+                }
+                if (!property_exists($settings, 'maps')) {
+                    $settings->maps = [];
+                }
+                $settings->maps['key'] = $data['key'];
+                $settings->maps['enabled'] = array_key_exists('enabled', $data);
+                $saved = \App\Options::set('google', $settings);
+                if (true == $saved) {
+                    return Redirect::route('settings-google')->with('globalsuccessmessage', __('Updated Google Maps Settings successfully.'));
+                }
+                return Redirect::route('settings-google')->with('globalerrormessage', __('Failed to updated Google Maps Settings.'));
                 break;
             
             default:

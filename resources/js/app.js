@@ -16,3 +16,13 @@ jQuery('#menu-toggle > a').on('click', function(e){
 		jQuery('#app').addClass('expanded-sidebar')
 	}
 });
+
+window.handleGoogleReCAPCHA = function(result) {
+	jQuery('.g-recaptcha').each(function() {
+		var btn = jQuery(this),
+			form = btn.closest(form),
+			field = form.find('[name="g-recaptcha"]');
+			field.val(result);
+		form.submit();
+	});
+}

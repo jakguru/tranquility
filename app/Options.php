@@ -4,6 +4,7 @@ namespace App;
 
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\Cache;
+use Illuminate\Support\Facades\Schema;
 
 class Options extends Model
 {
@@ -15,6 +16,9 @@ class Options extends Model
 
     public static function set($key, $value)
     {
+        if (!Schema::hasTable('options')) {
+            return false;
+        }
         $c = get_called_class();
         $option = $c::where(['option_key' => $key])->first();
         if (!is_a($option, '\App\Options')) {
@@ -33,6 +37,9 @@ class Options extends Model
 
     public static function get($key, $default = null)
     {
+        if (!Schema::hasTable('options')) {
+            return $default;
+        }
         $cache_key = sprintf('option.%s', $key);
         if (Cache::has($cache_key)) {
             return Cache::get($cache_key, $default);

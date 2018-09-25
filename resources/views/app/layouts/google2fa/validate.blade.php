@@ -9,7 +9,7 @@
 @endsection
 
 @section('main')
-	<div class="col-sm-10 offset-sm-1 col-lg-4 offset-lg-4 row-offset-md-2">
+	<div class="col-sm-10 offset-sm-1 col-lg-4 offset-lg-4">
 		<form action="{{ route('validate-google2fa') }}" method="POST" class="card dynamic-bg dynamic-shadow dynamic-color">
 			@csrf
 
@@ -39,12 +39,8 @@
 				</div>
 			</div>
 			<div class="card-footer">
-				<div class="row">
-					
-					<div class="col-sm-4">
-						<input type="submit" class="btn btn-dynamic btn-block" value="{{ __('Continue') }}" />
-					</div>
-				</div>
+				<input type="submit" class="btn btn-dynamic" value="{{ __('Continue') }}" />
+				<a href="{{ route('logout') }}" class="btn btn-secondary">{{ __('Cancel') }}</a>
 			</div>
 		</form>
 	</div>

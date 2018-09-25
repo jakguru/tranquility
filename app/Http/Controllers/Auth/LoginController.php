@@ -45,6 +45,14 @@ class LoginController extends Controller
         return view('app.layouts.login');
     }
 
+    protected function validateLogin(Request $request)
+    {
+        $this->validate($request, [
+            $this->username() => 'required|string',
+            'password' => 'required|string',
+        ]);
+    }
+
     protected function authenticated(Request $request, $user)
     {
         $hasher = app('hash');

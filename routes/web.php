@@ -58,7 +58,6 @@ Route::group(['middleware' => ['auth']], function () {
     })->name('settings-roles');
     Route::get('/settings/email', '\App\Http\Controllers\SettingsController@email')->name('settings-email');
     Route::get('/settings/google', '\App\Http\Controllers\SettingsController@google')->name('settings-google');
-    Route::get('/settings/twilio', '\App\Http\Controllers\SettingsController@twilio')->name('settings-twilio');
 
     if ('polling' == config('app.rtu.method')) {
         Route::get('/rtu', '\App\Http\Controllers\AuthenticatedSessionController@onPolling')->name('rtu');

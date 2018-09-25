@@ -2,6 +2,7 @@
 
 @section('rbg')
 	@rbg
+	{{ \App\Helpers\GoogleReCAPCHAHelper::injectJS() }}
 @endsection
 
 @section('title')
@@ -65,7 +66,11 @@
 			<div class="card-footer">
 				<div class="row">
                     <div class="col-sm-7 offset-sm-5">
+                    	@if(\App\Helpers\GoogleReCAPCHAHelper::enabled())
+                    	{{ \App\Helpers\GoogleReCAPCHAHelper::injectButton('btn btn-dynamic', __('Log In')) }}
+						@else
 						<input type="submit" class="btn btn-dynamic" value="{{ __('Log In') }}" />
+						@endif
 					</div>
 				</div>
 			</div>
