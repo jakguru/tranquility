@@ -18,7 +18,7 @@ class Enforce2FA
     {
         if (is_a($request->user(), '\App\User')
             && 0 === strlen($request->user()->google2fa_secret)
-            && !in_array($request->route()->getName(), ['logout', 'save-google2fa'])
+            && !in_array($request->route()->getName(), ['logout', 'save-google2fa', 'validate-google2fa',])
         ) {
             $google2fa = app('pragmarx.google2fa');
             if ($request->session()->has('google2fa_secret')) {
