@@ -64,7 +64,6 @@ class GoogleReCAPCHAHelper
                     'remoteip' => request()->ip(),
                 ],
             ]);
-            Log::debug($r->getBody());
             $response = json_decode($r->getBody());
             return (is_object($response) && property_exists($response, 'success') && true == $response->success);
         } catch (\Exception $e) {

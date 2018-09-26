@@ -36437,6 +36437,7 @@ var notificationIndicator = function notificationIndicator(identifier) {
 		var notifications = obj.getNotifications();
 		notifications.push(info);
 		obj.obj.attr('items', JSON.stringify(notifications));
+		obj.saveToLocalStorage(JSON.stringify(notifications));
 		obj.obj.find('.indicator-label').text(notifications.length);
 		if (notifications.length > 0) {
 			obj.obj.find('.indicator-label').addClass('indicator-label-danger');
@@ -36493,6 +36494,7 @@ var notificationIndicator = function notificationIndicator(identifier) {
 		}
 		notifications = filtered_notifications;
 		obj.obj.attr('items', JSON.stringify(notifications));
+		obj.saveToLocalStorage(JSON.stringify(notifications));
 		obj.obj.find('.indicator-label').text(notifications.length);
 		if (notifications.length > 0) {
 			obj.obj.find('.indicator-label').addClass('indicator-label-danger');
@@ -36513,6 +36515,27 @@ var notificationIndicator = function notificationIndicator(identifier) {
 			}
 		}
 		return html;
+	};
+	this.saveToLocalStorage = function (json) {
+		if (typeof Storage !== "undefined") {
+			localStorage.setItem("notifications_json", json);
+		}
+	};
+	this.getFromStorage = function () {
+		if (typeof Storage !== "undefined") {
+			return localStorage.getItem("notifications_json");
+		}
+		return '[]';
+	};
+	this.updateIconNumber = function () {
+		var notifications_raw = obj.obj.attr('items'),
+		    notifications = JSON.parse(notifications_raw);
+		obj.obj.find('.indicator-label').text(notifications.length);
+		if (notifications.length > 0) {
+			obj.obj.find('.indicator-label').addClass('indicator-label-danger');
+		} else {
+			obj.obj.find('.indicator-label').removeClass('indicator-label-danger');
+		}
 	};
 	var obj = this;
 	this.obj.popover({
@@ -36547,6 +36570,8 @@ var notificationIndicator = function notificationIndicator(identifier) {
 			}
 		});
 	});
+	this.obj.attr('items', obj.getFromStorage);
+	this.updateIconNumber();
 	jQuery(window).on('alert', obj.addNotification);
 	jQuery(window).on('login', function (event) {
 		playSound('loaded');
@@ -36568,7 +36593,7 @@ var notificationIndicator = function notificationIndicator(identifier) {
 	}
 	return obj;
 };
-var ni = new notificationIndicator('#notifications-indicator');
+window.ni = new notificationIndicator('#notifications-indicator');
 
 /***/ }),
 
