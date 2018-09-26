@@ -30,7 +30,7 @@
 
 					<h1>{{ __('Email Settings') }}</h1>
 					<input type="hidden" name="section" value="email" />
-					<div class="card bg-dark text-white">
+					<div class="card">
 						<div class="card-body">
 							<div class="form-group">
 								<label>SMTP Server</label>
@@ -117,7 +117,7 @@
 							</div>
 						</div>
 						<div class="card-footer">
-							<input type="submit" class="btn btn-light" value="{{ __('Save Email Settings') }}" />
+							<input type="submit" class="btn btn-dark" value="{{ __('Save Email Settings') }}" />
 						</div>
 					</div>
 				</form>
@@ -126,7 +126,7 @@
 
 					<h1>{{ __('Test Email Settings') }}</h1>
 					<input type="hidden" name="section" value="test-email" />
-					<div class="card bg-dark text-white">
+					<div class="card">
 						<div class="card-body">
 							<div class="form-group">
 								<label>Recipient</label>
@@ -157,7 +157,7 @@
 							</div>
 						</div>
 						<div class="card-footer">
-							<input type="submit" class="btn btn-light" value="{{ __('Send Test Email') }}" />
+							<input type="submit" class="btn btn-dark" value="{{ __('Send Test Email') }}" />
 						</div>
 					</div>
 				</form>

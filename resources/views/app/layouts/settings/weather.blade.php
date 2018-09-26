@@ -28,7 +28,7 @@
 				<h1>{{ __('Weather API Settings') }}</h1>
 				<div class="row">
 					<div class="col-md-4">
-						<form action="{{ route('save-settings') }}" method="POST" class="card bg-dark text-white">
+						<form action="{{ route('save-settings') }}" method="POST" class="card">
 							@csrf
 
 							<input type="hidden" name="section" value="yahoo-weather" />
@@ -72,12 +72,12 @@
 		                        </div>
 							</div>
 							<div class="card-footer">
-								<input type="submit" class="btn btn-light" value="{{ __('Save') }}" />
+								<input type="submit" class="btn btn-dark" value="{{ __('Save') }}" />
 							</div>
 						</form>
 					</div>
 					<div class="col-md-4">
-						<form action="{{ route('save-settings') }}" method="POST" class="card bg-dark text-white">
+						<form action="{{ route('save-settings') }}" method="POST" class="card">
 							@csrf
 
 							<input type="hidden" name="section" value="openweathermap-weather" />
@@ -103,12 +103,12 @@
 		                        </div>
 							</div>
 							<div class="card-footer">
-								<input type="submit" class="btn btn-light" value="{{ __('Save') }}" />
+								<input type="submit" class="btn btn-dark" value="{{ __('Save') }}" />
 							</div>
 						</form>
 					</div>
 					<div class="col-md-4">
-						<form action="{{ route('save-settings') }}" method="POST" class="card bg-dark text-white">
+						<form action="{{ route('save-settings') }}" method="POST" class="card">
 							@csrf
 
 							<input type="hidden" name="section" value="accuweather-weather" />
@@ -134,7 +134,7 @@
 		                        </div>
 							</div>
 							<div class="card-footer">
-								<input type="submit" class="btn btn-light" value="{{ __('Save') }}" />
+								<input type="submit" class="btn btn-dark" value="{{ __('Save') }}" />
 							</div>
 						</form>
 					</div>

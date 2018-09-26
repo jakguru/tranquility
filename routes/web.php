@@ -57,6 +57,7 @@ Route::group(['middleware' => ['auth']], function () {
     Route::get('/settings/roles', function () {
         abort(501);
     })->name('settings-roles');
+    Route::get('/settings/system', '\App\Http\Controllers\SettingsController@system')->name('settings-system');
     Route::get('/settings/email', '\App\Http\Controllers\SettingsController@email')->name('settings-email');
     Route::get('/settings/google', '\App\Http\Controllers\SettingsController@google')->name('settings-google');
     Route::get('/settings/minfraud', '\App\Http\Controllers\SettingsController@minfraud')->name('settings-minfraud');

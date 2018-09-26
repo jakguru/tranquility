@@ -30,7 +30,7 @@
 					@csrf
 
 					<input type="hidden" name="section" value="minfraud" />
-					<div class="card bg-dark text-white">
+					<div class="card">
 						<div class="card-body">
 							<div class="form-group">
 								<label>License User</label>
@@ -52,7 +52,7 @@
 							</div>
 						</div>
 						<div class="card-footer">
-							<input type="submit" class="btn btn-light" value="{{ __('Save MinFraud Settings') }}" />
+							<input type="submit" class="btn btn-dark" value="{{ __('Save MinFraud Settings') }}" />
 						</div>
 					</div>
 				</form>

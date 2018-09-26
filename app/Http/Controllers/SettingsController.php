@@ -24,6 +24,14 @@ class SettingsController extends Controller
         return view('app.layouts.settings.lobby');
     }
 
+    public function system(Request $request)
+    {
+        if (!is_a($request->user(), '\App\User') || !$request->user()->isSudo()) {
+            abort(401);
+        }
+        return view('app.layouts.settings.system', ['settings' => \App\Options::get('system')]);
+    }
+
     public function email(Request $request)
     {
         if (!is_a($request->user(), '\App\User') || !$request->user()->isSudo()) {
@@ -67,6 +75,32 @@ class SettingsController extends Controller
     public function saveSettings(Request $request)
     {
         switch ($request->input('section')) {
+            case 'system':
+                Validator::make($request->all(), [
+                    'name' => 'required|string',
+                    'timezone' => [
+                        'required',
+                        Rule::in(\DateTimeZone::listIdentifiers(\DateTimeZone::ALL))
+                    ],
+                    'listsize' => 'required|numeric|between:1,100',
+                    'dateformat' => 'required|string',
+                    'timeformat' => 'required|string',
+                    'datetimeformat' => 'required|string',
+                ])->validate();
+                $option = new \stdClass();
+                $option->name = $request->input('name');
+                $option->timezone = $request->input('timezone');
+                $option->listsize = $request->input('listsize');
+                $option->dateformat = $request->input('dateformat');
+                $option->timeformat = $request->input('timeformat');
+                $option->datetimeformat = $request->input('datetimeformat');
+                $saved = \App\Options::set('system', $option);
+                if (true == $saved) {
+                    return Redirect::route('settings-system')->with('globalsuccessmessage', __('Updated System Settings successfully.'));
+                }
+                return Redirect::route('settings-system')->with('globalerrormessage', __('Failed to updated System Settings.'));
+                break;
+
             case 'email':
                 Validator::make($request->all(), [
                     'hostname' => 'required|string',

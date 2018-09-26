@@ -38,6 +38,20 @@ class EventServiceProvider extends ServiceProvider
             Config::set('mail.from.address', $mail_options->sendermail);
             Config::set('mail.from.name', $mail_options->sendername);
         }
+        $system_options = \App\Options::get('system');
+        if (is_object($system_options)) {
+            Config::set('app.name', $system_options->name);
+            Config::set('app.timezone', $system_options->timezone);
+            Config::set('app.listsize', intval($system_options->listsize));
+            Config::set('app.dateformat', $system_options->dateformat);
+            Config::set('app.timeformat', $system_options->timeformat);
+            Config::set('app.datetimeformat', $system_options->datetimeformat);
+        } else {
+            Config::set('app.listsize', 20);
+            Config::set('app.dateformat', 'F j, Y');
+            Config::set('app.timeformat', 'H:i');
+            Config::set('app.datetimeformat', 'F j, Y H:i');
+        }
         parent::boot();
     }
 }

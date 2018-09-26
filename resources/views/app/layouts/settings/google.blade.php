@@ -28,7 +28,7 @@
 				<h1>{{ __('Google API Settings') }}</h1>
 				<div class="row">
 					<div class="col-md-6">
-						<form action="{{ route('save-settings') }}" method="POST" class="card bg-dark text-white">
+						<form action="{{ route('save-settings') }}" method="POST" class="card">
 							@csrf
 
 							<input type="hidden" name="section" value="google-recapcha" />
@@ -63,12 +63,12 @@
 		                        </div>
 							</div>
 							<div class="card-footer">
-								<input type="submit" class="btn btn-light" value="{{ __('Save') }}" />
+								<input type="submit" class="btn btn-dark" value="{{ __('Save') }}" />
 							</div>
 						</form>
 					</div>
 					<div class="col-md-6">
-						<form action="{{ route('save-settings') }}" method="POST" class="card bg-dark text-white">
+						<form action="{{ route('save-settings') }}" method="POST" class="card">
 							@csrf
 
 							<input type="hidden" name="section" value="google-maps" />
@@ -94,7 +94,7 @@
 		                        </div>
 							</div>
 							<div class="card-footer">
-								<input type="submit" class="btn btn-light" value="{{ __('Save') }}" />
+								<input type="submit" class="btn btn-dark" value="{{ __('Save') }}" />
 							</div>
 						</form>
 					</div>
