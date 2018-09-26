@@ -36183,6 +36183,12 @@ jQuery('#menu-toggle > a').on('click', function (e) {
 	}
 });
 
+jQuery(function () {
+	if (jQuery('.g-recaptcha').length > 0) {
+		grecaptcha.execute();
+	}
+});
+
 window.handleGoogleReCAPCHA = function (result) {
 	jQuery('.g-recaptcha').each(function () {
 		var btn = jQuery(this),

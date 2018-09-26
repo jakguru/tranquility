@@ -3,6 +3,9 @@
 namespace App\Helpers;
 
 use \App\Options;
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Validator;
+use Illuminate\Validation\Rule;
 
 class GoogleReCAPCHAHelper
 {
@@ -28,6 +31,30 @@ class GoogleReCAPCHAHelper
             echo '<input type="hidden" name="g-recaptcha" value="" />' . "\n";
             echo sprintf('<input class="g-recaptcha %s" data-sitekey="%s" data-callback="handleGoogleReCAPCHA" role="submit" type="submit" value="%s" />', $classes, self::getReCAPTCHAConfig()->key, $text) . "\n";
         }
+    }
+
+    public static function injectDiv()
+    {
+        if (self::enabled()) {
+            echo '<input type="hidden" name="g-recaptcha" value="" />' . "\n";
+            echo sprintf('<div class="g-recaptcha" data-sitekey="%s" data-callback="handleGoogleReCAPCHA" data-size="invisible"></div>', self::getReCAPTCHAConfig()->key) . "\n";
+        }
+    }
+
+    public static function validateRequest(Request $request)
+    {
+        Validator::make($request->all(), [
+            'g-recaptcha-response' => [
+                'required',
+                'string',
+                new \App\Rules\GoogleReCAPCHA
+            ],
+        ])->validate();
+    }
+
+    public static function validate($response)
+    {
+        return false;
     }
 
     protected static function getReCAPTCHAConfig()

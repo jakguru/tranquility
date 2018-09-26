@@ -62,15 +62,23 @@
                         </div>
                     </div>
                 </div>
+                <div class="row">
+                	<div class="col-sm-7 offset-sm-5">
+                		@if(\App\Helpers\GoogleReCAPCHAHelper::enabled())
+                    	{{ \App\Helpers\GoogleReCAPCHAHelper::injectDiv() }}
+                    	@if ($errors->has('g-recaptcha-response'))
+                            <span class="text-danger" role="alert">
+                                <strong>{{ $errors->first('g-recaptcha-response') }}</strong>
+                            </span>
+                        @endif
+						@endif
+                	</div>
+                </div>
 			</div>
 			<div class="card-footer">
 				<div class="row">
                     <div class="col-sm-7 offset-sm-5">
-                    	@if(\App\Helpers\GoogleReCAPCHAHelper::enabled())
-                    	{{ \App\Helpers\GoogleReCAPCHAHelper::injectButton('btn btn-dynamic', __('Log In')) }}
-						@else
-						<input type="submit" class="btn btn-dynamic" value="{{ __('Log In') }}" />
-						@endif
+                    	<input type="submit" class="btn btn-dynamic" value="{{ __('Log In') }}" />
 					</div>
 				</div>
 			</div>

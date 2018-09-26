@@ -49,10 +49,7 @@ class LoginController extends Controller
     {
 
         if (\App\Helpers\GoogleReCAPCHAHelper::enabled()) {
-            echo '<pre>';
-            print_r($request->all());
-            echo '</pre>';
-            exit();
+            \App\Helpers\GoogleReCAPCHAHelper::validateRequest($request);
         }
 
         $this->validateLogin($request);
