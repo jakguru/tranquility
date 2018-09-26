@@ -43,8 +43,8 @@
 					</div>
 				</div>
 			</div>
-			<div class="table-responsive">
-				<table class="table table-compressed table-striped table-hover table-model-list">
+			<div class="table-responsive mb-0">
+				<table class="table table-compressed table-striped table-hover table-model-list mb-0">
 					<thead>
 						<tr>
 							@foreach($columns as $column => $info)
@@ -65,7 +65,7 @@
 									@case('test')
 										@break
 									@default
-										<input type="{{ $info['type'] }}" name="filter[{{ $column }}]" value="{{ request()->query(sprintf('filter.%s', $column)) }}" />
+										<input type="{{ $info['type'] }}" class="form-control form-control-sm" name="filter[{{ $column }}]" value="{{ request()->query(sprintf('filter.%s', $column)) }}" />
 										@break
 								@endswitch
 							</th>
@@ -73,6 +73,26 @@
 						</tr>
 					</thead>
 					<tbody>
+						@if( (is_array($items) && 0 == count($items)) || (is_a($items, 'Collection') && $items->isEmpty()))
+						<tr>
+							<td colspan="{{ count($columns) }}">
+								<div class="alert alert-info mb-0 text-center">{{ sprintf(__('No %s Found'), ucwords($plural_label)) }}</div>
+							</td>
+						</tr>
+						@endif
+						@foreach($items as $model)
+							@foreach($columns as $column => $info)
+								<td>
+									@switch($info['type'])
+										@case('test')
+											@break
+										@default
+											{{ $model->{$column} }}
+											@break
+									@endswitch
+								</td>
+							@endforeach
+						@endforeach
 					</tbody>
 				</table>
 			</div>
