@@ -47,9 +47,7 @@ Route::group(['middleware' => ['auth']], function () {
 
     Route::get('/settings', '\App\Http\Controllers\SettingsController@lobby')->name('settings');
     Route::post('/settings', '\App\Http\Controllers\SettingsController@saveSettings')->name('save-settings');
-    Route::get('/settings/users', function () {
-        abort(501);
-    })->name('settings-users');
+    Route::get('/settings/users', '\App\Http\Controllers\UserController@list')->name('settings-users');
     Route::get('/settings/groups', function () {
         abort(501);
     })->name('settings-groups');

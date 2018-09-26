@@ -21,8 +21,12 @@ class ModularPermissionsPolicy
         //
     }
 
-    public function list(User $user, $model)
+    public function list(User $user)
     {
+        $model = self::getCallingModel();
+        if (false === $model) {
+            return false;
+        }
         // with the list, we need to check each item to ensure that we are not exposing something which the end user shouldn't see.
         if ($user->isSudo()) {
             return true;
@@ -111,6 +115,20 @@ class ModularPermissionsPolicy
         } else {
             // check ownership permissions.
         }
+    }
+
+    protected static function getCallingModel()
+    {
+        foreach (debug_backtrace(false) as $trace) {
+            $function = (is_array($trace) && array_key_exists('function', $trace)) ? $trace['function'] : null;
+            $class = (is_array($trace) && array_key_exists('class', $trace)) ? $trace['class'] : null;
+            $args = (is_array($trace) && array_key_exists('args', $trace)) ? $trace['args'] : [];
+            if ('Illuminate\Foundation\Auth\User' == $class && 'can' == $function && 2 == count($args)) {
+                list($method, $class) = $args;
+                return $class;
+            }
+        }
+        return false;
     }
 
     protected static function getModelClass($model)

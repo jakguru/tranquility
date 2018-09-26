@@ -15707,44 +15707,6 @@ body {
   right: -200px;
 }
 
-#app .form-control,
-#app .message-search {
-  background: rgba(0, 0, 0, 0.05);
-  border: 1px solid rgba(255, 255, 255, 0.3);
-  text-shadow: none;
-  color: #fff;
-  -webkit-box-shadow: none;
-          box-shadow: none;
-  -webkit-appearance: none;
-}
-
-#app .form-control:active,
-#app .form-control:focus,
-#app .message-search:active,
-#app .message-search:focus {
-  outline: none !important;
-  color: #fff;
-}
-
-#app .form-control:focus,
-#app .message-search:focus {
-  border-color: rgba(255, 255, 255, 0.4);
-  background: transparent;
-  -webkit-box-shadow: none;
-          box-shadow: none;
-}
-
-#app .form-control[disabled],
-#app .form-control[readonly],
-#app .form-control.disabled,
-#app .message-search[disabled],
-#app .message-search[readonly],
-#app .message-search.disabled {
-  cursor: not-allowed;
-  background-color: rgba(222, 226, 230, 0.09);
-  opacity: 1;
-}
-
 .notification-popover {
   padding: 0px;
   border-radius: 0;
@@ -16068,6 +16030,44 @@ body.with-bg.dark-bg .form-control[readonly],
 body.with-bg.dark-bg .form-control.disabled {
   cursor: not-allowed;
   background-color: rgba(108, 117, 125, 0.09);
+  opacity: 1;
+}
+
+body.with-bg .form-control,
+body.with-bg .message-search {
+  background: rgba(0, 0, 0, 0.05);
+  border: 1px solid rgba(255, 255, 255, 0.3);
+  text-shadow: none;
+  color: #fff;
+  -webkit-box-shadow: none;
+          box-shadow: none;
+  -webkit-appearance: none;
+}
+
+body.with-bg .form-control:active,
+body.with-bg .form-control:focus,
+body.with-bg .message-search:active,
+body.with-bg .message-search:focus {
+  outline: none !important;
+  color: #fff;
+}
+
+body.with-bg .form-control:focus,
+body.with-bg .message-search:focus {
+  border-color: rgba(255, 255, 255, 0.4);
+  background: transparent;
+  -webkit-box-shadow: none;
+          box-shadow: none;
+}
+
+body.with-bg .form-control[disabled],
+body.with-bg .form-control[readonly],
+body.with-bg .form-control.disabled,
+body.with-bg .message-search[disabled],
+body.with-bg .message-search[readonly],
+body.with-bg .message-search.disabled {
+  cursor: not-allowed;
+  background-color: rgba(222, 226, 230, 0.09);
   opacity: 1;
 }
 

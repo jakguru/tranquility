@@ -308,35 +308,6 @@ html, body {
 			right: -200px;
 		}
 	}
-
-	.form-control, .message-search {
-		background: rgba($black, 0.05);
-	    border: 1px solid rgba($white, 0.3);
-	    text-shadow: none;
-	    color: $white;
-	    box-shadow: none;
-	    -webkit-appearance: none;
-
-	    &:active,
-	    &:focus {
-	    	outline: none !important;
-	    	color: $white;
-	    }
-
-	    &:focus {
-	    	border-color: rgba($white,0.4);
-	    	background: transparent;
-	    	box-shadow: none;
-	    }
-
-	    &[disabled],
-	    &[readonly],
-	    &.disabled {
-	    	cursor: not-allowed;
-	    	background-color: rgba($gray-300, 0.09);
-	    	opacity: 1;
-	    }
-	}
 }
 
 .notification-popover {
