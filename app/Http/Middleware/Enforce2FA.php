@@ -17,6 +17,7 @@ class Enforce2FA
     public function handle($request, Closure $next)
     {
         if (is_a($request->user(), '\App\User')
+            && $request->user()->isSudo()
             && 0 === strlen($request->user()->google2fa_secret)
             && !in_array($request->route()->getName(), ['logout', 'save-google2fa', 'validate-google2fa',])
         ) {
@@ -28,7 +29,7 @@ class Enforce2FA
             }
             $qri = $google2fa->getQRCodeInline(
                 config('app.name'),
-                $request->user()->email,
+                config('app.url'),
                 $secret
             );
             $request->session()->flash('google2fa_secret', $secret);
