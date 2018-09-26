@@ -73,6 +73,36 @@ class ModelListHelper
                     }
                 }
             }
+            if ($this->request->has('s')) {
+                $esq['body']['query']['bool']['should'] = [];
+                $esq['body']['query']['bool']['minimum_should_match'] = 1;
+                $esq['body']['query']['bool']['boost'] = 1.0;
+                $sm = new $this->model;
+                $searchable = $sm->getSearchableColumns();
+                foreach ($searchable as $field) {
+                    switch ($field) {
+                        case 'id':
+                            array_push($esq['body']['query']['bool']['should'], ['term' => ['model_id' => $this->request->input('s')]]);
+                            break;
+
+                        case 'email':
+                            array_push($esq['body']['query']['bool']['should'], ['match_phrase' => ['email' => strtolower($this->request->input('s'))]]);
+                            break;
+
+                        case 'created_at':
+                            # do nothing. Invalid
+                            break;
+
+                        case 'updated_at':
+                            # do nothing. Invalid
+                            break;
+                                                    
+                        default:
+                            array_push($esq['body']['query']['bool']['should'], ['match_phrase' => [sprintf('%s.keyword', $field) => $this->request->input('s')]]);
+                            break;
+                    }
+                }
+            }
             if ($this->request->has('sort')) {
                 foreach ($this->request->input('sort') as $key => $direction) {
                     if ('id' == $key) {

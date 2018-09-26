@@ -95,7 +95,7 @@ class SearchHelper
                 if ('email' == $field) {
                     array_push($sub_query['bool']['should'], [
                         'match_phrase' => [
-                            $field => $term,
+                            $field => strtolower($term),
                         ],
                     ]);
                 } else {
@@ -180,7 +180,7 @@ class SearchHelper
             if ('email' == $field) {
                 array_push($query['bool']['should'], [
                     'match_phrase' => [
-                        $field => $term,
+                        $field => strtolower($term),
                     ],
                 ]);
             } else {
