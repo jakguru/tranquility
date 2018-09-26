@@ -44,8 +44,33 @@
 				</div>
 			</div>
 			<div class="table-responsive">
-				<table class="table table-compressed table-striped table-hover">
+				<table class="table table-compressed table-striped table-hover table-model-list">
 					<thead>
+						<tr>
+							@foreach($columns as $column => $info)
+							<th>
+								<span class="column-label">{{ $info['label'] }}</span>
+								<span class="column-sorting">
+									<a href="{{ \App\Helpers\ModelListHelper::getSortUrl($column, 'asc') }}"><span class="fas fa-caret-up"</a>
+									<a href="{{ \App\Helpers\ModelListHelper::getSortUrl($column, 'desc') }}"><span class="fas fa-caret-down"</a>
+									<a href="{{ \App\Helpers\ModelListHelper::getSortUrl($column, 'none') }}"><span class="fas fa-eraser"</a>
+								</span>
+							</th>
+							@endforeach
+						</tr>
+						<tr>
+							@foreach($columns as $column => $info)
+							<th>
+								@switch($info['type'])
+									@case('test')
+										@break
+									@default
+										<input type="{{ $info['type'] }}" name="filter[{{ $column }}]" value="{{ request()->query(sprintf('filter.%s', $column)) }}" />
+										@break
+								@endswitch
+							</th>
+							@endforeach
+						</tr>
 					</thead>
 					<tbody>
 					</tbody>
