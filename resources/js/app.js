@@ -21,6 +21,11 @@ jQuery(function(){
 	runWhenTrue("'undefined' !== typeof(grecaptcha) && 'function' == typeof(grecaptcha.execute)", function() {
 		grecaptcha.execute();
 	}, 100);
+	if (jQuery('#login-form').length > 0) {
+		if (typeof(Storage) !== "undefined") {
+			localStorage.removeItem("notifications_json");
+		}
+	}
 });
 
 window.handleGoogleReCAPCHA = function(result) {

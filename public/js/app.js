@@ -36187,6 +36187,11 @@ jQuery(function () {
 	runWhenTrue("'undefined' !== typeof(grecaptcha) && 'function' == typeof(grecaptcha.execute)", function () {
 		grecaptcha.execute();
 	}, 100);
+	if (jQuery('#login-form').length > 0) {
+		if (typeof Storage !== "undefined") {
+			localStorage.removeItem("notifications_json");
+		}
+	}
 });
 
 window.handleGoogleReCAPCHA = function (result) {
@@ -36529,7 +36534,7 @@ var notificationIndicator = function notificationIndicator(identifier) {
 	};
 	this.updateIconNumber = function () {
 		var notifications_raw = obj.obj.attr('items'),
-		    notifications = JSON.parse(notifications_raw);
+		    notifications = 'string' == typeof notifications_raw && notifications_raw.length > 0 ? JSON.parse(notifications_raw) : [];
 		obj.obj.find('.indicator-label').text(notifications.length);
 		if (notifications.length > 0) {
 			obj.obj.find('.indicator-label').addClass('indicator-label-danger');

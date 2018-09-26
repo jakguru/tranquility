@@ -167,7 +167,7 @@ var notificationIndicator = function(identifier) {
 	}
 	this.updateIconNumber = function() {
 		var notifications_raw = obj.obj.attr('items'),
-			notifications = JSON.parse(notifications_raw);
+			notifications = ('string' == typeof(notifications_raw) && notifications_raw.length > 0 ) ? JSON.parse(notifications_raw) : [];
 		obj.obj.find('.indicator-label').text(notifications.length);
 		if ( notifications.length > 0 ) {
 			obj.obj.find('.indicator-label').addClass('indicator-label-danger');
