@@ -32,7 +32,7 @@
 					<input type="hidden" name="section" value="system" />
 					<div class="card">
 						<div class="alert alert-danger mb-0">
-							<strong>{{ __('Danger Zone') }}</strong> {{ __('These settings affect the entire CRM.') }}
+							<strong>{{ __('Danger Zone') }}</strong> {{ __('These settings affect the entire CRM. Changing these settings may have unintended consiquences.') }}
 						</div>
 						<div class="card-body">
 							<div class="form-group">
