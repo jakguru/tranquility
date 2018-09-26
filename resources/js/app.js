@@ -18,9 +18,9 @@ jQuery('#menu-toggle > a').on('click', function(e){
 });
 
 jQuery(function(){
-	if (jQuery('.g-recaptcha').length > 0) {
+	runWhenTrue("'undefined' !== typeof(grecaptcha) && 'function' == typeof(grecaptcha.execute)", function() {
 		grecaptcha.execute();
-	}
+	}, 100);
 });
 
 window.handleGoogleReCAPCHA = function(result) {

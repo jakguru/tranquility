@@ -6,6 +6,8 @@ use \App\Options;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Validation\Rule;
+use GuzzleHttp\Client as Guzzle;
+use Illuminate\Support\Facades\Log;
 
 class GoogleReCAPCHAHelper
 {
@@ -45,8 +47,6 @@ class GoogleReCAPCHAHelper
     {
         Validator::make($request->all(), [
             'g-recaptcha-response' => [
-                'required',
-                'string',
                 new \App\Rules\GoogleReCAPCHA
             ],
         ])->validate();
@@ -54,6 +54,23 @@ class GoogleReCAPCHAHelper
 
     public static function validate($response)
     {
+        try {
+            $client = new Guzzle();
+            $config = self::getReCAPTCHAConfig();
+            $r = $client->request('POST', 'https://www.google.com/recaptcha/api/siteverify', [
+                'form_params' => [
+                    'secret' => $config->secret,
+                    'response' => $response,
+                    'remoteip' => request()->ip(),
+                ],
+            ]);
+            Log::debug($r->getBody());
+            $response = json_decode($r->getBody());
+            return (is_object($response) && property_exists($response, 'success') && true == $response->success);
+        } catch (\Exception $e) {
+            Log::info(sprintf('ReCAPCHA Validation failed with error: %s', $e->getMessage()));
+            return false;
+        }
         return false;
     }
 

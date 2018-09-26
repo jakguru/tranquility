@@ -11,13 +11,16 @@
     <title>@if (trim($__env->yieldContent('title')))@yield('title') | {{ config('app.name', 'Tranquility CRM') }}@else{{ config('app.name', 'Tranquility CRM') }}@endif</title>
     <meta name="application-name" content="{{ config('app.name', 'Tranquility CRM') }}"/>
     <script type="text/javascript">
-        var runWhenTrue = function(condition, callback, timeout ) {
-            if ('number' !== timeout ) {
+        var runWhenTrue = function(condition, callback, timeout, debug ) {
+            if ('number' !== typeof(timeout) ) {
                 timeout = 100;
             }
             if ( true == eval(condition) ) {
                 callback();
             } else {
+                if (true === debug) {
+                    console.log(condition);
+                }
                 setTimeout(function(){
                     runWhenTrue(condition, callback, timeout);
                 }, timeout);
