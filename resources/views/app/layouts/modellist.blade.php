@@ -7,6 +7,7 @@
 @section('main')
 	@include('app.shared.breadcrumbs',['crumbs' => $breadcrumbs])
 	<div class="container-fluid">
+		<h1>{{ ucwords($plural_label) }}</h1>
 		<form class="card" action="{{ url()->current() }}" method="GET">
 			<div class="card-header">
 				<div class="row">
