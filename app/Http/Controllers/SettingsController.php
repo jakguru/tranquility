@@ -215,6 +215,28 @@ class SettingsController extends Controller
                 }
                 return Redirect::route('settings-weather')->with('globalerrormessage', __('Failed to updated AccuWeather Settings.'));
                 break;
+
+            case 'openweathermap-weather':
+                $data = $request->input('openweathermap');
+                Validator::make($data, [
+                    'key' => 'string|required',
+                    'enabled' => 'nullable|accepted',
+                ]);
+                $settings = \App\Options::get('weather');
+                if (!is_object($settings)) {
+                    $settings = new \stdClass();
+                }
+                if (!property_exists($settings, 'openweathermap')) {
+                    $settings->openweathermap = [];
+                }
+                $settings->openweathermap['key'] = $data['key'];
+                $settings->openweathermap['enabled'] = array_key_exists('enabled', $data);
+                $saved = \App\Options::set('weather', $settings);
+                if (true == $saved) {
+                    return Redirect::route('settings-weather')->with('globalsuccessmessage', __('Updated OpenWeatherMap Settings successfully.'));
+                }
+                return Redirect::route('settings-weather')->with('globalerrormessage', __('Failed to updated OpenWeatherMap Settings.'));
+                break;
             
             default:
                 return Redirect::route('settings')->with('globalerrormessage', sprintf(__('Invalid Setting Section Name "%s"'), $request->input('section')));

@@ -27,7 +27,7 @@
 			<div class="col-md-8 col-lg-9 col-xl-10">
 				<h1>{{ __('Weather API Settings') }}</h1>
 				<div class="row">
-					<div class="col-md-6">
+					<div class="col-md-4">
 						<form action="{{ route('save-settings') }}" method="POST" class="card bg-dark text-white">
 							@csrf
 
@@ -76,7 +76,38 @@
 							</div>
 						</form>
 					</div>
-					<div class="col-md-6">
+					<div class="col-md-4">
+						<form action="{{ route('save-settings') }}" method="POST" class="card bg-dark text-white">
+							@csrf
+
+							<input type="hidden" name="section" value="openweathermap-weather" />
+							<div class="card-header">
+								<h4>{{ __('OpenWeatherMap') }}</h4>
+							</div>
+							<div class="card-body">
+								<div class="form-group">
+									<label>API Key</label>
+									<input type="text" name="openweathermap[key]" class="form-control{{ $errors->has('openweathermap.key') ? ' is-invalid' : '' }}"  value="{{ old('openweathermap.key', (is_object($settings) && property_exists($settings, 'openweathermap') ? $settings->openweathermap['key'] : null )) }}" autocomplete="off" />
+									@if ($errors->has('openweathermap.key'))
+			                            <span class="invalid-feedback" role="alert">
+			                                <strong>{{ $errors->first('openweathermap.key') }}</strong>
+			                            </span>
+			                        @endif
+								</div>
+								<div class="form-check">
+		                            <input class="form-check-input" type="checkbox" name="openweathermap[enabled]" {{ old('openweathermap.enabled', (is_object($settings) && property_exists($settings, 'openweathermap') ? $settings->openweathermap['enabled'] : false )) ? 'checked' : '' }}>
+
+		                            <label class="form-check-label" for="remember">
+		                                {{ __('Enabled') }}
+		                            </label>
+		                        </div>
+							</div>
+							<div class="card-footer">
+								<input type="submit" class="btn btn-light" value="{{ __('Save') }}" />
+							</div>
+						</form>
+					</div>
+					<div class="col-md-4">
 						<form action="{{ route('save-settings') }}" method="POST" class="card bg-dark text-white">
 							@csrf
 
