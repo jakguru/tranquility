@@ -40,6 +40,30 @@ class SettingsController extends Controller
         return view('app.layouts.settings.google', ['settings' => \App\Options::get('google')]);
     }
 
+    public function minfraud(Request $request)
+    {
+        if (!is_a($request->user(), '\App\User') || !$request->user()->isSudo()) {
+            abort(401);
+        }
+        return view('app.layouts.settings.minfraud', ['settings' => \App\Options::get('minfraud')]);
+    }
+
+    public function weather(Request $request)
+    {
+        if (!is_a($request->user(), '\App\User') || !$request->user()->isSudo()) {
+            abort(401);
+        }
+        return view('app.layouts.settings.weather', ['settings' => \App\Options::get('weather')]);
+    }
+
+    public function bincheck(Request $request)
+    {
+        if (!is_a($request->user(), '\App\User') || !$request->user()->isSudo()) {
+            abort(401);
+        }
+        return view('app.layouts.settings.bincheck', ['settings' => \App\Options::get('bincheck')]);
+    }
+
     public function saveSettings(Request $request)
     {
         switch ($request->input('section')) {
@@ -123,6 +147,73 @@ class SettingsController extends Controller
                     return Redirect::route('settings-google')->with('globalsuccessmessage', __('Updated Google Maps Settings successfully.'));
                 }
                 return Redirect::route('settings-google')->with('globalerrormessage', __('Failed to updated Google Maps Settings.'));
+                break;
+
+            case 'minfraud':
+                $data = $request->all();
+                Validator::make($data, [
+                    'user' => 'string',
+                    'key' => 'string|required_with:user',
+                ]);
+                $settings = \App\Options::get('minfraud');
+                if (!is_object($settings)) {
+                    $settings = new \stdClass();
+                }
+                $settings->user = $data['user'];
+                $settings->key = $data['key'];
+                $saved = \App\Options::set('minfraud', $settings);
+                if (true == $saved) {
+                    return Redirect::route('settings-minfraud')->with('globalsuccessmessage', __('Updated MinFraud Settings successfully.'));
+                }
+                return Redirect::route('settings-minfraud')->with('globalerrormessage', __('Failed to updated MinFraud Settings.'));
+                break;
+
+            case 'yahoo-weather':
+                $data = $request->input('yahoo');
+                Validator::make($data, [
+                    'id' => 'string',
+                    'key' => 'string|required_with:id',
+                    'secret' => 'string|required_with:key',
+                    'enabled' => 'nullable|accepted',
+                ]);
+                $settings = \App\Options::get('weather');
+                if (!is_object($settings)) {
+                    $settings = new \stdClass();
+                }
+                if (!property_exists($settings, 'yahoo')) {
+                    $settings->yahoo = [];
+                }
+                $settings->yahoo['id'] = $data['id'];
+                $settings->yahoo['key'] = $data['key'];
+                $settings->yahoo['secret'] = $data['secret'];
+                $settings->yahoo['enabled'] = array_key_exists('enabled', $data);
+                $saved = \App\Options::set('weather', $settings);
+                if (true == $saved) {
+                    return Redirect::route('settings-weather')->with('globalsuccessmessage', __('Updated Yahoo Weather Settings successfully.'));
+                }
+                return Redirect::route('settings-weather')->with('globalerrormessage', __('Failed to updated Yahoo Weather Settings.'));
+                break;
+
+            case 'accuweather-weather':
+                $data = $request->input('accuweather');
+                Validator::make($data, [
+                    'key' => 'string|required',
+                    'enabled' => 'nullable|accepted',
+                ]);
+                $settings = \App\Options::get('weather');
+                if (!is_object($settings)) {
+                    $settings = new \stdClass();
+                }
+                if (!property_exists($settings, 'accuweather')) {
+                    $settings->accuweather = [];
+                }
+                $settings->accuweather['key'] = $data['key'];
+                $settings->accuweather['enabled'] = array_key_exists('enabled', $data);
+                $saved = \App\Options::set('weather', $settings);
+                if (true == $saved) {
+                    return Redirect::route('settings-weather')->with('globalsuccessmessage', __('Updated AccuWeather Settings successfully.'));
+                }
+                return Redirect::route('settings-weather')->with('globalerrormessage', __('Failed to updated AccuWeather Settings.'));
                 break;
             
             default:

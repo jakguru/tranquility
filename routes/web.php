@@ -58,6 +58,9 @@ Route::group(['middleware' => ['auth']], function () {
     })->name('settings-roles');
     Route::get('/settings/email', '\App\Http\Controllers\SettingsController@email')->name('settings-email');
     Route::get('/settings/google', '\App\Http\Controllers\SettingsController@google')->name('settings-google');
+    Route::get('/settings/minfraud', '\App\Http\Controllers\SettingsController@minfraud')->name('settings-minfraud');
+    Route::get('/settings/weather', '\App\Http\Controllers\SettingsController@weather')->name('settings-weather');
+    Route::get('/settings/bin-check', '\App\Http\Controllers\SettingsController@bincheck')->name('settings-bin-check');
 
     if ('polling' == config('app.rtu.method')) {
         Route::get('/rtu', '\App\Http\Controllers\AuthenticatedSessionController@onPolling')->name('rtu');

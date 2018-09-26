@@ -1,7 +1,7 @@
 @extends('app.blueprints.framed')
 
 @section('title')
-	Settings
+	Google API Settings
 @endsection
 
 @section('main')
@@ -15,7 +15,7 @@
 			'url' => route('settings'),
 		],
 		[
-			'name' => __('Google Settings'),
+			'name' => __('Google API Settings'),
 			'url' => '#',
 		],
 	]])

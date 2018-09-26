@@ -1,7 +1,7 @@
 @extends('app.blueprints.framed')
 
 @section('title')
-	Settings
+	Email Settings
 @endsection
 
 @section('main')
