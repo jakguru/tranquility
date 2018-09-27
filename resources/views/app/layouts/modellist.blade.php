@@ -47,6 +47,7 @@
 				<table class="table table-sm table-striped table-hover table-model-list mb-0">
 					<thead>
 						<tr>
+							<th rowspan="2">&nbsp;</th>
 							@foreach($columns as $column => $info)
 							<th>
 								<span class="column-label">{{ __($info['label']) }}</span>
@@ -75,13 +76,14 @@
 					<tbody>
 						@if( (is_array($items) && 0 == count($items)) || (is_a($items, 'Collection') && $items->isEmpty()))
 						<tr>
-							<td colspan="{{ count($columns) }}">
+							<td colspan="{{ count($columns) + 1}}">
 								<div class="alert alert-info mb-0 text-center">{{ sprintf(__('No %s Found'), ucwords($plural_label)) }}</div>
 							</td>
 						</tr>
 						@endif
 						@foreach($items as $model)
 							<tr>
+								<td><a href="{{ route($view_route,['id' => $model->id]) }}" class="btn btn-block btn-sm btn-dark"><span class="far fa-eye"></span></a></td>
 								@foreach($columns as $column => $info)
 									<td>
 										@switch($info['type'])

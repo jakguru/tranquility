@@ -51,6 +51,9 @@ Route::group(['middleware' => ['auth']], function () {
     Route::get('/settings/users/new', function () {
         abort(501);
     })->name('create-user');
+    Route::get('/settings/users/{id}', function ($id) {
+        abort(501);
+    })->name('view-user')->where('id', '[0-9]+');
     Route::get('/settings/groups', function () {
         abort(501);
     })->name('settings-groups');
