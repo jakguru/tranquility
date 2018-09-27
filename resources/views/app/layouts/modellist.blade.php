@@ -27,14 +27,26 @@
 					<div class="col-md-4">
 						<div class="input-group input-group-sm mb-2 mb-md-0">
 							<div class="input-group-prepend">
+								@if($page !== 1)
+								<a href="{{ \App\Helpers\ModelListHelper::getPageUrl(1) }}" class="btn btn-secondary"><i class="fas fa-fast-backward"></i></a>
+								@endif
+								@if(0 !== $previous_page)
+								<a href="{{ \App\Helpers\ModelListHelper::getPageUrl($previous_page) }}" class="btn btn-secondary"><i class="fas fa-backward"></i></a>
+								@endif
 							    <span class="input-group-text">{{ __('Page') }}</span>
 							</div>
 							<input type="number" min="1" max="{{ $total_pages }}" name="page" value="{{ $page }}" class="form-control" />
 							<div class="input-group-append">
 							    <span class="input-group-text">{{ sprintf( __('of %d'), $total_pages) }}</span>
-							    <button class="btn" type="submit" role="submit" title="{{ __('Jump Pages') }}">
+							    <button class="btn btn-secondary" type="submit" role="submit" title="{{ __('Jump Pages') }}">
 							    	<span class="fas fa-check-circle"></span>
 							    </button>
+							    @if(0 !== $next_page)
+								<a href="{{ \App\Helpers\ModelListHelper::getPageUrl($next_page) }}" class="btn btn-secondary"><i class="fas fa-forward"></i></a>
+								@endif
+								@if($page < $total_pages)
+								<a href="{{ \App\Helpers\ModelListHelper::getPageUrl($total_pages) }}" class="btn btn-secondary"><i class="fas fa-fast-forward"></i></a>
+								@endif
 							</div>
 						</div>
 					</div>

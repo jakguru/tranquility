@@ -146,6 +146,7 @@ class ModelListHelper
             $this->items = collect($items);
         } else {
             $query = $this->model::limit(config('app.listsize'))->offset(($this->page - 1) * config('app.listsize'));
+            $countQuery = null;
             if ($this->request->has('filter')) {
                 foreach ($this->request->input('filter') as $key => $value) {
                     if (!is_array($value) && strlen($value) > 0) {
@@ -160,6 +161,11 @@ class ModelListHelper
                                                         
                             default:
                                 $query->where($key, $value);
+                                if (is_null($countQuery)) {
+                                    $countQuery = $this->model::where($key, $value);
+                                } else {
+                                    $countQuery->where($key, $value);
+                                }
                                 break;
                         }
                     } elseif (is_array($value)) {
@@ -171,15 +177,24 @@ class ModelListHelper
                 $searchable = $sm->getSearchableColumns();
                 foreach ($searchable as $field) {
                     $query->orWhere($field, 'like', $this->request->input('s'));
+                    if (is_null($countQuery)) {
+                        $countQuery = $this->model::where($field, $this->request->input('s'));
+                    } else {
+                        $countQuery->orWhere($field, $this->request->input('s'));
+                    }
                 }
             }
-            $this->total_items = $query->count();
             if ($this->request->has('sort')) {
                 foreach ($this->request->input('sort') as $key => $direction) {
                     $query->orderBy($key, $direction);
                 }
             } else {
                 $query->orderBy('id', 'desc');
+            }
+            if (is_null($countQuery)) {
+                $this->total_items = $this->model::all()->count();
+            } else {
+                $this->total_items = $countQuery->count();
             }
             $this->items = $query->get();
         }
@@ -312,6 +327,28 @@ class ModelListHelper
                 $query['sort'] = [];
             }
             $query['sort'][$column] = $direction;
+            return sprintf('%s/%s', $url, http_build_query($query));
+        }
+    }
+
+    public static function getPageUrl($page = 0)
+    {
+        $page = intval($page);
+        if ($page < 1) {
+            return '#';
+        }
+        $current = URL::current();
+        if (false === strpos($current, '?')) {
+            return sprintf('%s?%s', $current, http_build_query([
+                'page' => $page,
+            ]));
+        } else {
+            list($url, $query) = explode('?', $current, 2);
+            parse_str($query, $query);
+            if (!is_array($query)) {
+                $query = [];
+            }
+            $query['page'] = $page;
             return sprintf('%s/%s', $url, http_build_query($query));
         }
     }
