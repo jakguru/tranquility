@@ -13,7 +13,7 @@
 				<div class="row">
 					<div class="col-md-4">
 						<div class="input-group input-group-sm mb-2 mb-md-0">
-							<input type="search" name="s" value="{{ request()->query('s') }}" class="form-control" />
+							<input type="search" name="s" value="{{ request()->input('s') }}" class="form-control" />
 							<div class="input-group-append">
 							    <button class="btn" type="submit" role="submit">
 							    	<span class="fas fa-search"></span>
@@ -27,12 +27,12 @@
 					<div class="col-md-4">
 						<div class="input-group input-group-sm mb-2 mb-md-0">
 							<div class="input-group-prepend">
-							    <span class="input-group-text">{{ __('Jump to Page') }}</span>
+							    <span class="input-group-text">{{ __('Page') }}</span>
 							</div>
 							<input type="number" min="1" max="{{ $total_pages }}" name="page" value="{{ $page }}" class="form-control" />
 							<div class="input-group-append">
 							    <span class="input-group-text">{{ sprintf( __('of %d'), $total_pages) }}</span>
-							    <button class="btn" type="submit" role="submit">
+							    <button class="btn" type="submit" role="submit" title="{{ __('Jump Pages') }}">
 							    	<span class="fas fa-check-circle"></span>
 							    </button>
 							</div>
@@ -44,12 +44,12 @@
 				</div>
 			</div>
 			<div class="table-responsive mb-0">
-				<table class="table table-compressed table-striped table-hover table-model-list mb-0">
+				<table class="table table-sm table-striped table-hover table-model-list mb-0">
 					<thead>
 						<tr>
 							@foreach($columns as $column => $info)
 							<th>
-								<span class="column-label">{{ $info['label'] }}</span>
+								<span class="column-label">{{ __($info['label']) }}</span>
 								<span class="column-sorting">
 									<a href="{{ \App\Helpers\ModelListHelper::getSortUrl($column, 'asc') }}"><span class="fas fa-caret-up"</a>
 									<a href="{{ \App\Helpers\ModelListHelper::getSortUrl($column, 'desc') }}"><span class="fas fa-caret-down"</a>
@@ -65,7 +65,7 @@
 									@case('test')
 										@break
 									@default
-										<input type="{{ $info['type'] }}" class="form-control form-control-sm" name="filter[{{ $column }}]" value="{{ request()->query(sprintf('filter.%s', $column)) }}" />
+										<input type="{{ $info['type'] }}" class="form-control form-control-sm" name="filter[{{ $column }}]" value="{{ request()->input(sprintf('filter.%s', $column)) }}" />
 										@break
 								@endswitch
 							</th>
@@ -81,17 +81,19 @@
 						</tr>
 						@endif
 						@foreach($items as $model)
-							@foreach($columns as $column => $info)
-								<td>
-									@switch($info['type'])
-										@case('test')
-											@break
-										@default
-											{{ $model->{$column} }}
-											@break
-									@endswitch
-								</td>
-							@endforeach
+							<tr>
+								@foreach($columns as $column => $info)
+									<td>
+										@switch($info['type'])
+											@case('test')
+												@break
+											@default
+												{{ $model->{$column} }}
+												@break
+										@endswitch
+									</td>
+								@endforeach
+							</tr>
 						@endforeach
 					</tbody>
 				</table>

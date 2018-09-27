@@ -13,6 +13,30 @@ class User extends Authenticatable
     use Notifiable;
     use \App\Helpers\Loggable;
     use \App\Helpers\ElasticSearchable;
+    use \App\Helpers\Listable;
+
+    public static $list_columns = [
+        'email' => [
+            'type' => 'email',
+            'label' =>'Email Address',
+        ],
+        'name' => [
+            'type' => 'text',
+            'label' =>'Name',
+        ],
+        'active' => [
+            'type' => 'boolean',
+            'label' =>'Active',
+        ],
+        'created_at' => [
+            'type' => 'datetime',
+            'label' =>'Created',
+        ],
+        'updated_at' => [
+            'type' => 'datetime',
+            'label' =>'Updated',
+        ],
+    ];
 
     /**
      * The attributes that are mass assignable.

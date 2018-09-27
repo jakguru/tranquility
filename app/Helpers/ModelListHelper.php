@@ -12,24 +12,29 @@ class ModelListHelper
     protected $model;
     protected $request;
     protected $items = [];
+    protected $total_items = 0;
+    protected $page = 0;
 
     public function __construct($model, Request $request)
     {
         $this->model = $model;
         $this->request = $request;
+        $this->page = $this->request->has('page') ? intval($this->request->input('page')) : 1;
+        if ($this->page < 1) {
+            $this->page = 1;
+        }
         $this->populateCollection();
     }
 
     protected function populateCollection()
     {
         $es = ElasticSearchClientHelper::getClient();
-        $page = $this->request->has('page') ? intval($this->request->input('page')) : 1;
         if ((is_a($es, '\Elasticsearch\Client') && ElasticSearchClientHelper::clientCanConnect($es))) {
             $esq = [
                 'index' => config('app.es.index'),
                 'type' => 'model',
                 'body' => [
-                    'from' => (($page - 1) * config('app.listsize')),
+                    'from' => (($this->page - 1) * config('app.listsize')),
                     'size' => config('app.listsize'),
                     'query' => [
                         'bool' => [
@@ -47,7 +52,7 @@ class ModelListHelper
             ];
             if ($this->request->has('filter')) {
                 foreach ($this->request->input('filter') as $key => $value) {
-                    if (!is_array($value)) {
+                    if (!is_array($value) && strlen($value) > 0) {
                         switch ($key) {
                             case 'id':
                                 array_push($esq['body']['query']['bool']['must'], ['term' => ['model_id' => intval($value)]]);
@@ -69,11 +74,11 @@ class ModelListHelper
                                 array_push($esq['body']['query']['bool']['must'], ['match_phrase' => [sprintf('%s.keyword', $key) => $value]]);
                                 break;
                         }
-                    } else {
+                    } elseif (is_array($value)) {
                     }
                 }
             }
-            if ($this->request->has('s')) {
+            if ($this->request->has('s') && strlen($this->request->input('s')) > 0) {
                 $esq['body']['query']['bool']['should'] = [];
                 $esq['body']['query']['bool']['minimum_should_match'] = 1;
                 $esq['body']['query']['bool']['boost'] = 1.0;
@@ -113,11 +118,32 @@ class ModelListHelper
             } else {
                 array_push($esq['body']['sort'], ['model_id' => 'desc']);
             }
-            echo '<pre>';
-            print_r(json_encode($esq['body'], JSON_PRETTY_PRINT));
-            echo '</pre>';
-            exit();
-            // build and use ElasticSearch
+            try {
+                $es_results = $es->search($esq);
+            } catch (\Exception $e) {
+                $es_results = json_decode($e->getMessage(), true);
+            }
+            $items = [];
+            if (is_array($es_results)
+                && array_key_exists('hits', $es_results)
+                && is_array($es_results['hits'])
+                && array_key_exists('total', $es_results['hits'])
+                && intval($es_results['hits']['total'] >= 1)
+            ) {
+                foreach ($es_results['hits']['hits'] as $esmodel) {
+                    if (array_key_exists('_source', $esmodel)
+                        && is_array($esmodel['_source'])
+                        && array_key_exists('model_id', $esmodel['_source'])
+                    ) {
+                        $model = $esmodel['_source']['model'];
+                        $id = intval($esmodel['_source']['model_id']);
+                        $item = $model::find($id);
+                        array_push($items, $item);
+                    }
+                }
+                $this->total_items = intval($es_results['hits']['total']);
+            }
+            $this->items = collect($items);
         } else {
             // build and use Eloquent Query
         }
@@ -186,12 +212,12 @@ class ModelListHelper
     {
         $ret = new \stdClass();
         $ret->items = [];
-        $ret->total_items = 0;
+        $ret->total_items = $this->total_items;
         $ret->pagination = new \stdClass();
         $ret->pagination->page = 1;
-        $ret->pagination->total_pages = 0;
-        $ret->pagination->next_page = 0;
-        $ret->pagination->previous_page = 0;
+        $ret->pagination->total_pages = ceil($ret->pagination->total_items / config('app.listsize'));
+        $ret->pagination->next_page = ($ret->pagination->page < $ret->pagination->total_pages) ? $ret->pagination->page + 1 : 0;
+        $ret->pagination->previous_page = ($ret->pagination->page > 1) ? $ret->pagination->page - 1 : 0;
     }
 
     public function getViewVariables()
@@ -205,12 +231,12 @@ class ModelListHelper
             'view_route' => sprintf('view-%s', $this->getSingularLabel()),
             'delete_route' => sprintf('delete-%s', $this->getSingularLabel()),
             'columns' => $this->getColumns(),
-            'items' => [],
-            'total_items' => 0,
-            'page' => 1,
-            'total_pages' => 1,
-            'next_page' => 0,
-            'previous_page' => 0,
+            'items' => $this->items,
+            'total_items' => $this->total_items,
+            'page' => $this->page,
+            'total_pages' => ceil($this->total_items / config('app.listsize')),
+            'next_page' => ($this->page < ceil($this->total_items / config('app.listsize')) ) ? $this->page + 1 : 0,
+            'previous_page' => ($this->page > 1) ? $this->page - 1 : 0,
         ];
         return $return;
     }
