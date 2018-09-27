@@ -21,6 +21,9 @@
 							    <a href="{{ route($create_route) }}" class="btn btn-success">
 							    	<span class="fas fa-plus"></span> {{ sprintf(__('Add %s'), ucwords($single_label)) }}
 							    </a>
+							    <a href="{{ URL::current() }}" class="btn btn-secondary">
+							    	<span class="fas fa-undo"></span> {{ __('Reset Filters') }}
+							    </a>
 							</div>
 						</div>
 					</div>
