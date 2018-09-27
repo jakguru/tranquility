@@ -47,9 +47,8 @@
 				<table class="table table-sm table-striped table-hover table-model-list mb-0">
 					<thead>
 						<tr>
-							<th rowspan="2">&nbsp;</th>
 							@foreach($columns as $column => $info)
-							<th>
+							<th @if($column == array_keys($columns)[0]) colspan="2" @endif>
 								<span class="column-label">{{ __($info['label']) }}</span>
 								<span class="column-sorting">
 									<a href="{{ \App\Helpers\ModelListHelper::getSortUrl($column, 'asc') }}"><span class="fas fa-caret-up"</a>
@@ -61,7 +60,7 @@
 						</tr>
 						<tr>
 							@foreach($columns as $column => $info)
-							<th>
+							<th @if($column == array_keys($columns)[0]) colspan="2" @endif>
 								@switch($info['type'])
 									@case('test')
 										@break
@@ -74,7 +73,7 @@
 						</tr>
 					</thead>
 					<tbody>
-						@if( (is_array($items) && 0 == count($items)) || (is_a($items, 'Collection') && $items->isEmpty()))
+						@if( 0 == $total_items )
 						<tr>
 							<td colspan="{{ count($columns) + 1}}">
 								<div class="alert alert-info mb-0 text-center">{{ sprintf(__('No %s Found'), ucwords($plural_label)) }}</div>

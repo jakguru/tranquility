@@ -234,7 +234,7 @@ class ModelListHelper
             'items' => $this->items,
             'total_items' => $this->total_items,
             'page' => $this->page,
-            'total_pages' => ceil($this->total_items / config('app.listsize')),
+            'total_pages' => (ceil($this->total_items / config('app.listsize')) > 1) ? ceil($this->total_items / config('app.listsize')) : 1,
             'next_page' => ($this->page < ceil($this->total_items / config('app.listsize')) ) ? $this->page + 1 : 0,
             'previous_page' => ($this->page > 1) ? $this->page - 1 : 0,
         ];
