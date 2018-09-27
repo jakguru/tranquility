@@ -145,7 +145,43 @@ class ModelListHelper
             }
             $this->items = collect($items);
         } else {
-            // build and use Eloquent Query
+            $query = $this->model::limit(config('app.listsize'))->offset(($this->page - 1) * config('app.listsize'));
+            if ($this->request->has('filter')) {
+                foreach ($this->request->input('filter') as $key => $value) {
+                    if (!is_array($value) && strlen($value) > 0) {
+                        switch ($key) {
+                            case 'created_at':
+                                # do nothing. Invalid
+                                break;
+
+                            case 'updated_at':
+                                # do nothing. Invalid
+                                break;
+                                                        
+                            default:
+                                $query->where($key, $value);
+                                break;
+                        }
+                    } elseif (is_array($value)) {
+                    }
+                }
+            }
+            if ($this->request->has('s') && strlen($this->request->input('s')) > 0) {
+                $sm = new $this->model;
+                $searchable = $sm->getSearchableColumns();
+                foreach ($searchable as $field) {
+                    $query->orWhere($field, 'like', $this->request->input('s'));
+                }
+            }
+            $this->total_items = $query->count();
+            if ($this->request->has('sort')) {
+                foreach ($this->request->input('sort') as $key => $direction) {
+                    $query->orderBy($key, $direction);
+                }
+            } else {
+                $query->orderBy('id', 'desc');
+            }
+            $this->items = $query->get();
         }
     }
 
