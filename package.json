@@ -21,7 +21,9 @@
     },
     "dependencies": {
         "@fortawesome/fontawesome-free-webfonts": "^1.0.9",
+        "datetime-local-polyfill": "^1.0.0",
         "push.js": "^1.0.7",
-        "sprintf-js": "^1.1.1"
+        "sprintf-js": "^1.1.1",
+        "time-polyfill": "^1.0.0"
     }
 }

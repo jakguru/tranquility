@@ -76,13 +76,50 @@
 						<tr>
 							@foreach($columns as $column => $info)
 							<th @if($column == array_keys($columns)[0]) colspan="2" @endif>
+								<div class="input-group input-group-sm">
 								@switch($info['type'])
-									@case('test')
+									@case('boolean')
+										<select class="form-control form-control-sm" name="filter[{{ $column }}]">
+											<option value=""></option>
+											<option value="1"{{ (true == request()->input(sprintf('filter.%s', $column))) ? ' selected' : '' }}>{{ __('Yes') }}</option>
+											<option value="0"{{ ('0' === request()->input(sprintf('filter.%s', $column))) ? ' selected' : '' }}>{{ __('No') }}</option>
+										</select>
 										@break
+
+									@case('datetime')
+										<input type="datetime-local" class="form-control form-control-sm" name="filter[{{ $column }}][min]" value="{{ request()->input(sprintf('filter.%s.min', $column)) }}" />
+										<div class="input-group-append">
+											<span class="input-group-text">{{ __('to') }}</span>
+										</div>
+										<input type="datetime-local" class="form-control form-control-sm" name="filter[{{ $column }}][max]" value="{{ request()->input(sprintf('filter.%s.max', $column)) }}" />
+										@break
+
+									@case('date')
+										<input type="date" class="form-control form-control-sm" name="filter[{{ $column }}][min]" value="{{ request()->input(sprintf('filter.%s.min', $column)) }}" />
+										<div class="input-group-append">
+											<span class="input-group-text">{{ __('to') }}</span>
+										</div>
+										<input type="date" class="form-control form-control-sm" name="filter[{{ $column }}][max]" value="{{ request()->input(sprintf('filter.%s.max', $column)) }}" />
+										@break
+
+									@case('time')
+										<input type="time" class="form-control form-control-sm" name="filter[{{ $column }}][min]" value="{{ request()->input(sprintf('filter.%s.min', $column)) }}" />
+										<div class="input-group-append">
+											<span class="input-group-text">{{ __('to') }}</span>
+										</div>
+										<input type="time" class="form-control form-control-sm" name="filter[{{ $column }}][max]" value="{{ request()->input(sprintf('filter.%s.max', $column)) }}" />
+										@break
+
 									@default
 										<input type="{{ $info['type'] }}" class="form-control form-control-sm" name="filter[{{ $column }}]" value="{{ request()->input(sprintf('filter.%s', $column)) }}" />
 										@break
 								@endswitch
+									<div class="input-group-append">
+										<button class="btn btn-secondary" type="submit" role="submit" title="{{ __('Filter Results') }}">
+									    	<span class="fas fa-filter"></span>
+									    </button>
+									</div>
+								</div>
 							</th>
 							@endforeach
 						</tr>
@@ -101,8 +138,22 @@
 								@foreach($columns as $column => $info)
 									<td>
 										@switch($info['type'])
-											@case('test')
+											@case('boolean')
+												<input type="checkbox" disabled readonly {{ true == $model->{$column} ? 'checked' : '' }} />
 												@break
+
+											@case('datetime')
+												{{ Auth::user()->formatDateTime($model->{$column}) }}
+												@break
+
+											@case('date')
+												{{ Auth::user()->formatDateTime($model->{$column}, 'date') }}
+												@break
+
+											@case('time')
+												{{ Auth::user()->formatDateTime($model->{$column}, 'time') }}
+												@break
+
 											@default
 												{{ $model->{$column} }}
 												@break

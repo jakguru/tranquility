@@ -7,6 +7,7 @@ use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use App\Helpers\PermissionsHelper;
 use App\Helpers\Validators;
+use Illuminate\Support\Carbon;
 
 class User extends Authenticatable
 {
@@ -245,6 +246,39 @@ class User extends Authenticatable
             ]));
         }
         return $url;
+    }
+
+    public function formatDateTime($datetime, $type = 'datetime')
+    {
+        if (!is_a($datetime, 'Illuminate\Support\Carbon')) {
+            $datetime = new Carbon($datetime);
+        }
+        $formatfield = sprintf('%sformat', $type);
+        $format = $this->{$formatfield};
+        $timezone = $this->timezone;
+        if (is_null($format) || 0 == strlen($format)) {
+            $configkey = sprintf('app.%sformat', $type);
+            $format = config($configkey);
+        }
+        if (is_null($timezone) || 0 == strlen($timezone)) {
+            $timezone = config('app.timezone');
+        }
+        $datetime->setTimezone($timezone);
+        $formatted = $datetime->format($format);
+        return $formatted;
+    }
+
+    public function getDateTimeAsUserTimezone($datetime)
+    {
+        if (0 == strlen($datetime)) {
+            return null;
+        }
+        $timezone = $this->timezone;
+        if (is_null($timezone) || 0 == strlen($timezone)) {
+            $timezone = config('app.timezone');
+        }
+        $datetime = new Carbon($datetime, $timezone);
+        return $datetime;
     }
 
     private static function getChildrenRoles($role, &$results = array())

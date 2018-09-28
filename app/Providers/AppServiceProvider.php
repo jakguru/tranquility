@@ -63,8 +63,8 @@ class AppServiceProvider extends ServiceProvider
         } else {
             Config::set('app.listsize', 20);
             Config::set('app.dateformat', 'F j, Y');
-            Config::set('app.timeformat', 'H:i');
-            Config::set('app.datetimeformat', 'F j, Y H:i');
+            Config::set('app.timeformat', 'H:i T');
+            Config::set('app.datetimeformat', 'F j, Y H:i T');
         }
     }
 

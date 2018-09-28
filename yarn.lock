@@ -1582,6 +1582,10 @@ date-now@^0.1.4:
   version "0.1.4"
   resolved "https://registry.yarnpkg.com/date-now/-/date-now-0.1.4.tgz#eaf439fd4d4848ad74e5cc7dbef200672b9e345b"
 
+datetime-local-polyfill@^1.0.0:
+  version "1.0.0"
+  resolved "https://registry.yarnpkg.com/datetime-local-polyfill/-/datetime-local-polyfill-1.0.0.tgz#70d5d3eabc8ba7bd2a2039bd0361ae66de270a03"
+
 de-indent@^1.0.2:
   version "1.0.2"
   resolved "https://registry.yarnpkg.com/de-indent/-/de-indent-1.0.2.tgz#b2038e846dc33baa5796128d0804b455b8c1e21d"
@@ -5417,6 +5421,10 @@ through@~2.3.6:
 thunky@^1.0.2:
   version "1.0.2"
   resolved "https://registry.yarnpkg.com/thunky/-/thunky-1.0.2.tgz#a862e018e3fb1ea2ec3fce5d55605cf57f247371"
+
+time-polyfill@^1.0.0:
+  version "1.0.0"
+  resolved "https://registry.yarnpkg.com/time-polyfill/-/time-polyfill-1.0.0.tgz#d4c8bd4bea8b5079f72a6ef4c4962eae66baa5ee"
 
 time-stamp@^2.0.0:
   version "2.1.0"

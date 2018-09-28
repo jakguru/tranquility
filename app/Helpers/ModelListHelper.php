@@ -6,6 +6,8 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\URL;
 use App\Helpers\ElasticSearchClientHelper;
+use Request as R;
+use URL as U;
 
 class ModelListHelper
 {
@@ -75,6 +77,42 @@ class ModelListHelper
                                 break;
                         }
                     } elseif (is_array($value)) {
+                        switch (true) {
+                            case (array_key_exists('min', $value) && array_key_exists('max', $value)):
+                                $min = $value['min'];
+                                $max = $value['max'];
+                                if (in_array($this->getFieldType($key), ['date', 'time', 'datetime'])) {
+                                    // make a carbon object assuming the date is in the user's local datetime
+                                    $min = $this->request->user()->getDateTimeAsUserTimezone($min);
+                                    $max = $this->request->user()->getDateTimeAsUserTimezone($max);
+                                    // convert the date to the system timezone
+                                    if (!is_null($min)) {
+                                        $min->setTimezone(config('app.timezone'));
+                                    }
+                                    if (!is_null($max)) {
+                                        $max->setTimezone(config('app.timezone'));
+                                    }
+                                }
+                                $range = [];
+                                if (!is_null($min)) {
+                                    $range['gte'] = $min->toDateTimeString();
+                                }
+                                if (!is_null($max)) {
+                                    $range['lte'] = $max->toDateTimeString();
+                                }
+                                if (count($range) > 0) {
+                                    array_push($esq['body']['query']['bool']['must'], ['range' => [$key => $range]]);
+                                }
+                                break;
+
+                            case (!self::isAssociativeArray($value) && count($value) > 0):
+                                if (in_array($this->getFieldType($key), ['integer', 'email'])) {
+                                    array_push($esq['body']['query']['bool']['must'], ['terms' => [$key => $value]]);
+                                } else {
+                                    array_push($esq['body']['query']['bool']['must'], ['terms' => [sprintf('%s.keyword', $key) => $value]]);
+                                }
+                                break;
+                        }
                     }
                 }
             }
@@ -145,7 +183,8 @@ class ModelListHelper
             }
             $this->items = collect($items);
         } else {
-            $query = $this->model::limit(config('app.listsize'))->offset(($this->page - 1) * config('app.listsize'));
+            $m = $this->model;
+            $query = $m::limit(config('app.listsize'))->offset(($this->page - 1) * config('app.listsize'));
             $countQuery = null;
             if ($this->request->has('filter')) {
                 foreach ($this->request->input('filter') as $key => $value) {
@@ -160,15 +199,69 @@ class ModelListHelper
                                 break;
                                                         
                             default:
-                                $query->where($key, $value);
+                                $query->where([$key => $value]);
                                 if (is_null($countQuery)) {
-                                    $countQuery = $this->model::where($key, $value);
+                                    $m = $this->model;
+                                    $countQuery = $m::where([$key => $value]);
                                 } else {
-                                    $countQuery->where($key, $value);
+                                    $countQuery->where([$key => $value]);
                                 }
                                 break;
                         }
                     } elseif (is_array($value)) {
+                        switch (true) {
+                            case (array_key_exists('min', $value) && array_key_exists('max', $value)):
+                                $min = $value['min'];
+                                $max = $value['max'];
+                                if (in_array($this->getFieldType($key), ['date', 'time', 'datetime'])) {
+                                    // make a carbon object assuming the date is in the user's local datetime
+                                    $min = $this->request->user()->getDateTimeAsUserTimezone($min);
+                                    $max = $this->request->user()->getDateTimeAsUserTimezone($max);
+                                    // convert the date to the system timezone
+                                    if (!is_null($min)) {
+                                        $min->setTimezone(config('app.timezone'));
+                                    }
+                                    if (!is_null($max)) {
+                                        $max->setTimezone(config('app.timezone'));
+                                    }
+                                }
+                                if (strlen($min) > 0 && strlen($max) > 0) {
+                                    $query->whereBetween($key, [$min, $max]);
+                                    if (is_null($countQuery)) {
+                                        $m = $this->model;
+                                        $countQuery = $m::whereBetween($key, [$min, $max]);
+                                    } else {
+                                        $countQuery->whereBetween($key, [$min, $max]);
+                                    }
+                                } elseif (!is_null($min) && strlen($min) > 0) {
+                                    $query->where($key, '>=', $min);
+                                    if (is_null($countQuery)) {
+                                        $m = $this->model;
+                                        $countQuery = $m::where($key, '>=', $min);
+                                    } else {
+                                        $countQuery->where($key, '>=', $min);
+                                    }
+                                } elseif (!is_null($max) && strlen($max) > 0) {
+                                    $query->where($key, '<=', $max);
+                                    if (is_null($countQuery)) {
+                                        $m = $this->model;
+                                        $countQuery = $m::where($key, '<=', $max);
+                                    } else {
+                                        $countQuery->where($key, '<=', $max);
+                                    }
+                                }
+                                break;
+
+                            case (!self::isAssociativeArray($value) && count($value) > 0):
+                                $query->whereIn($key, $value);
+                                if (is_null($countQuery)) {
+                                    $m = $this->model;
+                                    $countQuery = $m::whereIn($key, $value);
+                                } else {
+                                    $countQuery->whereIn($key, $value);
+                                }
+                                break;
+                        }
                     }
                 }
             }
@@ -178,7 +271,8 @@ class ModelListHelper
                 foreach ($searchable as $field) {
                     $query->orWhere($field, 'like', $this->request->input('s'));
                     if (is_null($countQuery)) {
-                        $countQuery = $this->model::where($field, $this->request->input('s'));
+                        $m = $this->model;
+                        $countQuery = $m::where($field, $this->request->input('s'));
                     } else {
                         $countQuery->orWhere($field, $this->request->input('s'));
                     }
@@ -192,12 +286,22 @@ class ModelListHelper
                 $query->orderBy('id', 'desc');
             }
             if (is_null($countQuery)) {
-                $this->total_items = $this->model::all()->count();
+                $m = $this->model;
+                $this->total_items = $m::all()->count();
             } else {
                 $this->total_items = $countQuery->count();
             }
             $this->items = $query->get();
         }
+    }
+
+    protected function getFieldType($field)
+    {
+        $columns = $this->getColumns();
+        if (array_key_exists($field, $columns)) {
+            return $columns[$field]['type'];
+        }
+        return 'text';
     }
 
     protected function getSingularLabel()
@@ -249,7 +353,8 @@ class ModelListHelper
     protected function getColumns()
     {
         if (\App\Helpers\PermissionsHelper::modelHasTrait($this->model, 'Listable')) {
-            return $this->model::getListColumns();
+            $m = $this->model;
+            return $m::getListColumns();
         }
         return [
             'id' => [
@@ -294,7 +399,7 @@ class ModelListHelper
 
     public static function getSortUrl($column, $direction = 'asc')
     {
-        $current = URL::current();
+        $current = U::full();
         $direction = strtolower($direction);
         if ('none' == $direction) {
             if (false === strpos($current, '?')) {
@@ -309,7 +414,7 @@ class ModelListHelper
                     $query['sort'] = [];
                 }
                 unset($query['sort'][$column]);
-                return sprintf('%s/%s', $url, http_build_query($query));
+                return sprintf('%s/?%s', $url, http_build_query($query));
             }
         }
         $direction = ('desc' == $direction) ? 'desc' : 'asc';
@@ -327,7 +432,7 @@ class ModelListHelper
                 $query['sort'] = [];
             }
             $query['sort'][$column] = $direction;
-            return sprintf('%s/%s', $url, http_build_query($query));
+            return sprintf('%s/?%s', $url, http_build_query($query));
         }
     }
 
@@ -337,7 +442,7 @@ class ModelListHelper
         if ($page < 1) {
             return '#';
         }
-        $current = URL::current();
+        $current = U::full();
         if (false === strpos($current, '?')) {
             return sprintf('%s?%s', $current, http_build_query([
                 'page' => $page,
@@ -349,7 +454,15 @@ class ModelListHelper
                 $query = [];
             }
             $query['page'] = $page;
-            return sprintf('%s/%s', $url, http_build_query($query));
+            return sprintf('%s/?%s', $url, http_build_query($query));
         }
+    }
+
+    public static function isAssociativeArray($array)
+    {
+        if ( ! is_array( $array ) ) {
+            return false;
+        }
+        return ( array_keys( $array ) !== range( 0, count( $array ) - 1 ));
     }
 }
