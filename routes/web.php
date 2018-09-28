@@ -54,12 +54,24 @@ Route::group(['middleware' => ['auth']], function () {
     Route::get('/settings/users/{id}', function ($id) {
         abort(501);
     })->name('view-user')->where('id', '[0-9]+');
-    Route::get('/settings/groups', function () {
+    
+    Route::get('/settings/groups', '\App\Http\Controllers\GroupController@list')->name('settings-groups');
+    Route::get('/settings/groups/new', function () {
         abort(501);
-    })->name('settings-groups');
-    Route::get('/settings/roles', function () {
+    })->name('create-group');
+    Route::get('/settings/groups/{id}', function ($id) {
         abort(501);
-    })->name('settings-roles');
+    })->name('view-group')->where('id', '[0-9]+');
+
+    Route::get('/settings/roles', '\App\Http\Controllers\RoleController@list')->name('settings-roles');
+    Route::get('/settings/roles/new', function () {
+        abort(501);
+    })->name('create-role');
+    Route::get('/settings/roles/{id}', function ($id) {
+        abort(501);
+    })->name('view-role')->where('id', '[0-9]+');
+
+
     Route::get('/settings/system', '\App\Http\Controllers\SettingsController@system')->name('settings-system');
     Route::get('/settings/email', '\App\Http\Controllers\SettingsController@email')->name('settings-email');
     Route::get('/settings/google', '\App\Http\Controllers\SettingsController@google')->name('settings-google');

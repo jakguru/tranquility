@@ -6,6 +6,7 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\URL;
 use App\Helpers\ElasticSearchClientHelper;
+use \App\Helpers\PermissionsHelper;
 use Request as R;
 use URL as U;
 
@@ -31,7 +32,10 @@ class ModelListHelper
     protected function populateCollection()
     {
         $es = ElasticSearchClientHelper::getClient();
-        if ((is_a($es, '\Elasticsearch\Client') && ElasticSearchClientHelper::clientCanConnect($es))) {
+        if (PermissionsHelper::modelHasTrait($this->model, 'ElasticSearchable')
+            && is_a($es, '\Elasticsearch\Client')
+            && ElasticSearchClientHelper::clientCanConnect($es)
+        ) {
             $esq = [
                 'index' => config('app.es.index'),
                 'type' => 'model',
@@ -156,6 +160,9 @@ class ModelListHelper
             } else {
                 array_push($esq['body']['sort'], ['model_id' => 'desc']);
             }
+            /**
+             * TODO: If the item is an ownable item, make sure to only retrieve items which are owned by the requesting user!
+             */
             try {
                 $es_results = $es->search($esq);
             } catch (\Exception $e) {
@@ -285,6 +292,9 @@ class ModelListHelper
             } else {
                 $query->orderBy('id', 'desc');
             }
+            /**
+             * TODO: If the item is an ownable item, make sure to only retrieve items which are owned by the requesting user!
+             */
             if (is_null($countQuery)) {
                 $m = $this->model;
                 $this->total_items = $m::all()->count();
@@ -352,7 +362,7 @@ class ModelListHelper
 
     protected function getColumns()
     {
-        if (\App\Helpers\PermissionsHelper::modelHasTrait($this->model, 'Listable')) {
+        if (PermissionsHelper::modelHasTrait($this->model, 'Listable')) {
             $m = $this->model;
             return $m::getListColumns();
         }
