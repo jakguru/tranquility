@@ -36,6 +36,9 @@
 								<h4>{{ __('Google ReCAPCHA') }}</h4>
 							</div>
 							<div class="card-body">
+								<div class="alert alert-info mb-3">
+									<strong>{{ __('Important Note') }}</strong> {{ __('In order for Google ReCAPCHA to work, the user\'s computer must have web access to Google API\'s.') }}
+								</div>
 								<div class="form-group">
 									<label>API Key</label>
 									<input type="text" name="recapcha[key]" class="form-control{{ $errors->has('recapcha.key') ? ' is-invalid' : '' }}"  value="{{ old('recapcha.key', (is_object($settings) && property_exists($settings, 'recapcha') ? $settings->recapcha['key'] : null )) }}" autocomplete="off" />
@@ -82,6 +85,15 @@
 									@if ($errors->has('maps.key'))
 			                            <span class="invalid-feedback" role="alert">
 			                                <strong>{{ $errors->first('maps.key') }}</strong>
+			                            </span>
+			                        @endif
+								</div>
+								<div class="form-group">
+									<label>Default Address</label>
+									<textarea name="maps[address]" class="form-control{{ $errors->has('maps.address') ? ' is-invalid' : '' }}">{{ old('maps.address', (is_object($settings) && property_exists($settings, 'maps') ? $settings->maps['address'] : 'Nordfjord, Norway' )) }}</textarea>
+									@if ($errors->has('maps.address'))
+			                            <span class="invalid-feedback" role="alert">
+			                                <strong>{{ $errors->first('maps.address') }}</strong>
 			                            </span>
 			                        @endif
 								</div>

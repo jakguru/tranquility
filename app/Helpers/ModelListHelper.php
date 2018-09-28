@@ -316,12 +316,7 @@ class ModelListHelper
 
     protected function getSingularLabel()
     {
-        $class = $this->model;
-        if (false !== $lp = strrpos($class, '\\')) {
-            $class = substr($class, $lp + 1);
-        }
-        $class = strtolower($class);
-        return str_singular($class);
+        return self::getSingleLabelForClass($this->model);
     }
 
     protected function getPluralLabel()
@@ -497,5 +492,22 @@ class ModelListHelper
         }
         $last = array_pop($array);
         return sprintf(__('%s and %s'), implode(', ', $array), $last);
+    }
+
+    public static function getSingleLabelForClass($class)
+    {
+        if (is_object($class)) {
+            $class = get_class($class);
+        }
+        if (false !== $lp = strrpos($class, '\\')) {
+            $class = substr($class, $lp + 1);
+        }
+        $class = strtolower($class);
+        return str_singular($class);
+    }
+
+    public static function getPluralLabelForClass($class)
+    {
+        return str_plural(self::getSingleLabelForClass($class));
     }
 }

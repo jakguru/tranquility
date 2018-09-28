@@ -42,6 +42,9 @@ Route::group(['middleware' => ['auth']], function () {
         abort(501);
     })->name('my-preferences');
 
+    Route::get('/backgrounds/{model}/{id}.png', '\App\Helpers\ModelImageHelper@getBackgroundImage')->name('get-model-background')->where('id', '[0-9]+');
+    Route::get('/avatars/{model}/{id}.png', '\App\Helpers\ModelImageHelper@getAvatarImage')->name('get-model-avatar')->where('id', '[0-9]+');
+
     Route::post('/my/preferences/google2fa', '\App\Http\Controllers\CurrentUserController@saveGoogle2FA')->name('save-google2fa');
     Route::post('/google/authenticator', '\App\Http\Controllers\CurrentUserController@validateGoogle2FA')->name('validate-google2fa');
 
@@ -51,9 +54,7 @@ Route::group(['middleware' => ['auth']], function () {
     Route::get('/settings/users/new', function () {
         abort(501);
     })->name('create-user');
-    Route::get('/settings/users/{id}', function ($id) {
-        abort(501);
-    })->name('view-user')->where('id', '[0-9]+');
+    Route::get('/settings/users/{id}', '\App\Http\Controllers\UserController@view')->name('view-user')->where('id', '[0-9]+');
     
     Route::get('/settings/groups', '\App\Http\Controllers\GroupController@list')->name('settings-groups');
     Route::get('/settings/groups/new', function () {

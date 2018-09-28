@@ -242,18 +242,18 @@ class User extends Authenticatable
 
     public function getAvatarUrl($size = 200, $default = 'mp', $rating = 'r', $forceDefault = false)
     {
-        $url = '';
-        if (!is_null($this->avatar_url)) {
-            $url = $this->avatar_url;
-        } else {
-            $url = sprintf('https://www.gravatar.com/avatar/%s?%s', md5($this->email), http_build_query([
-                's' => intval($size),
-                'd' => $default,
-                'f' => (true == $forceDefault) ? 'y' : 'n',
-                'r' => $rating,
-            ]));
-        }
-        return $url;
+        return route('get-model-avatar', [
+            'model' => self::class,
+            'id' => $this->id,
+            's' => $size,
+            'd' => $default,
+            'r' => $rating,
+        ]);
+    }
+
+    public function getBackgroundMap()
+    {
+        return 'https://via.placeholder.com/1024x500';
     }
 
     public function formatDateTime($datetime, $type = 'datetime')

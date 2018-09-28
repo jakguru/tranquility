@@ -16543,6 +16543,46 @@ table.table-model-list > tfoot > tr > th > span.column-sorting > a.active {
   color: #343a40;
 }
 
+.business-card > .card-body {
+  position: relative;
+  background-repeat: no-repeat;
+  background-size: cover;
+  background-position: center center;
+}
+
+.business-card > .card-body img.avatar {
+  border: solid 0.5rem rgba(0, 0, 0, 0.75);
+  border-radius: 0.25rem;
+  width: 100%;
+  height: auto;
+}
+
+.business-card > .card-body .text-panel {
+  background: rgba(52, 58, 64, 0.85);
+  color: #fff;
+  padding: 5px;
+}
+
+.business-card > .card-body img.avatar,
+.business-card > .card-body .text-panel {
+  -webkit-box-shadow: 0px 0px 5px 0px rgba(0, 0, 0, 0.75);
+          box-shadow: 0px 0px 5px 0px rgba(0, 0, 0, 0.75);
+}
+
+.business-card > .card-body h1 {
+  font-size: 1.5rem;
+  line-height: 1.72rem;
+  padding: 0;
+  margin: 0;
+}
+
+.business-card > .card-body h2 {
+  font-size: 1.1rem;
+  line-height: 1.3rem;
+  padding: 0;
+  margin: 0;
+}
+
 .alert.alert-primary {
   color: #fff;
   background: #3490dc;

@@ -165,6 +165,7 @@ class SettingsController extends Controller
                 $data = $request->input('maps');
                 Validator::make($data, [
                     'key' => 'string',
+                    'address' => 'string',
                     'enabled' => 'nullable|accepted',
                 ]);
                 $settings = \App\Options::get('google');
@@ -175,6 +176,7 @@ class SettingsController extends Controller
                     $settings->maps = [];
                 }
                 $settings->maps['key'] = $data['key'];
+                $settings->maps['address'] = $data['address'];
                 $settings->maps['enabled'] = array_key_exists('enabled', $data);
                 $saved = \App\Options::set('google', $settings);
                 if (true == $saved) {

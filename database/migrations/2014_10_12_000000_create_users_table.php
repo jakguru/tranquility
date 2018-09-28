@@ -3,6 +3,7 @@
 use Illuminate\Support\Facades\Schema;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
+use \App\Helpers\CountryHelper;
 
 class CreateUsersTable extends Migration
 {
@@ -19,6 +20,16 @@ class CreateUsersTable extends Migration
             $table->string('lName');
             $table->string('name');
             $table->string('email')->unique();
+            $table->string('main_phone')->nullable();
+            $table->enum('main_phone_country', array_keys(CountryHelper::$countries))->default('XX');
+            $table->string('mobile_phone')->nullable();
+            $table->enum('mobile_phone_country', array_keys(CountryHelper::$countries))->default('XX');
+            $table->string('home_phone')->nullable();
+            $table->enum('home_phone_country', array_keys(CountryHelper::$countries))->default('XX');
+            $table->string('work_phone')->nullable();
+            $table->enum('work_phone_country', array_keys(CountryHelper::$countries))->default('XX');
+            $table->string('fax_phone')->nullable();
+            $table->enum('fax_phone_country', array_keys(CountryHelper::$countries))->default('XX');
             $table->timestamp('email_verified_at')->nullable();
             $table->string('password');
             $table->integer('role_id')->unsigned()->nullable();
@@ -30,6 +41,14 @@ class CreateUsersTable extends Migration
             $table->text('google2fa_secret')->nullable();
             $table->ipAddress('last_login_ip')->nullable();
             $table->dateTime('last_login_at')->nullable();
+            $table->string('address_line_1')->nullable();
+            $table->string('address_line_2')->nullable();
+            $table->string('city')->nullable();
+            $table->string('state')->nullable();
+            $table->string('postal')->nullable();
+            $table->enum('country', array_keys(CountryHelper::$countries))->default('XX');
+            $table->string('avatar')->nullable();
+            $table->string('title')->nullable();
             $table->rememberToken();
             $table->timestamps();
         });

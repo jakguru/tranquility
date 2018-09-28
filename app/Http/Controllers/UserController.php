@@ -23,4 +23,13 @@ class UserController extends Controller
         }
         return view('app.layouts.modellist', $listHelper->getViewVariables());
     }
+
+    public function view(Request $request, $id)
+    {
+        $user = User::find($id);
+        if (!is_a($user, '\App\User')) {
+            abort(404);
+        }
+        return view('app.layouts.models.users.view', ['model' => $user]);
+    }
 }

@@ -19,7 +19,7 @@ class CheckLogin2FA
     {
         if (is_a($request->user(), '\App\User')
             && ! $this->hasValidMFALogin($request)
-            && !in_array($request->route()->getName(), ['logout', 'validate-google2fa', 'save-google2fa'])
+            && !in_array($request->route()->getName(), ['logout', 'validate-google2fa', 'save-google2fa', 'get-model-background', 'get-model-avatar'])
         ) {
             return new Response(view('app.layouts.google2fa.validate'));
         }
