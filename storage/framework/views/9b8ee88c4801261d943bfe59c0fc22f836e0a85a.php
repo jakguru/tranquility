@@ -7,7 +7,7 @@
 	<?php echo $__env->make('app.shared.breadcrumbs',['crumbs' => $breadcrumbs], \Illuminate\Support\Arr::except(get_defined_vars(), array('__data', '__path')))->render(); ?>
 	<div class="container-fluid">
 		<h1><?php echo e(ucwords($plural_label)); ?></h1>
-		<form class="card" action="<?php echo e(url()->current()); ?>" method="GET">
+		<form class="card mb-3" action="<?php echo e(url()->current()); ?>" method="GET">
 			<div class="card-header">
 				<div class="row">
 					<div class="col-md-4">
@@ -64,19 +64,19 @@
 					<thead>
 						<tr>
 							<?php $__currentLoopData = $columns; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $column => $info): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
-							<th <?php if($column == array_keys($columns)[0]): ?> colspan="2" <?php endif; ?>>
+							<th <?php if($column == array_keys($columns)[0]): ?> colspan="2" <?php endif; ?> class="<?php echo e($info['type']); ?>-field">
 								<span class="column-label"><?php echo e(__($info['label'])); ?></span>
 								<span class="column-sorting">
-									<a href="<?php echo e(\App\Helpers\ModelListHelper::getSortUrl($column, 'asc')); ?>"><span class="fas fa-caret-up"</a>
-									<a href="<?php echo e(\App\Helpers\ModelListHelper::getSortUrl($column, 'desc')); ?>"><span class="fas fa-caret-down"</a>
-									<a href="<?php echo e(\App\Helpers\ModelListHelper::getSortUrl($column, 'none')); ?>"><span class="fas fa-eraser"</a>
+									<a class="<?php echo e(\App\Helpers\ModelListHelper::pageIsSortedBy($column, 'asc') ? 'active' : ''); ?>" href="<?php echo e(\App\Helpers\ModelListHelper::getSortUrl($column, 'asc')); ?>"><span class="fas fa-caret-up"</a>
+									<a class="<?php echo e(\App\Helpers\ModelListHelper::pageIsSortedBy($column, 'desc') ? 'active' : ''); ?>" href="<?php echo e(\App\Helpers\ModelListHelper::getSortUrl($column, 'desc')); ?>"><span class="fas fa-caret-down"</a>
+									<a class="<?php echo e(\App\Helpers\ModelListHelper::pageIsSortedBy($column, 'none') ? 'active' : ''); ?>" href="<?php echo e(\App\Helpers\ModelListHelper::getSortUrl($column, 'none')); ?>"><span class="fas fa-eraser"</a>
 								</span>
 							</th>
 							<?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
 						</tr>
 						<tr>
 							<?php $__currentLoopData = $columns; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $column => $info): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
-							<th <?php if($column == array_keys($columns)[0]): ?> colspan="2" <?php endif; ?>>
+							<th <?php if($column == array_keys($columns)[0]): ?> colspan="2" <?php endif; ?> class="<?php echo e($info['type']); ?>-field">
 								<div class="input-group input-group-sm">
 								<?php switch($info['type']):
 									case ('boolean'): ?>
@@ -88,11 +88,11 @@
 										<?php break; ?>
 
 									<?php case ('datetime'): ?>
-										<input type="datetime-local" class="form-control form-control-sm" name="filter[<?php echo e($column); ?>][min]" value="<?php echo e(request()->input(sprintf('filter.%s.min', $column))); ?>" />
+										<input type="text" psuedo-type="datetime-local" class="form-control form-control-sm" name="filter[<?php echo e($column); ?>][min]" value="<?php echo e(request()->input(sprintf('filter.%s.min', $column))); ?>" />
 										<div class="input-group-append">
 											<span class="input-group-text"><?php echo e(__('to')); ?></span>
 										</div>
-										<input type="datetime-local" class="form-control form-control-sm" name="filter[<?php echo e($column); ?>][max]" value="<?php echo e(request()->input(sprintf('filter.%s.max', $column))); ?>" />
+										<input type="text" psuedo-type="datetime-local" class="form-control form-control-sm" name="filter[<?php echo e($column); ?>][max]" value="<?php echo e(request()->input(sprintf('filter.%s.max', $column))); ?>" />
 										<?php break; ?>
 
 									<?php case ('date'): ?>
@@ -137,7 +137,7 @@
 							<tr>
 								<td><a href="<?php echo e(route($view_route,['id' => $model->id])); ?>" class="btn btn-block btn-sm btn-dark"><span class="far fa-eye"></span></a></td>
 								<?php $__currentLoopData = $columns; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $column => $info): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
-									<td>
+									<td class="<?php echo e($info['type']); ?>-field">
 										<?php switch($info['type']):
 											case ('boolean'): ?>
 												<input type="checkbox" disabled readonly <?php echo e(true == $model->{$column} ? 'checked' : ''); ?> />

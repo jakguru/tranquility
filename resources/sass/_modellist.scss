@@ -1,0 +1,59 @@
+table.table-model-list {
+	> thead,
+	> tbody,
+	> tfoot {
+		> tr {
+			> th,
+			> td {
+				white-space: nowrap;
+				width:0.1%;
+
+				&.text-field,
+				&.email-field {
+					width: auto;
+				}
+
+				&.datetime-field,
+				&.date-field,
+				&.time-field {
+					> .input-group {
+						width: 250px;
+					}
+				}
+			}
+
+			> th {
+				position: relative;
+
+				> span {
+					display: inline-block;
+					&.column-label {
+						display: block;
+						padding-right: 56.39px;
+					}
+
+					&.column-sorting {
+						position: absolute;
+						right: 0;
+						top: 0;
+						bottom: 0;
+						height: 31px;
+						line-height: 31px;
+
+						> a {
+							padding: 0 0.25rem;
+							color: $secondary;
+
+							&:hover,
+							&:focus,
+							&:active,
+							&.active {
+								color: $dark;
+							}
+						}
+					}
+				}
+			}
+		}
+	}
+}

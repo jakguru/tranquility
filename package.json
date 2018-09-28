@@ -21,9 +21,12 @@
     },
     "dependencies": {
         "@fortawesome/fontawesome-free-webfonts": "^1.0.9",
-        "datetime-local-polyfill": "^1.0.0",
+        "fs": "^0.0.1-security",
+        "json-loader": "^0.5.7",
+        "modernizr": "^3.6.0",
+        "modernizr-loader": "^1.0.1",
+        "pc-bootstrap4-datetimepicker": "^4.17.50",
         "push.js": "^1.0.7",
-        "sprintf-js": "^1.1.1",
-        "time-polyfill": "^1.0.0"
+        "sprintf-js": "^1.1.1"
     }
 }

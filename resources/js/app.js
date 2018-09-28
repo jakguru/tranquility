@@ -37,3 +37,47 @@ window.handleGoogleReCAPCHA = function(result) {
 		form.submit();
 	});
 }
+
+jQuery('[psuedo-type="datetime-local"]').each(function() {
+	jQuery(this).datetimepicker({
+		showClear: true,
+		showClose: true,
+		showTodayButton: true,
+		useCurrent: false,
+	});
+});
+
+if (!Modernizr.inputtypes['datetime-local']) {
+	jQuery('[type="datetime-local"]').each(function() {
+		jQuery(this).datetimepicker({
+			showClear: true,
+			showClose: true,
+			showTodayButton: true,
+			useCurrent: false,
+		});
+	});
+}
+
+if (!Modernizr.inputtypes['date']) {
+	jQuery('[type="date"]').each(function() {
+		jQuery(this).datetimepicker({
+			showClear: true,
+			showClose: true,
+			showTodayButton: true,
+			useCurrent: false,
+			format: 'L',
+		});
+	});
+}
+
+if (!Modernizr.inputtypes['time']) {
+	jQuery('[type="time"]').each(function() {
+		jQuery(this).datetimepicker({
+			showClear: true,
+			showClose: true,
+			showTodayButton: true,
+			useCurrent: false,
+			format: 'LT',
+		});
+	});
+}

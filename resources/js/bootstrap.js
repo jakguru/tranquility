@@ -12,6 +12,20 @@ try {
     window.$ = window.jQuery = require('jquery');
 
     require('bootstrap');
+    require('pc-bootstrap4-datetimepicker');
+    window.jQuery.extend(true, window.jQuery.fn.datetimepicker.defaults, {
+	    icons: {
+	      time: 'far fa-clock',
+	      date: 'far fa-calendar',
+	      up: 'fas fa-arrow-up',
+	      down: 'fas fa-arrow-down',
+	      previous: 'fas fa-chevron-left',
+	      next: 'fas fa-chevron-right',
+	      today: 'fas fa-calendar-check',
+	      clear: 'far fa-trash-alt',
+	      close: 'far fa-times-circle'
+	    }
+	  });
 } catch (e) {}
 
 /**
@@ -61,6 +75,10 @@ try {
 	window.vsprintf = require('sprintf-js').vsprintf;
 }
 catch (e) {}
+
+import Modernizr from 'modernizr';
+
+window.Modernizr = Modernizr;
 
 try {
 	window.ajax = function(url, method, data, success, error, pending, redirect, progress) {

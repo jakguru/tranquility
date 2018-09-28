@@ -10,6 +10,25 @@ let mix = require('laravel-mix');
  | file for the application as well as bundling up all the JS files.
  |
  */
+ mix.webpackConfig({
+ 	module: {
+		rules: [
+		  {
+		    test: /\.modernizrrc.js$/,
+		    use: [ 'modernizr-loader' ]
+		  },
+		  {
+		    test: /\.modernizrrc(\.json)?$/,
+		    use: [ 'modernizr-loader', 'json-loader' ]
+		  }
+		]
+		},
+	resolve: {
+		alias: {
+		  modernizr$: path.resolve(__dirname, ".modernizrrc")
+		}
+	}
+ });
 
 mix.js('resources/js/app.js', 'public/js')
    .sass('resources/sass/app.scss', 'public/css')

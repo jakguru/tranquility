@@ -8,7 +8,7 @@
 	@include('app.shared.breadcrumbs',['crumbs' => $breadcrumbs])
 	<div class="container-fluid">
 		<h1>{{ ucwords($plural_label) }}</h1>
-		<form class="card" action="{{ url()->current() }}" method="GET">
+		<form class="card mb-3" action="{{ url()->current() }}" method="GET">
 			<div class="card-header">
 				<div class="row">
 					<div class="col-md-4">
@@ -63,19 +63,19 @@
 					<thead>
 						<tr>
 							@foreach($columns as $column => $info)
-							<th @if($column == array_keys($columns)[0]) colspan="2" @endif>
+							<th @if($column == array_keys($columns)[0]) colspan="2" @endif class="{{ $info['type'] }}-field">
 								<span class="column-label">{{ __($info['label']) }}</span>
 								<span class="column-sorting">
-									<a href="{{ \App\Helpers\ModelListHelper::getSortUrl($column, 'asc') }}"><span class="fas fa-caret-up"</a>
-									<a href="{{ \App\Helpers\ModelListHelper::getSortUrl($column, 'desc') }}"><span class="fas fa-caret-down"</a>
-									<a href="{{ \App\Helpers\ModelListHelper::getSortUrl($column, 'none') }}"><span class="fas fa-eraser"</a>
+									<a class="{{ \App\Helpers\ModelListHelper::pageIsSortedBy($column, 'asc') ? 'active' : '' }}" href="{{ \App\Helpers\ModelListHelper::getSortUrl($column, 'asc') }}"><span class="fas fa-caret-up"</a>
+									<a class="{{ \App\Helpers\ModelListHelper::pageIsSortedBy($column, 'desc') ? 'active' : '' }}" href="{{ \App\Helpers\ModelListHelper::getSortUrl($column, 'desc') }}"><span class="fas fa-caret-down"</a>
+									<a class="{{ \App\Helpers\ModelListHelper::pageIsSortedBy($column, 'none') ? 'active' : '' }}" href="{{ \App\Helpers\ModelListHelper::getSortUrl($column, 'none') }}"><span class="fas fa-eraser"</a>
 								</span>
 							</th>
 							@endforeach
 						</tr>
 						<tr>
 							@foreach($columns as $column => $info)
-							<th @if($column == array_keys($columns)[0]) colspan="2" @endif>
+							<th @if($column == array_keys($columns)[0]) colspan="2" @endif class="{{ $info['type'] }}-field">
 								<div class="input-group input-group-sm">
 								@switch($info['type'])
 									@case('boolean')
@@ -87,11 +87,11 @@
 										@break
 
 									@case('datetime')
-										<input type="datetime-local" class="form-control form-control-sm" name="filter[{{ $column }}][min]" value="{{ request()->input(sprintf('filter.%s.min', $column)) }}" />
+										<input type="text" psuedo-type="datetime-local" class="form-control form-control-sm" name="filter[{{ $column }}][min]" value="{{ request()->input(sprintf('filter.%s.min', $column)) }}" />
 										<div class="input-group-append">
 											<span class="input-group-text">{{ __('to') }}</span>
 										</div>
-										<input type="datetime-local" class="form-control form-control-sm" name="filter[{{ $column }}][max]" value="{{ request()->input(sprintf('filter.%s.max', $column)) }}" />
+										<input type="text" psuedo-type="datetime-local" class="form-control form-control-sm" name="filter[{{ $column }}][max]" value="{{ request()->input(sprintf('filter.%s.max', $column)) }}" />
 										@break
 
 									@case('date')
@@ -136,7 +136,7 @@
 							<tr>
 								<td><a href="{{ route($view_route,['id' => $model->id]) }}" class="btn btn-block btn-sm btn-dark"><span class="far fa-eye"></span></a></td>
 								@foreach($columns as $column => $info)
-									<td>
+									<td class="{{ $info['type'] }}-field">
 										@switch($info['type'])
 											@case('boolean')
 												<input type="checkbox" disabled readonly {{ true == $model->{$column} ? 'checked' : '' }} />

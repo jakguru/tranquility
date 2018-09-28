@@ -436,6 +436,12 @@ class ModelListHelper
         }
     }
 
+    public static function pageIsSortedBy($column, $direction = 'asc')
+    {
+        $dir = request()->input(sprintf('sort.%s', $column));
+        return trim(strtolower($direction)) == trim(strtolower($dir));
+    }
+
     public static function getPageUrl($page = 0)
     {
         $page = intval($page);
@@ -460,9 +466,9 @@ class ModelListHelper
 
     public static function isAssociativeArray($array)
     {
-        if ( ! is_array( $array ) ) {
+        if (! is_array($array)) {
             return false;
         }
-        return ( array_keys( $array ) !== range( 0, count( $array ) - 1 ));
+        return ( array_keys($array) !== range(0, count($array) - 1));
     }
 }
