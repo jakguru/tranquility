@@ -18,6 +18,18 @@ class Group extends Model
             'type' => 'boolean',
             'label' =>'Super Admins',
         ],
+        'users' => [
+            'type' => 'submodulecount',
+            'label' =>'Users',
+        ],
+        'ip_whitelist' => [
+            'type' => 'linebreaklist',
+            'label' => 'Whitelisted IPs',
+        ],
+        'ip_whitelist' => [
+            'type' => 'linebreaklist',
+            'label' => 'Whitelisted IPs',
+        ],
         'created_at' => [
             'type' => 'datetime',
             'label' =>'Created',

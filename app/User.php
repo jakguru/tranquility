@@ -29,6 +29,14 @@ class User extends Authenticatable
             'type' => 'boolean',
             'label' =>'Active',
         ],
+        'last_login_ip' => [
+            'type' => 'ip',
+            'label' =>'Last Login IP',
+        ],
+        'last_login_at' => [
+            'type' => 'datetime',
+            'label' =>'Last Login',
+        ],
         'created_at' => [
             'type' => 'datetime',
             'label' =>'Created',
@@ -251,6 +259,9 @@ class User extends Authenticatable
     public function formatDateTime($datetime, $type = 'datetime')
     {
         if (!is_a($datetime, 'Illuminate\Support\Carbon')) {
+            if (is_null($datetime)) {
+                return null;
+            }
             $datetime = new Carbon($datetime);
         }
         $formatfield = sprintf('%sformat', $type);

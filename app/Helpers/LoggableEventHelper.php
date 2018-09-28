@@ -4,6 +4,7 @@ namespace App\Helpers;
 
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\Request;
+use Illuminate\Support\Carbon;
 
 class LoggableEventHelper
 {
@@ -60,6 +61,11 @@ class LoggableEventHelper
     {
         $current_user = Request::user();
         $current_ip = Request::ip();
+        if ('Login' == $action) {
+            $model->last_login_ip = $current_ip;
+            $model->last_login_at = new Carbon();
+            $model->save();
+        }
         return \App\Jobs\SaveActivityLog::dispatch($model, $action, $changes, $current_user, $current_ip);
     }
 }

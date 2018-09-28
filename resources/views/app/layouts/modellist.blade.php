@@ -65,17 +65,20 @@
 							@foreach($columns as $column => $info)
 							<th @if($column == array_keys($columns)[0]) colspan="2" @endif class="{{ $info['type'] }}-field">
 								<span class="column-label">{{ __($info['label']) }}</span>
+								@if(!in_array($info['type'], ['submodulecount']))
 								<span class="column-sorting">
 									<a class="{{ \App\Helpers\ModelListHelper::pageIsSortedBy($column, 'asc') ? 'active' : '' }}" href="{{ \App\Helpers\ModelListHelper::getSortUrl($column, 'asc') }}"><span class="fas fa-caret-up"</a>
 									<a class="{{ \App\Helpers\ModelListHelper::pageIsSortedBy($column, 'desc') ? 'active' : '' }}" href="{{ \App\Helpers\ModelListHelper::getSortUrl($column, 'desc') }}"><span class="fas fa-caret-down"</a>
 									<a class="{{ \App\Helpers\ModelListHelper::pageIsSortedBy($column, 'none') ? 'active' : '' }}" href="{{ \App\Helpers\ModelListHelper::getSortUrl($column, 'none') }}"><span class="fas fa-eraser"</a>
 								</span>
+								@endif
 							</th>
 							@endforeach
 						</tr>
 						<tr>
 							@foreach($columns as $column => $info)
 							<th @if($column == array_keys($columns)[0]) colspan="2" @endif class="{{ $info['type'] }}-field">
+								@if(!in_array($info['type'], ['submodulecount']))
 								<div class="input-group input-group-sm">
 								@switch($info['type'])
 									@case('boolean')
@@ -120,6 +123,7 @@
 									    </button>
 									</div>
 								</div>
+								@endif
 							</th>
 							@endforeach
 						</tr>
@@ -152,6 +156,14 @@
 
 											@case('time')
 												{{ Auth::user()->formatDateTime($model->{$column}, 'time') }}
+												@break
+
+											@case('linebreaklist')
+												{{ \App\Helpers\ModelListHelper::formatLineBreakList($model->{$column}) }}
+												@break
+
+											@case('submodulecount')
+												{{ $model->{$column}->count() }}
 												@break
 
 											@default

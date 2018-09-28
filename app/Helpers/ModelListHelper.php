@@ -481,4 +481,21 @@ class ModelListHelper
         }
         return ( array_keys($array) !== range(0, count($array) - 1));
     }
+
+    public static function formatLineBreakList($list)
+    {
+        $items = explode("\n", $list);
+        $items = array_map('trim', $items);
+        $items = array_filter($items, 'strlen');
+        return self::formatArrayItems($items);
+    }
+
+    public static function formatArrayItems(array $array = [])
+    {
+        if (count($array) <= 1) {
+            return implode(', ', $array);
+        }
+        $last = array_pop($array);
+        return sprintf(__('%s and %s'), implode(', ', $array), $last);
+    }
 }
