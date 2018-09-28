@@ -16,7 +16,7 @@ class Group extends Model
         ],
         'sudo' => [
             'type' => 'boolean',
-            'label' =>'Active',
+            'label' =>'Super Admins',
         ],
         'created_at' => [
             'type' => 'datetime',
