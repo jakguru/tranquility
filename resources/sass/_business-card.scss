@@ -1,40 +1,143 @@
 .business-card {
+
+	.nowrap {
+		white-space: nowrap;
+	}
+
 	> .card-body {
 		position: relative;
 		background-repeat: no-repeat;
 		background-size: cover;
 		background-position: center center;
 
-		img.avatar {
-			border: solid 0.5rem rgba($black,0.75);
+		.avatar {
+			border: solid 0.25rem rgba($black,0.75);
 			border-radius: 0.25rem;
 			width: 100%;
 			height: auto;
-		}
-
-		.text-panel {
-			background: rgba($dark, 0.85);
-			color: $white;
-			padding: 5px;
-		}
-
-		img.avatar,
-		.text-panel {
-			box-shadow: 0px 0px 5px 0px rgba($black,0.75);
+			position: relative;
+			top: 1.5rem;
 		}
 
 		h1 {
-			font-size: 1.5rem;
-			line-height: 1.72rem;
-			padding: 0;
-			margin: 0;
+			&.model-info-with-bg {
+				font-size: 1.72rem;
+				width: 100%;
+			}
 		}
 
-		h2 {
-			font-size: 1.1rem;
-			line-height: 1.3rem;
+		.model-info-with-bg {
+			font-size: 1rem;
+			line-height: 2rem;
 			padding: 0;
-			margin: 0;	
+			margin: 0;
+			background: rgba($dark, 0.85);
+			color: $white;
+			padding: 0.75rem;
+		}
+	}
+
+	.model-info-menu {
+		list-style-type: none;
+		padding: 0;
+		margin: 0;
+		
+		> li {
+			line-height: 2.5rem;
+			height: 2.5rem;
+
+			.btn-link {
+				padding-left: 0;
+				padding-right: 0;
+				color: $dark;
+
+				&:hover,
+				&:focus,
+				&:active {
+					text-decoration: none;
+				}
+			}
+
+			.dropdown-menu {
+				line-height: 1.2rem;
+			}
 		}
 	}
 }
+
+@media (min-width: 768px) {
+	.business-card {
+		.model-info-menu {		
+			> li {
+				padding: 0 1rem;
+
+				&:first-child {
+					padding-left: 0;
+				}
+
+				&:last-child {
+					padding-right: 0;
+				}
+			}
+		}
+	}
+}
+
+/**
+.text-panel {
+	background: rgba($dark, 0.85);
+	color: $white;
+	padding: 0.75rem;
+}
+
+img.avatar,
+.text-panel,
+.btn-group-panel {
+	box-shadow: 0px 0px 5px 0px rgba($black,0.75);
+}
+
+.btn-group-panel {
+	margin-top: 1rem;
+
+	> * {
+		border-radius: 0;
+
+		> span {
+			margin-right: 0.5rem;
+		}
+	}
+}
+
+h1 {
+	font-size: 1.72rem;
+	line-height: 2rem;
+	padding: 0;
+	margin: 0;
+}
+
+h2 {
+	font-size: 1.0rem;
+	line-height: 1.5rem;
+	padding: 0;
+	margin: 0;
+
+	> span {
+		margin-right: 0.5rem;
+	}
+}
+
+.active-status {
+	display: inline-block;
+	line-height: 1.5rem;
+
+	> span {
+		margin-right: 0.5rem;
+	}
+}
+
+.last-login-info {
+	> div > span {
+		margin-right: 0.5rem;
+	}
+}
+**/

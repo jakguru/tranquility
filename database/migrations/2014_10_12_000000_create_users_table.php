@@ -16,6 +16,7 @@ class CreateUsersTable extends Migration
     {
         Schema::create('users', function (Blueprint $table) {
             $table->increments('id');
+            $table->string('salutation')->nullable();
             $table->string('fName');
             $table->string('lName');
             $table->string('name');
@@ -30,7 +31,6 @@ class CreateUsersTable extends Migration
             $table->enum('work_phone_country', array_keys(CountryHelper::$countries))->default('XX');
             $table->string('fax_phone')->nullable();
             $table->enum('fax_phone_country', array_keys(CountryHelper::$countries))->default('XX');
-            $table->timestamp('email_verified_at')->nullable();
             $table->string('password');
             $table->integer('role_id')->unsigned()->nullable();
             $table->boolean('active')->default(true);
@@ -49,6 +49,17 @@ class CreateUsersTable extends Migration
             $table->enum('country', array_keys(CountryHelper::$countries))->default('XX');
             $table->string('avatar')->nullable();
             $table->string('title')->nullable();
+            $table->string('timezone')->default('UTC');
+            $table->string('whatsapp_phone')->nullable();
+            $table->enum('whatsapp_phone_country', array_keys(CountryHelper::$countries))->default('XX');
+            $table->string('telegram_phone')->nullable();
+            $table->enum('telegram_phone_country', array_keys(CountryHelper::$countries))->default('XX');
+            $table->string('viber_phone')->nullable();
+            $table->enum('viber_phone_country', array_keys(CountryHelper::$countries))->default('XX');
+            $table->string('skype')->nullable();
+            $table->string('facebook')->nullable();
+            $table->string('googleplus')->nullable();
+            $table->string('linkedin')->nullable();
             $table->rememberToken();
             $table->timestamps();
         });

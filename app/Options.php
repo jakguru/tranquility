@@ -8,7 +8,6 @@ use Illuminate\Support\Facades\Schema;
 
 class Options extends Model
 {
-    use \App\Helpers\Loggable;
 
     protected $notLoggable = [
         'created_at', 'updated_at',

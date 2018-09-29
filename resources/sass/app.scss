@@ -11,6 +11,9 @@
 @import '~@fortawesome/fontawesome-free-webfonts/scss/fa-solid';
 @import '~@fortawesome/fontawesome-free-webfonts/scss/fontawesome';
 
+// Flag Icons
+@import '~flag-icon-css/sass/flag-icon';
+
 // Mix-Ins
 @import 'row-heights';
 
@@ -33,4 +36,24 @@
     background: $value;
     background-color: $value;
   }
+}
+
+// Random Stuff
+.change-line {
+	list-style-type: none;
+	padding: 0;
+	margin: 0;
+
+	> li {
+		> code:first-child {
+			font-weight: bold;
+		}
+	}
+}
+
+.table-inline {
+	td,
+	th {
+		white-space: nowrap;
+	}
 }

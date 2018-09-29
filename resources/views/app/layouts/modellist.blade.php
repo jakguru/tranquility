@@ -11,7 +11,7 @@
 		<form class="card mb-3" action="{{ url()->current() }}" method="GET">
 			<div class="card-header">
 				<div class="row">
-					<div class="col-md-4">
+					<div class="col-sm-6 col-lg-4">
 						<div class="input-group input-group-sm mb-2 mb-md-0">
 							<input type="search" name="s" value="{{ request()->input('s') }}" class="form-control" />
 							<div class="input-group-append">
@@ -27,7 +27,7 @@
 							</div>
 						</div>
 					</div>
-					<div class="col-md-4">
+					<div class="col-sm-6 col-lg-4">
 						<div class="input-group input-group-sm mb-2 mb-md-0">
 							<div class="input-group-prepend">
 								@if($page !== 1)
@@ -53,7 +53,7 @@
 							</div>
 						</div>
 					</div>
-					<div class="col-md-4 text-right">
+					<div class="col-sm-12 col-lg-4 text-right">
 						<span class="modellist-totals-summary">{{ sprintf(__('Showing %d of %d %s'), count($items), $total_items, ucwords($plural_label)) }}</span>
 					</div>
 				</div>

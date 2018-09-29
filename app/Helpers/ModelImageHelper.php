@@ -61,7 +61,7 @@ class ModelImageHelper
                     if (count($address_line_3_array) > 0) {
                         array_push($address_array, implode(', ', $address_line_3_array));
                     }
-                    if (!is_null($obj->country) && strlen($obj->country) > 0) {
+                    if (!is_null($obj->country) && strlen($obj->country) > 0 && 'XX' !== $obj->country) {
                         array_push($address_array, CountryHelper::getCountryName($obj->country));
                     }
                     if (count($address_array) > 0) {
@@ -114,12 +114,12 @@ class ModelImageHelper
                         $bg = imagecolorallocate($img, 255, 255, 255);
                         imagefilledrectangle($img, 0, 0, 640, 250, $bg);
                     }
-                }
-                if (isset($img) && false !== $img) {
                     $layer = imagecreatetruecolor(640, 250);
                     $bg = imagecolorallocatealpha($layer, 255, 255, 255, 0);
                     imagefilledrectangle($layer, 0, 0, 640, 250, $bg);
                     imagecopymerge($img, $layer, 0, 0, 0, 0, 640, 250, 50);
+                }
+                if (isset($img) && false !== $img) {
                     imagepng($img);
                     imagedestroy($img);
                 }

@@ -7,6 +7,8 @@ table.table-model-list {
 			> td {
 				white-space: nowrap;
 				width:0.1%;
+				vertical-align: middle;
+				line-height: 28px;
 
 				&.text-field,
 				&.email-field {
@@ -52,6 +54,12 @@ table.table-model-list {
 							}
 						}
 					}
+				}
+			}
+
+			> td {
+				&.boolean-field {
+					text-align: center;
 				}
 			}
 		}

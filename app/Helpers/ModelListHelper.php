@@ -9,6 +9,7 @@ use App\Helpers\ElasticSearchClientHelper;
 use \App\Helpers\PermissionsHelper;
 use Request as R;
 use URL as U;
+use \Auth;
 
 class ModelListHelper
 {
@@ -509,5 +510,30 @@ class ModelListHelper
     public static function getPluralLabelForClass($class)
     {
         return str_plural(self::getSingleLabelForClass($class));
+    }
+
+    public static function getChangeLogDisplay($key, $value)
+    {
+        switch (true) {
+            case is_null($value):
+                return 'null';
+                break;
+
+            case (is_bool($value) && true == $value):
+                return 'true';
+                break;
+
+            case (is_bool($value) && false == $value):
+                return 'false';
+                break;
+
+            case (in_array($key, ['created_at', 'updated_at', 'last_login_at']) && is_array($value)):
+                return Auth::user()->formatDateTime($value['date']);
+                break;
+            
+            default:
+                return $value;
+                break;
+        }
     }
 }
