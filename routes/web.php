@@ -56,6 +56,7 @@ Route::group(['middleware' => ['auth']], function () {
     })->name('create-user');
     Route::get('/settings/users/{id}', '\App\Http\Controllers\UserController@view')->name('view-user')->where('id', '[0-9]+');
     Route::get('/settings/users/{id}/edit', '\App\Http\Controllers\UserController@edit')->name('edit-user')->where('id', '[0-9]+');
+    Route::put('/settings/users/{id}/edit', '\App\Http\Controllers\UserController@update')->name('update-user')->where('id', '[0-9]+');
     Route::get('/settings/users/{id}/audit', '\App\Http\Controllers\UserController@audit')->name('audit-user')->where('id', '[0-9]+');
     
     Route::get('/settings/groups', '\App\Http\Controllers\GroupController@list')->name('settings-groups');

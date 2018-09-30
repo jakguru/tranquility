@@ -272,6 +272,13 @@
 					{{ Auth::user()->formatDateTime($model->updated_at) }}
 				</div>
 				@endif
+				@if(!is_null($model->birthday))
+				<div class="d-block">
+					<i class="fas fa-birthday-cake mr-1"></i>
+					<strong>{{__('Birthday')}}:</strong>
+					{{ Auth::user()->formatDateTime($model->birthday, 'date') }}
+				</div>
+				@endif
 				<div class="d-block">
 					<i class="far fa-calendar mr-1"></i>
 					<strong>{{__('Local Time')}}:</strong>

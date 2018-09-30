@@ -64,6 +64,7 @@ class CreateUsersTable extends Migration
             $table->string('dateformat')->nullable();
             $table->string('timeformat')->nullable();
             $table->string('datetimeformat')->nullable();
+            $table->date('birthday')->nullable();
             $table->rememberToken();
             $table->timestamps();
         });
