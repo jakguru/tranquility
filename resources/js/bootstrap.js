@@ -80,6 +80,9 @@ import Modernizr from 'modernizr';
 
 window.Modernizr = Modernizr;
 
+window.moment = require('moment');
+window['moment-timezone'] = require('moment-timezone');
+
 try {
 	window.ajax = function(url, method, data, success, error, pending, redirect, progress) {
 	    if ( 'undefined' == typeof( url ) ) {

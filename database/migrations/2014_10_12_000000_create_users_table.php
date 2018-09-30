@@ -61,6 +61,9 @@ class CreateUsersTable extends Migration
             $table->string('googleplus')->nullable();
             $table->string('linkedin')->nullable();
             $table->string('temperature_unit')->default('celsius');
+            $table->string('dateformat')->nullable();
+            $table->string('timeformat')->nullable();
+            $table->string('datetimeformat')->nullable();
             $table->rememberToken();
             $table->timestamps();
         });

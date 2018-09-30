@@ -8,6 +8,26 @@
 require('./bootstrap');
 require('./rtu');
 
+var setMoment = function() {
+	var obj = jQuery(this),
+		mom = obj.attr('data-moment'),
+		tz = obj.attr('data-moment-tz'),
+		fm = obj.attr('data-moment-format');
+	if ('now' == mom) {
+		var mo = moment();
+	} else {
+		var mo = moment(mom);
+	}
+	if ('string' == typeof(tz)) {
+		mo.tz(tz);
+	}
+	if ('string' == typeof(fm)) {
+		obj.html(mo.format(fm));
+	} else {
+		obj.html(mo.format('HH:mm'));
+	}
+}
+
 jQuery('#menu-toggle > a').on('click', function(e){
 	e.preventDefault();
 	if ( jQuery('#app').hasClass('expanded-sidebar') ) {
@@ -26,6 +46,10 @@ jQuery(function(){
 			localStorage.removeItem("notifications_json");
 		}
 	}
+	jQuery('[data-moment]').each(setMoment);
+	setInterval(function() {
+		jQuery('[data-moment]').each(setMoment);
+	},1000);
 });
 
 window.handleGoogleReCAPCHA = function(result) {

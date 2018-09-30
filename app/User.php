@@ -279,6 +279,26 @@ class User extends Authenticatable
         return $formatted;
     }
 
+    public function getTimeZone()
+    {
+        $timezone = $this->timezone;
+        if (is_null($timezone) || 0 == strlen($timezone)) {
+            $timezone = config('app.timezone');
+        }
+        return $timezone;
+    }
+
+    public function getMomentDateTimeFormat($type = 'datetime')
+    {
+        $formatfield = sprintf('%sformat', $type);
+        $format = $this->{$formatfield};
+        if (is_null($format) || 0 == strlen($format)) {
+            $configkey = sprintf('app.%sformat', $type);
+            $format = config($configkey);
+        }
+        return self::convertPHPToMomentFormat($format);
+    }
+
     public function getDateTimeAsUserTimezone($datetime)
     {
         if (0 == strlen($datetime)) {
@@ -310,5 +330,50 @@ class User extends Authenticatable
             array_push($results, $parent->id);
             self::getParentRoles($parent, $results);
         }
+    }
+
+    protected static function convertPHPToMomentFormat($format)
+    {
+        $replacements = [
+            'd' => 'DD',
+            'D' => 'ddd',
+            'j' => 'D',
+            'l' => 'dddd',
+            'N' => 'E',
+            'S' => 'o',
+            'w' => 'e',
+            'z' => 'DDD',
+            'W' => 'W',
+            'F' => 'MMMM',
+            'm' => 'MM',
+            'M' => 'MMM',
+            'n' => 'M',
+            't' => '', // no equivalent
+            'L' => '', // no equivalent
+            'o' => 'YYYY',
+            'Y' => 'YYYY',
+            'y' => 'YY',
+            'a' => 'a',
+            'A' => 'A',
+            'B' => '', // no equivalent
+            'g' => 'h',
+            'G' => 'H',
+            'h' => 'hh',
+            'H' => 'HH',
+            'i' => 'mm',
+            's' => 'ss',
+            'u' => 'SSS',
+            'e' => 'zz', // deprecated since version 1.6.0 of moment.js
+            'I' => '', // no equivalent
+            'O' => '', // no equivalent
+            'P' => '', // no equivalent
+            'T' => '', // no equivalent
+            'Z' => '', // no equivalent
+            'c' => '', // no equivalent
+            'r' => '', // no equivalent
+            'U' => 'X',
+        ];
+        $momentFormat = strtr($format, $replacements);
+        return trim($momentFormat);
     }
 }

@@ -210,7 +210,7 @@
 				@php
 				$weather = \App\Helpers\BusinessCardHelper::getWeatherForModel($model);
 				@endphp
-				<span class="wi {{ $weather->condition }} mr-1"></span>{{$weather->temp}}° {{('fahrenheit' == Auth::user()->temperature_unit) ? 'F' : 'C'}}
+				<span class="wi {{ $weather->condition }} mr-1"></span>{{$weather->temp}}°{{('fahrenheit' == Auth::user()->temperature_unit) ? 'F' : 'C'}}
 			</div>
 			@if(!is_null($model->status))
 			<div class="col-md-12 col-lg-4 mb-3 mb-lg-0 pt-lg-1 pb-lg-1">
@@ -272,6 +272,11 @@
 					{{ Auth::user()->formatDateTime($model->updated_at) }}
 				</div>
 				@endif
+				<div class="d-block">
+					<i class="far fa-calendar mr-1"></i>
+					<strong>{{__('Local Time')}}:</strong>
+					<span class="system-clock" data-moment-format="{{ Auth::user()->getMomentDateTimeFormat('time') }}" data-moment-tz="{{ (is_null($model->timezone)) ? 'UTC' : $model->timezone }}" data-moment="now"></span>				
+				</div>
 			</div>
 		</div>
 	</div>
