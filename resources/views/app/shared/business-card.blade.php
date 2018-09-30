@@ -52,7 +52,7 @@
 			</div>
 		</div>
 	</div>
-	<div class="card-footer pt-0 pb-0">
+	<div class="card-footer bg-secondary text-white pt-0 pb-0">
 		<div class="row">
 			<div class="d-none d-md-block col-md-2 offset-md-0"></div>
 			<div class="col-12 col-md-10">
@@ -204,10 +204,13 @@
 			</div>
 		</div>
 	</div>
-	<div class="card-footer pt-0 pb-0">
+	<div class="card-footer bg-secondary text-white pt-0 pb-0">
 		<div class="row">
 			<div class="col-md-12 col-lg-4 mb-3 mb-lg-0 pt-lg-1 pb-lg-1">
-				Weather
+				@php
+				$weather = \App\Helpers\BusinessCardHelper::getWeatherForModel($model);
+				@endphp
+				<span class="wi {{ $weather->condition }} mr-1"></span>{{$weather->temp}}° {{('fahrenheit' == Auth::user()->temperature_unit) ? 'F' : 'C'}}
 			</div>
 			@if(!is_null($model->status))
 			<div class="col-md-12 col-lg-4 mb-3 mb-lg-0 pt-lg-1 pb-lg-1">
@@ -227,11 +230,11 @@
 			@endif
 		</div>
 	</div>
-	<div class="card-footer pt-0 pb-0">
+	<div class="card-footer bg-secondary text-white pt-0 pb-0">
 		<div class="row">
 			<div class="col-md-12 col-lg-4 mb-3 mb-lg-0 pt-lg-1 pb-lg-1">
 				<i class="fas fa-map-pin mr-1"></i>
-				Address goes here!
+				{{ \App\Helpers\BusinessCardHelper::formatModelAddress($model) }}
 			</div>
 			<div class="col-md-6 col-lg-4 mb-3 mb-md-0 pt-lg-1 pb-lg-1">
 				@if(!is_null($model->google2fa_secret))

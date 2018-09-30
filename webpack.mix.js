@@ -34,5 +34,6 @@ mix.js('resources/js/app.js', 'public/js')
    .sass('resources/sass/app.scss', 'public/css')
    .copy('resources/img/', 'public/img')
    .copy('resources/sounds/', 'public/sounds')
-   .copy('node_modules/@fortawesome/fontawesome-free-webfonts/webfonts/', 'public/webfonts')
+   .copy('node_modules/@fortawesome/fontawesome-free-webfonts/webfonts', 'public/webfonts')
+   .copy('node_modules/weather-icons/font', 'public/font')
    .version();

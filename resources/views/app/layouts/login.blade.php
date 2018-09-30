@@ -10,7 +10,7 @@
 @endsection
 
 @section('main')
-	<div class="col-sm-10 offset-sm-1 col-lg-4 offset-lg-4">
+	<div class="col-sm-10 offset-sm-1 col-lg-6 offset-lg-3 col-xl-4 offset-xl-4">
 		<form action="{{ route('submit-login') }}" method="POST" class="card dynamic-bg dynamic-shadow dynamic-color" id="login-form">
 			@csrf
 
