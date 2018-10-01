@@ -7,6 +7,7 @@ use \App\User;
 use Illuminate\Support\Facades\Redirect;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Validation\Rule;
+use Illuminate\Support\Facades\Hash;
 
 class UserController extends Controller
 {
@@ -191,7 +192,118 @@ class UserController extends Controller
                     }
                 }
                 $user->save();
-                return Redirect::route('view-user', ['id' => $user->id])->with('globalsuccessmessage', __('Updated Personal Information Successfully'));
+                return Redirect::route('edit-user', ['id' => $user->id])->with('globalsuccessmessage', __('Updated Personal Information Successfully'));
+                break;
+
+            case 'preferences':
+                $updatable = [
+                    'timezone',
+                    'temperature_unit',
+                    'dateformat',
+                    'timeformat',
+                    'datetimeformat',
+                ];
+                foreach ($updatable as $key) {
+                    if (ends_with($key, '_phone')) {
+                        $val = $request->input($key);
+                        if (is_null($val) || 0 == strlen($val)) {
+                            $countryKey = sprintf('%s_country', $key);
+                            $request->merge([$countryKey => '']);
+                        }
+                    }
+                }
+                Validator::make($request->all(), [
+                    'timezone' => ['required', 'string', Rule::in(\DateTimeZone::listIdentifiers(\DateTimeZone::ALL))],
+                    'temperature_unit' => ['required', 'string', Rule::in(['celsius', 'fahrenheit'])],
+                    'dateformat' => ['required', 'string'],
+                    'timeformat' => ['required', 'string'],
+                    'datetimeformat' => ['required', 'string'],
+                ])->validate();
+                foreach ($updatable as $key) {
+                    switch (true) {
+                        case ends_with($key, '_phone'):
+                            $countryKey = sprintf('%s_country', $key);
+                            $country = $request->input($countryKey);
+                            $phone = new \App\Helpers\PhoneHelper($request->input($key), $country);
+                            $user->{$key} = $phone->format();
+                            break;
+
+                        case ('email' == $key):
+                            $user->{$key} = strtolower($request->input($key));
+                            break;
+
+                        case ends_with($key, 'Name'):
+                            $user->{$key} = ucwords($request->input($key));
+                            break;
+                        
+                        default:
+                            $user->{$key} = $request->input($key);
+                            break;
+                    }
+                }
+                $user->save();
+                return Redirect::route('edit-user', ['id' => $user->id])->with('globalsuccessmessage', __('Updated Preferences Successfully'));
+                break;
+
+            case 'security':
+                $data = [
+                    'active' => (!is_null($request->input('active'))),
+                    'role_id' => $request->input('role_id'),
+                ];
+                Validator::make($data, [
+                    'active' => 'boolean',
+                    'role_id' => 'required|numeric|exists:roles,id',
+                ])->validate();
+                $user->active = $data['active'];
+                $role = \App\Role::find($data['role_id']);
+                if (is_a($role, '\App\Role')) {
+                    $user->role()->associate($role);
+                }
+                $user->save();
+                return Redirect::route('edit-user', ['id' => $user->id])->with('globalsuccessmessage', __('Updated Security Settings Successfully'));
+                break;
+
+            case 'authentication':
+                Validator::make($request->all(), [
+                    'password' => 'string|nullable|confirmed',
+                    'password_confirmation' => 'string|nullable|required_with:password',
+                    'google2fa_secret' => 'string|nullable|googlemfasecret',
+                ])->validate();
+                $user->google2fa_secret = $request->input('google2fa_secret');
+                if ($request->has('password')) {
+                    $user->password = Hash::make($request->input('password'));
+                }
+                $user->save();
+                return Redirect::route('edit-user', ['id' => $user->id])->with('globalsuccessmessage', __('Updated Security Settings Successfully'));
+                break;
+
+            case 'groups':
+                $groups = $request->has('groups') ? array_keys($request->input('groups')) : [];
+                Validator::make(['groups' => $groups], [
+                    'groups' => 'array|nullable',
+                    'groups.*' => 'numeric|exists:groups,id',
+                ])->validate();
+                $owngroups = $user->groups->pluck('id')->toArray();
+                $groups_to_add = [];
+                $groups_to_remove = [];
+                foreach ($groups as $group_id) {
+                    if (!in_array($group_id, $owngroups)) {
+                        array_push($groups_to_add, $group_id);
+                    }
+                }
+                foreach ($owngroups as $group_id) {
+                    if (!in_array($group_id, $groups)) {
+                        array_push($groups_to_remove, $group_id);
+                    }
+                }
+                foreach ($groups_to_add as $group_id) {
+                    $user->groups()->attach($group_id);
+                }
+                foreach ($groups_to_remove as $group_id) {
+                    $user->groups()->detach($group_id);
+                }
+                $user->save();
+                return Redirect::route('edit-user', ['id' => $user->id])->with('globalsuccessmessage', __('Updated Groups Successfully'));
                 break;
             
             default:

@@ -19129,16 +19129,16 @@ body > .ui-pnotify-modal-overlay {
 }
 
 .ui-pnotify.growl .ui-pnotify-container {
-  background-color: #404040 !important;
+  background-color: rgba(52, 58, 64, 0.85) !important;
   background-image: none !important;
   border: none !important;
-  border-radius: 10px;
+  border-radius: 0;
+  -webkit-box-shadow: 0px 0px 5px 0px rgba(0, 0, 0, 0.75);
+          box-shadow: 0px 0px 5px 0px rgba(0, 0, 0, 0.75);
 }
 
 .ui-pnotify.growl .ui-pnotify-title,
 .ui-pnotify.growl .ui-pnotify-text {
-  font-family: Arial, Helvetica, sans-serif !important;
-  text-shadow: 2px 2px 3px black !important;
   font-size: 10pt !important;
   color: #FFF !important;
   padding-left: 50px !important;
@@ -19162,7 +19162,7 @@ body > .ui-pnotify-modal-overlay {
   width: 33px;
   height: 33px;
   font-size: 33px;
-  color: #FF0;
+  color: #fff;
 }
 
 .ui-pnotify.alert {
@@ -19173,7 +19173,9 @@ body > .ui-pnotify-modal-overlay {
   background-color: transparent !important;
   background-image: none !important;
   border: none !important;
-  border-radius: 10px;
+  border-radius: 0;
+  -webkit-box-shadow: 0px 0px 5px 0px rgba(0, 0, 0, 0.75);
+          box-shadow: 0px 0px 5px 0px rgba(0, 0, 0, 0.75);
 }
 
 .ui-pnotify.alert .ui-pnotify-title,
@@ -20688,6 +20690,8 @@ table.table-model-list > tfoot > tr > td.boolean-field {
   height: auto;
   position: relative;
   top: 1.5rem;
+  -webkit-box-shadow: 0px 0px 5px 0px rgba(0, 0, 0, 0.75);
+          box-shadow: 0px 0px 5px 0px rgba(0, 0, 0, 0.75);
 }
 
 .business-card > .card-body h1.model-info-with-bg {
@@ -20703,6 +20707,8 @@ table.table-model-list > tfoot > tr > td.boolean-field {
   background: rgba(52, 58, 64, 0.85);
   color: #fff;
   padding: 0.75rem;
+  -webkit-box-shadow: 0px 0px 5px 0px rgba(0, 0, 0, 0.75);
+          box-shadow: 0px 0px 5px 0px rgba(0, 0, 0, 0.75);
 }
 
 .business-card .model-info-menu {

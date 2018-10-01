@@ -9,7 +9,9 @@
 				<a href="{{ route(\App\Helpers\BusinessCardHelper::getEditRoute($model), ['id' => $model->id]) }}" class="btn btn-sm btn-light">{{ __('Edit') }}</a>
 			</span>
 			@endif
-			{{ sprintf(__('%s #%d'), ucwords(\App\Helpers\BusinessCardHelper::getSingleLabelForClass($model)), $model->id) }}
+			<span data-clipboard-text="{{$model->id}}">
+				{{ sprintf(__('%s #%d'), ucwords(\App\Helpers\BusinessCardHelper::getSingleLabelForClass($model)), $model->id) }}
+			</span>
 		</h4>
 	</div>
 	<div class="card-body pt-0 pb-0" style="background-image: url({{ \App\Helpers\BusinessCardHelper::getUrlForBackgroundImage($model, $model->id) }})">
@@ -18,7 +20,7 @@
 				<img src="{{ \App\Helpers\BusinessCardHelper::getUrlForAvatarImage($model, $model->id) }}" class="avatar" />
 			</div>
 			<div class="col-12 col-md-5 mb-3 mb-md-0 d-md-flex flex-row justify-content-start align-items-end flex-fill">
-				<h1 class="model-info-with-bg text-center text-md-left d-block mt-2"">
+				<h1 class="model-info-with-bg text-center text-md-left d-block mt-2" data-clipboard-text="{{ $model->name }}">
 					@if(!is_null($model->name) && strlen($model->name) > 0)
 						{{ $model->name }}
 					@elseif(!is_null($model->email) && strlen($model->email) > 0)
@@ -26,7 +28,7 @@
 					@else
 						{{ sprintf(__('%s #%d'), ucwords(\App\Helpers\BusinessCardHelper::getSingleLabelForClass($model)), $model->id) }}
 					@endif
-					@if(!is_null($model->title) && strlen($model->title) > 0)<small class="d-block">{{ $model->title }}</small> @endif
+					@if(!is_null($model->title) && strlen($model->title) > 0)<small class="d-block" data-clipboard-text="{{ $model->title }}">{{ $model->title }}</small> @endif
 				</h1>
 			</div>
 			<div class="col-12 col-md-5 mb-3 mb-md-0 d-md-flex flex-row justify-content-end align-items-end flex-fill">

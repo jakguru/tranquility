@@ -46,6 +46,11 @@ class AppServiceProvider extends ServiceProvider
         Validator::extend('phone', '\App\Helpers\PhoneHelper::isValidPhoneValidator', __('Invalid Phone Number'));
         Validator::extend('mobile', '\App\Helpers\PhoneHelper::isValidMobilePhoneValidator', __('Invalid Mobile Phone Number'));
         Validator::extend('mobilestrict', '\App\Helpers\PhoneHelper::isValidMobilePhoneStrictValidator', __('Invalid Mobile Phone Number'));
+        Validator::extend('googlemfasecret', function ($attribute, $value, $parameters, $validator) {
+            $google2fa = app('pragmarx.google2fa');
+            $cleaned = $google2fa->removeInvalidChars($value);
+            return ($value === $cleaned);
+        }, __('Invalid Google Authenticator Secret'));
         $mail_options = \App\Options::get('mail');
         if (is_object($mail_options)) {
             Config::set('mail.host', $mail_options->hostname);

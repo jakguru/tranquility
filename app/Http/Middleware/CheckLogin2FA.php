@@ -28,6 +28,9 @@ class CheckLogin2FA
 
     protected function hasValidMFALogin($request)
     {
+        if (0 === strlen($request->user()->google2fa_secret)) {
+            return true;
+        }
         $session_id = $request->session()->getId();
         $encrypted = $request->session()->get('2favalidation');
         if (strlen($encrypted) > 0 && $session_id == Crypt::decrypt($encrypted)) {

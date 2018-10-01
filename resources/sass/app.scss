@@ -27,16 +27,13 @@
 @import "~pnotify/dist/pnotify.brighttheme";
 
 .ui-pnotify.growl .ui-pnotify-container {
-	background-color: #404040 !important;
+	background-color: rgba($dark,0.85) !important;
 	background-image: none !important;
 	border: none !important;
-	-moz-border-radius: 10px;
-	-webkit-border-radius: 10px;
-	border-radius: 10px;
+	border-radius: 0;
+	box-shadow: 0px 0px 5px 0px rgba($black,0.75);
 }
 .ui-pnotify.growl .ui-pnotify-title, .ui-pnotify.growl .ui-pnotify-text {
-	font-family: Arial, Helvetica, sans-serif !important;
-	text-shadow: 2px 2px 3px black !important;
 	font-size: 10pt !important;
 	color: #FFF !important;
 	padding-left: 50px !important;
@@ -57,7 +54,7 @@
 	width: 33px;
 	height: 33px;
 	font-size: 33px;
-	color: #FF0;
+	color: $white;
 }
 
 .ui-pnotify.alert {
@@ -68,9 +65,8 @@
 	background-color: transparent !important;
 	background-image: none !important;
 	border: none !important;
-	-moz-border-radius: 10px;
-	-webkit-border-radius: 10px;
-	border-radius: 10px;
+	border-radius: 0;
+	box-shadow: 0px 0px 5px 0px rgba($black,0.75);
 }
 .ui-pnotify.alert .ui-pnotify-title, .ui-pnotify.alert .ui-pnotify-text {
 	font-family: Arial, Helvetica, sans-serif !important;

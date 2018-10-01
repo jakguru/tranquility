@@ -352,8 +352,8 @@
     							<div class="form-group">
     								<label>{{ __('Temperature Unit') }}</label>
 									<select name="temperature_unit" class="form-control form-control-sm{{ $errors->has('temperature_unit') ? ' is-invalid' : '' }}" required autocomplete="off">
-									@foreach(['celsius' => __('Metric'), 'fahrenheit' => __('Imperial')] as $tz)
-									<option value="{{ $tz }}"{{ $tz == (old('temperature_unit', $model->temperature_unit)) ? ' selected' : '' }}>{{ ucwords(str_replace('_', ' ', $tz)) }}</option>
+									@foreach(['celsius' => __('Metric'), 'fahrenheit' => __('Imperial')] as $tz => $label)
+									<option value="{{ $tz }}"{{ $tz == (old('temperature_unit', $model->temperature_unit)) ? ' selected' : '' }}>{{ ucwords(str_replace('_', ' ', $label)) }}</option>
 									@endforeach
 								</select>
 									@if ($errors->has('temperature_unit'))
@@ -414,7 +414,7 @@
     				</div>
     				<div class="card-body">
     					<div class="form-check">
-                            <input class="form-check-input" type="checkbox" name="active" id="active" {{ old('active', $model->active) ? 'checked' : '' }}>
+                            <input class="form-check-input" type="checkbox" name="active" id="active" value="1" {{ old('active', $model->active) ? 'checked' : '' }}>
 
                             <label class="form-check-label" for="active">
                                 {{ __('Active') }}
@@ -428,7 +428,7 @@
                         </div>
 						<div class="form-group">
 							<label>{{ __('Role') }}</label>
-							<select class="form-control form-control-sm{{ $errors->has('role') ? ' is-invalid' : '' }}">
+							<select name="role_id" class="form-control form-control-sm{{ $errors->has('role') ? ' is-invalid' : '' }}">
 								@foreach(\App\Role::getSelectChoices() as $value => $label)
 								<option value="{{$value}}"{{$value == $model->role_id ? ' selected' : ''}}>{{$label}}</option>
 								@endforeach
@@ -503,6 +503,13 @@
     				<div class="card-header bg-dark text-white">
     					<h4 class="mb-0">{{ __('Groups') }}</h4>
     				</div>
+    				@if ($errors->has('groups.*'))
+                        <div class="card-body pt-0 pb-0">
+                        	@foreach($errors->get('groups.*') as $message)
+	                        <div class="alert alert-danger mb-0">{{ $message[0] }}</div>
+	                        @endforeach
+                        </div>
+                    @endif
     				<div class="table-responsive max-height-200">
     					@php
 						$owngroups = $model->groups->pluck('id')->toArray();
