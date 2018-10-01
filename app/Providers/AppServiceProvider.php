@@ -10,6 +10,7 @@ use \App\Helpers\BackgroundImageHelper;
 use Illuminate\Support\Facades\Blade;
 use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\Config;
+use Illuminate\Support\Facades\Validator;
 
 class AppServiceProvider extends ServiceProvider
 {
@@ -42,6 +43,9 @@ class AppServiceProvider extends ServiceProvider
                     '</style>\n<script type=\"text/javascript\">setTimeout(function(){document.body.className += \' with-bg \' + \'%s\';},100);</script>", Cache::get(\'random-bg-body-class\'), '
                     . 'asset(Cache::get(\'random-bg-asset-path\')), Cache::get(\'random-bg-body-class\')); ?>';
         });
+        Validator::extend('phone', '\App\Helpers\PhoneHelper::isValidPhoneValidator', __('Invalid Phone Number'));
+        Validator::extend('mobile', '\App\Helpers\PhoneHelper::isValidMobilePhoneValidator', __('Invalid Mobile Phone Number'));
+        Validator::extend('mobilestrict', '\App\Helpers\PhoneHelper::isValidMobilePhoneStrictValidator', __('Invalid Mobile Phone Number'));
         $mail_options = \App\Options::get('mail');
         if (is_object($mail_options)) {
             Config::set('mail.host', $mail_options->hostname);

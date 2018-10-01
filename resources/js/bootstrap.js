@@ -13,6 +13,8 @@ try {
 
     require('bootstrap');
     require('pc-bootstrap4-datetimepicker');
+    require('intl-tel-input/build/js/utils');
+	window.intlTelInput = require("intl-tel-input/build/js/intlTelInput");
     window.jQuery.extend(true, window.jQuery.fn.datetimepicker.defaults, {
 	    icons: {
 	      time: 'far fa-clock',
@@ -26,7 +28,44 @@ try {
 	      close: 'far fa-times-circle'
 	    }
 	  });
+    window.ClipboardJS = require('clipboard');
 } catch (e) {}
+
+try {
+	window.PNotify = require('pnotify');
+	window.PNotify.notice = function(options) {
+		options.addclass = 'growl';
+		options.icon = ('undefined' == typeof(options.icon)) ? 'fas fa-flag' : options.icon;
+		return new PNotify(options);
+	}
+	window.PNotify.info = function(options) {
+		options.addclass = 'alert alert-info';
+		options.icon = 'fas fa-exclamation-circle';
+		return new PNotify(options);	
+	}
+	window.PNotify.success = function(options) {
+		options.addclass = 'alert alert-success';
+		options.icon = 'fas fa-check';
+		return new PNotify(options);
+	}
+	window.PNotify.warning = function(options) {
+		options.addclass = 'alert alert-warning';
+		options.icon = 'fas fa-exclamation-triangle';
+		return new PNotify(options);
+	}
+	window.PNotify.danger = function(options) {
+		options.addclass = 'alert alert-danger';
+		options.icon = 'fas fa-times-circle';
+		return new PNotify(options);
+	}
+	window.PNotify.alert = function(options) {
+		options.addclass = 'growl';
+		options.icon = 'fas fa-exclamation-triangle';
+		return new PNotify(options);
+	}
+} catch (e) {
+	console.warn(e);
+}
 
 /**
  * We'll load the axios HTTP library which allows us to easily issue requests

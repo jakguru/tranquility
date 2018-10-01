@@ -63,6 +63,15 @@
 			}
 		}
 	}
+
+	.fixed-icon-width {
+		width: 1.5rem;
+		display: inline-block;
+	}
+
+	.dropdown-item {
+		padding: 0.25rem;
+	}
 }
 
 @media (min-width: 768px) {

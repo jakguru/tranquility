@@ -50,6 +50,63 @@ jQuery(function(){
 	setInterval(function() {
 		jQuery('[data-moment]').each(setMoment);
 	},1000);
+	jQuery('input[type="tel"]').each(function(){
+		var field = jQuery(this),
+			name = field.attr('name'),
+			country_field = field.closest('form').find(sprintf('[name="%s_country"]', name));
+		if(country_field.val() == 'XX') {
+			country_field.val('');
+		}
+		var iti = intlTelInput(this, {
+    		autoPlaceholder: 'polite',
+    		initialCountry: ('undefined' !== typeof(country_field)) ? ('string' !== typeof(country_field.val())) ? country_field.val() : country_field.val().toLowerCase() : '',
+    		preferredCountries: [],
+		});
+		field.on('countrychange', function() {
+			var iso = iti.getSelectedCountryData().iso2.toUpperCase();
+			if ('object' == typeof(country_field) && 1 == country_field.length) {
+				country_field.val(iso);
+				console.log(country_field.val());
+			}
+		});
+		field.on('setCountry', function(e, data){
+			iti.setCountry(data);
+		});
+	});
+	jQuery('select[name="country"]').each(function() {
+		var select = jQuery(this);
+		jQuery('input[type="tel"]').each(function(){
+			var field = jQuery(this),
+				name = field.attr('name'),
+				country_field = field.closest('form').find(sprintf('[name="%s_country"]', name));
+				if ('object' == typeof(country_field) && (0 == country_field.val().length || 'XX' == country_field.val())) {
+					field.trigger('setCountry', select.val().toLowerCase());
+				}
+		});
+	});
+	jQuery('select[name="country"]').on('change', function() {
+		var select = jQuery(this);
+		jQuery('input[type="tel"]').each(function(){
+			var field = jQuery(this),
+				name = field.attr('name'),
+				country_field = field.closest('form').find(sprintf('[name="%s_country"]', name));
+				if ('object' == typeof(country_field) && (0 == country_field.val().length || 'XX' == country_field.val())) {
+					field.trigger('setCountry', select.val().toLowerCase());
+				}
+		});
+	});
+	clipboard = new ClipboardJS('[data-clipboard-text]');
+	clipboard.on('success', function(e) {
+		var notice = PNotify.notice({
+			title: 'Copied to Clipboard',
+			text: sprintf('Copied "%s" to Clipboard', e.text),
+			icon: 'fas fa-clipboard-check',
+		});
+		notice.get().click(function() {
+		    notice.remove();
+		});
+		e.clearSelection();
+	});
 });
 
 window.handleGoogleReCAPCHA = function(result) {

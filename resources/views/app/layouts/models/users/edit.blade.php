@@ -41,17 +41,6 @@
     					<div class="row">
     						<div class="col-lg-3 col-md-6">
     							<div class="form-group">
-    								<label>{{ __('Salutation') }}</label>
-									<input type="text" name="title" class="form-control form-control-sm{{ $errors->has('title') ? ' is-invalid' : '' }}" value="{{ old('title', $model->title) }}" />
-									@if ($errors->has('title'))
-			                            <span class="invalid-feedback" role="alert">
-			                                <strong>{{ $errors->first('title') }}</strong>
-			                            </span>
-			                        @endif
-    							</div>
-    						</div>
-    						<div class="col-lg-3 col-md-6">
-    							<div class="form-group">
     								<label>{{ __('First Name') }}</label>
 									<input type="text" name="fName" class="form-control form-control-sm{{ $errors->has('fName') ? ' is-invalid' : '' }}" value="{{ old('fName', $model->fName) }}" required />
 									@if ($errors->has('fName'))
@@ -150,6 +139,17 @@
 									@if ($errors->has('birthday'))
 			                            <span class="invalid-feedback" role="alert">
 			                                <strong>{{ $errors->first('birthday') }}</strong>
+			                            </span>
+			                        @endif
+    							</div>
+    						</div>
+    						<div class="col-lg-9 col-md-6">
+    							<div class="form-group">
+    								<label>{{ __('Job Title') }}</label>
+									<input type="text" name="title" class="form-control form-control-sm{{ $errors->has('title') ? ' is-invalid' : '' }}" value="{{ old('title', $model->title) }}" />
+									@if ($errors->has('title'))
+			                            <span class="invalid-feedback" role="alert">
+			                                <strong>{{ $errors->first('title') }}</strong>
 			                            </span>
 			                        @endif
     							</div>
@@ -284,10 +284,10 @@
 			                        @endif
     							</div>
     						</div>
-    						<div class="col-lg-3 col-md-6">
+    						<div class="col-lg-4 col-md-6">
     							<div class="form-group">
     								<label>{{ __('Facebook Profile') }}</label>
-									<input type="text" name="facebook" class="form-control form-control-sm{{ $errors->has('facebook') ? ' is-invalid' : '' }}" value="{{ old('facebook', $model->facebook) }}" />
+									<input type="url" name="facebook" class="form-control form-control-sm{{ $errors->has('facebook') ? ' is-invalid' : '' }}" value="{{ old('facebook', $model->facebook) }}" />
 									@if ($errors->has('facebook'))
 			                            <span class="invalid-feedback" role="alert">
 			                                <strong>{{ $errors->first('facebook') }}</strong>
@@ -295,10 +295,10 @@
 			                        @endif
     							</div>
     						</div>
-    						<div class="col-lg-3 col-md-6">
+    						<div class="col-lg-4 col-md-6">
     							<div class="form-group">
     								<label>{{ __('Google+ Profile') }}</label>
-									<input type="text" name="googleplus" class="form-control form-control-sm{{ $errors->has('googleplus') ? ' is-invalid' : '' }}" value="{{ old('googleplus', $model->googleplus) }}" />
+									<input type="url" name="googleplus" class="form-control form-control-sm{{ $errors->has('googleplus') ? ' is-invalid' : '' }}" value="{{ old('googleplus', $model->googleplus) }}" />
 									@if ($errors->has('googleplus'))
 			                            <span class="invalid-feedback" role="alert">
 			                                <strong>{{ $errors->first('googleplus') }}</strong>
@@ -306,10 +306,10 @@
 			                        @endif
     							</div>
     						</div>
-    						<div class="col-lg-3 col-md-6">
+    						<div class="col-lg-4 col-md-6">
     							<div class="form-group">
     								<label>{{ __('LinkedIn Profile') }}</label>
-									<input type="text" name="linkedin" class="form-control form-control-sm{{ $errors->has('linkedin') ? ' is-invalid' : '' }}" value="{{ old('linkedin', $model->linkedin) }}" />
+									<input type="url" name="linkedin" class="form-control form-control-sm{{ $errors->has('linkedin') ? ' is-invalid' : '' }}" value="{{ old('linkedin', $model->linkedin) }}" />
 									@if ($errors->has('linkedin'))
 			                            <span class="invalid-feedback" role="alert">
 			                                <strong>{{ $errors->first('linkedin') }}</strong>
@@ -399,7 +399,7 @@
     					</div>
     				</div>
     				<div class="card-footer">
-    					<input type="hidden" name="section" value="personal" />
+    					<input type="hidden" name="section" value="preferences" />
     					<input type="submit" class="btn btn-dark" value="{{ __('Save Preferences') }}" />
     				</div>
 				</form>
@@ -441,7 +441,7 @@
 						</div>
     				</div>
     				<div class="card-footer">
-    					<input type="hidden" name="section" value="personal" />
+    					<input type="hidden" name="section" value="security" />
     					<input type="submit" class="btn btn-dark" value="{{ __('Update Security Settings') }}" />
     				</div>
 				</form>
@@ -492,7 +492,7 @@
                         @endif
     				</div>
     				<div class="card-footer">
-    					<input type="hidden" name="section" value="personal" />
+    					<input type="hidden" name="section" value="authentication" />
     					<input type="submit" class="btn btn-dark" value="{{ __('Save Authentication Settings') }}" />
     				</div>
 				</form>
@@ -533,7 +533,7 @@
     					</table>
     				</div>
     				<div class="card-footer">
-    					<input type="hidden" name="section" value="personal" />
+    					<input type="hidden" name="section" value="groups" />
     					<input type="submit" class="btn btn-dark" value="{{ __('Save Group Memberships') }}" />
     				</div>
 				</form>

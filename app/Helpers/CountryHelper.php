@@ -2210,6 +2210,33 @@ class CountryHelper
         return __($name);
     }
 
+    public static function getCountriesForValidation($allowAnon = true)
+    {
+        $keys = array_keys(self::$countries);
+        if (true !== $allowAnon) {
+            $keys = array_filter($keys, function ($var) {
+                return (strtoupper($var) !== 'XX');
+            });
+        }
+        return $keys;
+    }
+
+    public static function getCountriesByCountryCode()
+    {
+        $return = [];
+        foreach (self::$countries as $iso => $data) {
+            $code = self::getArrayKey('prefix', $data, null);
+            if (!is_null($code)) {
+                if (!array_key_exists($code, $return)) {
+                    $return[$code] = [];
+                }
+                array_push($return[$code], $iso);
+            }
+        }
+        ksort($return, SORT_NUMERIC);
+        return $return;
+    }
+
     protected static function getArrayKey($key, $array, $default = null)
     {
         return (!is_array($array) || !array_key_exists($key, $array)) ? $default: $array[$key];

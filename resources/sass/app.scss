@@ -17,6 +17,93 @@
 // Weather Icons
 @import '~weather-icons/css/weather-icons.css';
 
+// International Tel Input
+@import '~intl-tel-input/build/css/intlTelInput.css';
+
+.intl-tel-input { width: 100%; }
+
+// PNotify
+@import "~pnotify/dist/pnotify";
+@import "~pnotify/dist/pnotify.brighttheme";
+
+.ui-pnotify.growl .ui-pnotify-container {
+	background-color: #404040 !important;
+	background-image: none !important;
+	border: none !important;
+	-moz-border-radius: 10px;
+	-webkit-border-radius: 10px;
+	border-radius: 10px;
+}
+.ui-pnotify.growl .ui-pnotify-title, .ui-pnotify.growl .ui-pnotify-text {
+	font-family: Arial, Helvetica, sans-serif !important;
+	text-shadow: 2px 2px 3px black !important;
+	font-size: 10pt !important;
+	color: #FFF !important;
+	padding-left: 50px !important;
+	line-height: 1 !important;
+	text-rendering: geometricPrecision !important;
+}
+.ui-pnotify.growl .ui-pnotify-title {
+	font-weight: bold;
+}
+.ui-pnotify.growl .ui-pnotify-icon {
+	float: left;
+}
+.ui-pnotify.growl .fa,
+.ui-pnotify.growl .far,
+.ui-pnotify.growl .fas,
+.ui-pnotify.growl .fab {
+	margin: 3px;
+	width: 33px;
+	height: 33px;
+	font-size: 33px;
+	color: #FF0;
+}
+
+.ui-pnotify.alert {
+	padding: 0;
+}
+
+.ui-pnotify.alert .ui-pnotify-container {
+	background-color: transparent !important;
+	background-image: none !important;
+	border: none !important;
+	-moz-border-radius: 10px;
+	-webkit-border-radius: 10px;
+	border-radius: 10px;
+}
+.ui-pnotify.alert .ui-pnotify-title, .ui-pnotify.alert .ui-pnotify-text {
+	font-family: Arial, Helvetica, sans-serif !important;
+	font-size: 10pt !important;
+	color: #FFF !important;
+	padding-left: 50px !important;
+	line-height: 1 !important;
+	text-rendering: geometricPrecision !important;
+}
+.ui-pnotify.alert .ui-pnotify-title {
+	font-weight: bold;
+}
+.ui-pnotify.alert .ui-pnotify-icon {
+	float: left;
+}
+.ui-pnotify.alert .fa,
+.ui-pnotify.alert .far,
+.ui-pnotify.alert .fas,
+.ui-pnotify.alert .fab {
+	margin: 3px;
+	width: 33px;
+	height: 33px;
+	font-size: 33px;
+	color: #FF0;
+}
+
+@media(min-width: 321px) {
+	.ui-pnotify {
+		width: 320px !important;
+		left: initial;
+	}
+}
+
 // Mix-Ins
 @import 'row-heights';
 
@@ -38,6 +125,22 @@
     color: color-yiq($value);
     background: $value;
     background-color: $value;
+  }
+
+  .ui-pnotify.alert.alert-#{$color} {
+  	color: color-yiq($value) !important;
+
+  	.ui-pnotify-title,
+  	.ui-pnotify-text {
+		color: color-yiq($value) !important;  		
+  	}
+
+  	.fa,
+	.far,
+	.fas,
+	.fab {
+		color: color-yiq($value) !important;
+	}
   }
 }
 
@@ -64,4 +167,8 @@
 .max-height-200 {
 	max-height: 200px;
 	overflow-y: auto;
+}
+
+.invalid-feedback {
+	display: block;
 }
