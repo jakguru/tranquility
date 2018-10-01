@@ -44,8 +44,12 @@ class ModularPermissionsPolicy
         }
     }
 
-    public function add(User $user, $model)
+    public function add(User $user)
     {
+        $model = self::getCallingModel();
+        if (false === $model) {
+            return false;
+        }
         // you can always add your own model, unless specifically denied
         if ($user->isSudo()) {
             return true;

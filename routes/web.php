@@ -51,9 +51,8 @@ Route::group(['middleware' => ['auth']], function () {
     Route::get('/settings', '\App\Http\Controllers\SettingsController@lobby')->name('settings');
     Route::post('/settings', '\App\Http\Controllers\SettingsController@saveSettings')->name('save-settings');
     Route::get('/settings/users', '\App\Http\Controllers\UserController@list')->name('settings-users');
-    Route::get('/settings/users/new', function () {
-        abort(501);
-    })->name('create-user');
+    Route::get('/settings/users/new', '\App\Http\Controllers\UserController@add')->name('create-user');
+    Route::post('/settings/users/new', '\App\Http\Controllers\UserController@create')->name('create-user');
     Route::get('/settings/users/{id}', '\App\Http\Controllers\UserController@view')->name('view-user')->where('id', '[0-9]+');
     Route::get('/settings/users/{id}/edit', '\App\Http\Controllers\UserController@edit')->name('edit-user')->where('id', '[0-9]+');
     Route::put('/settings/users/{id}/edit', '\App\Http\Controllers\UserController@update')->name('update-user')->where('id', '[0-9]+');

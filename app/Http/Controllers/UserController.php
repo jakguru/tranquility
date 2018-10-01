@@ -52,6 +52,14 @@ class UserController extends Controller
         return view('app.layouts.models.users.edit', ['model' => $user]);
     }
 
+    public function add(Request $request)
+    {
+        if (!$request->user()->can('add', \App\User::class)) {
+            abort(403);
+        }
+        return view('app.layouts.models.users.add');
+    }
+
     public function audit(Request $request, $id)
     {
         $user = User::find($id);
@@ -76,6 +84,107 @@ class UserController extends Controller
             'next_page' => ($page < ceil($total_count / config('app.listsize')) ) ? $page + 1 : 0,
             'previous_page' => ($page > 1) ? $page - 1 : 0,
         ]);
+    }
+
+    public function create(Request $request)
+    {
+        $rules = [
+            'title' => 'string|nullable',
+            'fName' => 'required|string',
+            'lName' => 'required|string',
+            'email' => [
+                'required',
+                'email',
+                Rule::unique('users'),
+            ],
+            'main_phone_country' => ['required_with:main_phone', Rule::in(\App\Helpers\CountryHelper::getCountriesForValidation(false))],
+            'main_phone' => 'phone|nullable',
+            'mobile_phone_country' => ['required_with:mobile_phone', Rule::in(\App\Helpers\CountryHelper::getCountriesForValidation(false))],
+            'mobile_phone' => 'phone|mobile|nullable',
+            'home_phone_country' => ['required_with:home_phone', Rule::in(\App\Helpers\CountryHelper::getCountriesForValidation(false))],
+            'home_phone' => 'phone|nullable',
+            'work_phone_country' => ['required_with:work_phone', Rule::in(\App\Helpers\CountryHelper::getCountriesForValidation(false))],
+            'work_phone' => 'phone|nullable',
+            'fax_phone_country' => ['required_with:fax_phone', Rule::in(\App\Helpers\CountryHelper::getCountriesForValidation(false))],
+            'fax_phone' => 'phone|nullable',
+            'birthday' => 'date|nullable|before_or_equal:18 years ago',
+            'address_line_1' => 'string|nullable',
+            'address_line_2' => 'string|nullable',
+            'city' => 'string|nullable',
+            'state' => 'string|nullable',
+            'postal' => 'string|nullable',
+            'country' => ['string', 'required', Rule::in(\App\Helpers\CountryHelper::getCountriesForValidation(false))],
+            'whatsapp_phone_country' => ['required_with:whatsapp_phone', Rule::in(\App\Helpers\CountryHelper::getCountriesForValidation(false))],
+            'whatsapp_phone' => 'phone|nullable',
+            'telegram_phone_country' => ['required_with:telegram_phone', Rule::in(\App\Helpers\CountryHelper::getCountriesForValidation(false))],
+            'telegram_phone' => 'phone|nullable',
+            'viber_phone_country' => ['required_with:viber_phone', Rule::in(\App\Helpers\CountryHelper::getCountriesForValidation(false))],
+            'viber_phone' => 'phone|nullable',
+            'skype' => 'string|nullable',
+            'facebook' => 'url|nullable',
+            'googleplus' => 'url|nullable',
+            'linkedin' => 'url|nullable',
+            'timezone' => ['required', 'string', Rule::in(\DateTimeZone::listIdentifiers(\DateTimeZone::ALL))],
+            'temperature_unit' => ['required', 'string', Rule::in(['celsius', 'fahrenheit'])],
+            'dateformat' => ['required', 'string'],
+            'timeformat' => ['required', 'string'],
+            'datetimeformat' => ['required', 'string'],
+            'active' => 'boolean',
+            'role_id' => 'required|numeric|exists:roles,id',
+            'password' => 'required|string|nullable|confirmed',
+            'password_confirmation' => 'string|nullable|required_with:password',
+            'google2fa_secret' => 'string|nullable|googlemfasecret',
+            'groups' => 'array|nullable',
+            'groups.*' => 'numeric|exists:groups,id',
+        ];
+        foreach ($rules as $key => $rule) {
+            if (ends_with($key, '_phone')) {
+                $val = $request->input($key);
+                if (is_null($val) || 0 == strlen($val)) {
+                    $countryKey = sprintf('%s_country', $key);
+                    $request->merge([$countryKey => '']);
+                }
+            }
+            if ('boolean' == $rule) {
+                $request->merge([$key => $request->has($key)]);
+            }
+            if ('groups' == $key) {
+                $request->merge([$key => ($request->has($key) ? array_keys($request->input($key)) : [])]);
+            }
+        }
+        Validator::make($request->all(), $rules)->validate();
+        $user = new User;
+        foreach ($rules as $key => $rule) {
+            switch ($key) {
+                case 'role_id':
+                    $role = \App\Role::find($request->input($key));
+                    if (is_a($role, '\App\Role')) {
+                        $user->role()->associate($role);
+                    }
+                    break;
+
+                case 'groups':
+                    // do nothing
+                    break;
+
+                case 'groups.*':
+                    // do nothing
+                    break;
+
+                case 'password_confirmation':
+                    // do nothing
+                    break;
+                
+                default:
+                    $user->{$key} = $request->input($key);
+                    break;
+            }
+        }
+        $user->save();
+        foreach ($request->input('groups') as $group_id) {
+            $user->groups()->attach($group_id);
+        }
+        return Redirect::route('edit-user', ['id' => $user->id])->with('globalsuccessmessage', __('Created User Successfully'));
     }
 
     public function update(Request $request, $id)
