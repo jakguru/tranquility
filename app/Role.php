@@ -9,6 +9,7 @@ class Role extends Model
 {
     use \App\Helpers\Loggable;
     use \App\Helpers\Listable;
+    use \App\Helpers\Permitable;
 
     public static $list_columns = [
         'name' => [

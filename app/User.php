@@ -15,6 +15,7 @@ class User extends Authenticatable
     use \App\Helpers\Loggable;
     use \App\Helpers\ElasticSearchable;
     use \App\Helpers\Listable;
+    use \App\Helpers\Permitable;
 
     public static $list_columns = [
         'email' => [
@@ -98,6 +99,16 @@ class User extends Authenticatable
     {
         foreach ($this->groups as $group) {
             if (true == $group->sudo) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    public function isInfosec()
+    {
+        foreach ($this->groups as $group) {
+            if (true == $group->infosec) {
                 return true;
             }
         }

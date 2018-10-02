@@ -59,12 +59,10 @@ Route::group(['middleware' => ['auth']], function () {
     Route::get('/settings/users/{id}/audit', '\App\Http\Controllers\UserController@audit')->name('audit-user')->where('id', '[0-9]+');
     
     Route::get('/settings/groups', '\App\Http\Controllers\GroupController@list')->name('settings-groups');
-    Route::get('/settings/groups/new', function () {
-        abort(501);
-    })->name('create-group');
-    Route::get('/settings/groups/{id}', function ($id) {
-        abort(501);
-    })->name('view-group')->where('id', '[0-9]+');
+    Route::get('/settings/groups/new', '\App\Http\Controllers\GroupController@add')->name('create-group');
+    Route::post('/settings/groups/new', '\App\Http\Controllers\GroupController@create')->name('create-group');
+    Route::get('/settings/groups/{id}', '\App\Http\Controllers\GroupController@view')->name('view-group')->where('id', '[0-9]+');
+    Route::put('/settings/groups/{id}', '\App\Http\Controllers\GroupController@edit')->name('edit-group')->where('id', '[0-9]+');
 
     Route::get('/settings/roles', '\App\Http\Controllers\RoleController@list')->name('settings-roles');
     Route::get('/settings/roles/new', function () {

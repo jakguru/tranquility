@@ -8,6 +8,7 @@ class Group extends Model
 {
     use \App\Helpers\Loggable;
     use \App\Helpers\Listable;
+    use \App\Helpers\Permitable;
 
     public static $list_columns = [
         'name' => [
@@ -17,6 +18,10 @@ class Group extends Model
         'sudo' => [
             'type' => 'boolean',
             'label' =>'Super Admins',
+        ],
+        'infosec' => [
+            'type' => 'boolean',
+            'label' =>'InfoSec',
         ],
         'users' => [
             'type' => 'submodulecount',

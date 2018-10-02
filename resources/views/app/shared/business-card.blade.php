@@ -19,7 +19,7 @@
 			<div class="col-6 offset-3 col-md-2 offset-md-0 mb-5 mb-md-0">
 				<img src="{{ \App\Helpers\BusinessCardHelper::getUrlForAvatarImage($model, $model->id) }}" class="avatar" />
 			</div>
-			<div class="col-12 col-md-5 mb-3 mb-md-0 d-md-flex flex-row justify-content-start align-items-end flex-fill">
+			<div class="col-12 col-md-5 mb-3 mb-md-1 d-md-flex flex-row justify-content-start align-items-end flex-fill">
 				<h1 class="model-info-with-bg text-center text-md-left d-block mt-2" data-clipboard-text="{{ $model->name }}">
 					@if(!is_null($model->name) && strlen($model->name) > 0)
 						{{ $model->name }}
@@ -31,7 +31,7 @@
 					@if(!is_null($model->title) && strlen($model->title) > 0)<small class="d-block" data-clipboard-text="{{ $model->title }}">{{ $model->title }}</small> @endif
 				</h1>
 			</div>
-			<div class="col-12 col-md-5 mb-3 mb-md-0 d-md-flex flex-row justify-content-end align-items-end flex-fill">
+			<div class="col-12 col-md-5 mb-3 mb-md-1 d-md-flex flex-row justify-content-end align-items-end flex-fill">
 				<h2 class="model-info-with-bg text-center text-md-left mt-2">
 					@if(is_object($model->role))
 						<span title="{{ __('Role') }}" class="mr-1 d-block d-lg-inline">
@@ -103,7 +103,7 @@
   								@if(!is_null($model->main_phone) && strlen($model->main_phone) > 0)
   								<a class="dropdown-item" href="#" data-clipboard-text="{{\App\Helpers\PhoneHelper::formatPhone($model->main_phone, $model->main_phone_country)}}">
   									<span class="fixed-icon-width text-center mr-1">
-  										<i class="fas fa-mobile-alt"></i>
+  										<i class="fas fa-phone"></i>
   									</span>
   									<span class="flag-icon flag-icon-{{strlen($model->main_phone_country) > 0 ? strtolower($model->main_phone_country) : 'xx'}} flag-icon-squared mr-1"></span>
   									{{\App\Helpers\PhoneHelper::formatPhone($model->main_phone, $model->main_phone_country, 'international')}}

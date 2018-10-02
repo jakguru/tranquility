@@ -528,17 +528,25 @@
     					<table class="table table-sm table-striped table-hover mb-0">
     						<thead>
     							<tr>
-    								<th class="text-center">&nbsp;</th>
+    								<th class="text-center" style="max-width: 20px;" width="20">&nbsp;</th>
     								<th>{{__('Group')}}</th>
     							</tr>
     						</thead>
     						<tbody>
     							@foreach(\App\Group::all() as $group)
     							<tr>
-    								<td class="text-center">
+    								<td class="text-center" style="max-width: 20px;" width="20">
     									<input type="checkbox" name="groups[{{$group->id}}]" {{{in_array($group->id, $owngroups) ? 'checked' : ''}}} />
     								</td>
-    								<td>{{$group->name}}</td>
+    								<td>
+    									@if(Auth::user()->can('view', $group))
+    									<a href="{{ route('view-group', ['id' => $group->id]) }}">
+    									@endif
+    									{{$group->name}}
+    									@if(Auth::user()->can('view', $group))
+    									</a>
+    									@endif
+    								</td>
     							</tr>
     							@endforeach
     						</tbody>

@@ -18,6 +18,7 @@ class CreateGroupsTable extends Migration
             $table->increments('id');
             $table->string('name');
             $table->boolean('sudo')->default(false);
+            $table->boolean('infosec')->default(false);
             $table->boolean('locked')->default(false);
             /** User Model Permissions */
             PermissionsHelper::addPermissionsForModel('User', $table);

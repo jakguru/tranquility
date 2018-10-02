@@ -100,6 +100,28 @@ class PermissionsHelper
         return (in_array($trait, $traits));
     }
 
+    public static function getPermitableModels($namespace = '\\App')
+    {
+        $return = [];
+        $path = app_path();
+        try {
+            $df = new \RecursiveIteratorIterator(new \RecursiveDirectoryIterator($path), \RecursiveIteratorIterator::SELF_FIRST);
+            foreach ($df as $item) {
+                if ($item->isReadable() && $item->isFile() && mb_strtolower($item->getExtension()) === 'php') {
+                    $class = str_replace("/", "\\", mb_substr($item->getRealPath(), mb_strlen($path), -4));
+                    $class = sprintf('%s%s', ('\\' == substr($namespace, -1)) ? substr($namespace, 0, strlen($namespace) - 1) : $namespace, $class);
+                    array_push($return, $class);
+                }
+            }
+        } catch (\Exception $e) {
+            throw $e;
+        }
+        $return = array_filter($return, function ($class) {
+            return self::modelHasTrait($class, 'Permitable');
+        });
+        return $return;
+    }
+
     protected static function getTraitWithoutNamespace($trait)
     {
         if (false === $lp = strrpos($trait, '\\')) {
