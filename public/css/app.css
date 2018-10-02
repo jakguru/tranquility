@@ -18810,7 +18810,7 @@ readers do not read off random characters that represent icons */
   width: 100%;
 }
 
-.iti-mobile .intl-tel-input.iti-container {
+.intl-tel-input.iti-container {
   z-index: 1081;
 }
 
