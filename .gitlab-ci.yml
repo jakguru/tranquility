@@ -19,7 +19,7 @@ variables:
 before_script:
   - set -e
 
-Deploy Production:
+Deploy Demo:
   image: docker.eosos.io/docker/eosos:php7.2-stable
   stage: deploy
   environment:
