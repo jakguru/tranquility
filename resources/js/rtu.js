@@ -57,7 +57,19 @@ var notificationIndicator = function(identifier) {
 	}
 	this.addNotification = function(event, info) {
 		var notifications = obj.getNotifications();
-		notifications.push(info);
+
+		// sort through this to ensure that we aren't adding a hash which already exists
+		var hash_exists = false;
+		for (var i = 0; i < notifications.length; i++) {
+			if (info.hash == notifications[i].hash) {
+				hash_exists = true;
+			}
+		}
+
+		if (!hash_exists) {
+			notifications.push(info);
+		}
+
 		obj.obj.attr('items', JSON.stringify(notifications));
 		obj.saveToLocalStorage(JSON.stringify(notifications))
 		obj.obj.find('.indicator-label').text(notifications.length);
@@ -211,6 +223,14 @@ var notificationIndicator = function(identifier) {
 	this.obj.attr('items', obj.getFromStorage);
 	this.updateIconNumber();
 	jQuery(window).on('alert', obj.addNotification);
+	jQuery(window).on('debug', function(event, info){
+		console.log('Got Debug Realtime Notification');
+		console.log(info);
+		info.type = 'success';
+		info.url = '#';
+		info.icon_class = 'fas fa-flag';
+		obj.addNotification(event, info);
+	});
 	jQuery(window).on('login', function(event) {
 		playSound('loaded');
 	});
@@ -226,6 +246,11 @@ var notificationIndicator = function(identifier) {
 			) {
 				obj.obj.popover('hide');
 			}
+	});
+	jQuery(window).on('storage', function(e) {
+		if (e.originalEvent.key!='notifications_json') return;
+		obj.obj.attr('items', obj.getFromStorage);
+		obj.updateIconNumber();
 	});
 	if (Push.Permission.get() == Push.Permission.DEFAULT) {
 		Push.Permission.request(function(){

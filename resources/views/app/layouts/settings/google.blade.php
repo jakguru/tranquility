@@ -90,7 +90,7 @@
 								</div>
 								<div class="form-group">
 									<label>Default Address</label>
-									<textarea name="maps[address]" class="form-control{{ $errors->has('maps.address') ? ' is-invalid' : '' }}">{{ old('maps.address', (is_object($settings) && property_exists($settings, 'maps') ? $settings->maps['address'] : 'Nordfjord, Norway' )) }}</textarea>
+									<textarea name="maps[address]" class="form-control{{ $errors->has('maps.address') ? ' is-invalid' : '' }}">{{ old('maps.address', (is_object($settings) && property_exists($settings, 'maps') && array_key_exists('address', $settings->maps )? $settings->maps['address'] : 'Nordfjord, Norway' )) }}</textarea>
 									@if ($errors->has('maps.address'))
 			                            <span class="invalid-feedback" role="alert">
 			                                <strong>{{ $errors->first('maps.address') }}</strong>

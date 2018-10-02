@@ -29,9 +29,9 @@ class ModelImageHelper
                 'enabled' => false,
             ];
         }
-        $this->api_key = $settings->maps['key'];
-        $this->default_address = $settings->maps['address'];
-        $this->maps_enabled = $settings->maps['enabled'];
+        $this->api_key = (array_key_exists('key', $settings->maps)) ? $settings->maps['key'] : null;
+        $this->default_address = (array_key_exists('address', $settings->maps)) ? $settings->maps['address'] : 'Nordfjord, Norway';
+        $this->maps_enabled = (array_key_exists('enabled', $settings->maps)) ? $settings->maps['enabled'] : false;
     }
 
     public function getBackgroundImage(Request $request, $model, $model_id)
