@@ -27,8 +27,8 @@
             }
         }
     </script>
-    <script type="text/javascript" src="{{ asset('js/app.js') }}" async defer></script>
-    <link href="{{ asset('css/app.css') }}" rel="stylesheet">
+    <script type="text/javascript" src="{{ mix('js/app.js') }}" async defer></script>
+    <link href="{{ mix('css/app.css') }}" rel="stylesheet">
     <link rel="apple-touch-icon" sizes="114x114" href="{{ asset( 'img/favicon.png' ) }}" />
     <link rel="apple-touch-icon" sizes="72x72" href="{{ asset( 'img/favicon.png' ) }}" />
     <link rel="icon" type="image/png" href="{{ asset( 'img/favicon.png' ) }}" sizes="196x196" />
