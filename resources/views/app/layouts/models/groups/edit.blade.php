@@ -32,14 +32,21 @@
 					@endif
     				@csrf
     				<div class="card-header bg-dark text-white">
-    					<h4 class="mb-0">{{ __('Settings') }}</h4>
+    					<h4 class="mb-0">
+                            @if(!is_null($model->id))
+                            <span class="pull-right">
+                                <a href="{{ route('audit-group', ['id' => $model->id]) }}" class="btn btn-sm btn-light">{{ __('Audit') }}</a>
+                            </span>
+                            @endif
+                            {{ __('Settings') }}
+                        </h4>
     				</div>
     				<div class="card-body">
     					<div class="row">
 	    					<div class="col-md-4">
 	    						<div class="form-group row">
-									<label class="col-md-2">{{ __('Name') }}</label>
-									<div class="col-md-10">
+									<label class="col-md-4 col-lg-3">{{ __('Name') }}</label>
+									<div class="col-md-8 col-lg-9">
 										<input type="text" name="name" class="form-control form-control-sm{{ $errors->has('name') ? ' is-invalid' : '' }}" value="{{ old('name', $model->name) }}" required />
 										@if ($errors->has('name'))
 				                            <span class="invalid-feedback" role="alert">
@@ -109,7 +116,7 @@
     								<td class="text-center"><code>{{ str_after($class, '\\App\\') }}</code></td>
     								@foreach(\App\Helpers\PermissionsHelper::getPermissionFieldsForModel(str_after($class, '\\App\\')) as $permission)
     								<td>
-    									<select name="permissions[{{ strtolower(str_after($class, '\\App\\')) }}][{{ str_replace(['can_', sprintf('_%s', strtolower(str_after($class, '\\App\\')))], '', $permission) }}]" class="form-control form-control-sm" required>
+    									<select name="{{ $permission }}" class="form-control form-control-sm" required>
     										@foreach(\App\Helpers\PermissionsHelper::$permissionOptions as $option)
     										<option value="{{ $option }}"{{ $option == $model->{$permission} ? ' selected' : '' }}>{{ ucwords($option) }}</option>
     										@endforeach
@@ -137,6 +144,13 @@
     				<div class="card-header bg-dark text-white">
     					<h4 class="mb-0">{{ __('Associated Users') }}</h4>
     				</div>
+                    @if ($errors->has('users.*'))
+                        <div class="card-body pt-0 pb-0">
+                            @foreach($errors->get('users.*') as $message)
+                            <div class="alert alert-danger mb-0">{{ $message[0] }}</div>
+                            @endforeach
+                        </div>
+                    @endif
     				<div class="table-responsive max-height-200">
     					<table class="table table-sm table-striped table-hover table-model-list mb-0">
     						<thead>

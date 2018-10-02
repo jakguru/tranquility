@@ -20,7 +20,7 @@
 		],
 		[
 			'name' => sprintf(__('View %s'), $model->name),
-			'url' => route('view-user', ['id' => $model->id]),
+			'url' => route(\App\Helpers\BusinessCardHelper::getViewRoute($model), ['id' => $model->id]),
 		],
 		[
 			'name' => sprintf(__('View Audit of %s'), $model->name),

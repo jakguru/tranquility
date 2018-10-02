@@ -24,6 +24,11 @@ class BusinessCardHelper
         return ModelImageHelper::getUrlForAvatarImage($model, $model_id);
     }
 
+    public static function getViewRoute($model)
+    {
+        return sprintf('view-%s', strtolower(self::getSingleLabelForClass($model)));
+    }
+
     public static function getEditRoute($model)
     {
         return sprintf('edit-%s', strtolower(self::getSingleLabelForClass($model)));

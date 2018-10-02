@@ -92,6 +92,9 @@ class PermissionsHelper
 
     public static function modelHasTrait($model, $trait)
     {
+        if (!class_exists($model)) {
+            return false;
+        }
         $uses = class_uses($model);
         $keys = array_keys($uses);
         $vals = array_values($uses);

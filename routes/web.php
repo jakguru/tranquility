@@ -63,6 +63,7 @@ Route::group(['middleware' => ['auth']], function () {
     Route::post('/settings/groups/new', '\App\Http\Controllers\GroupController@create')->name('create-group');
     Route::get('/settings/groups/{id}', '\App\Http\Controllers\GroupController@view')->name('view-group')->where('id', '[0-9]+');
     Route::put('/settings/groups/{id}', '\App\Http\Controllers\GroupController@edit')->name('edit-group')->where('id', '[0-9]+');
+    Route::get('/settings/groups/{id}/audit', '\App\Http\Controllers\GroupController@audit')->name('audit-group')->where('id', '[0-9]+');
 
     Route::get('/settings/roles', '\App\Http\Controllers\RoleController@list')->name('settings-roles');
     Route::get('/settings/roles/new', function () {
