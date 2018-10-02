@@ -25,7 +25,7 @@ Deploy Production:
   environment:
     name: dev
   only:
-    - tags
+    - master
   before_script:
     - set -e
     - composer install -o --prefer-dist --no-dev --no-interaction --no-ansi --no-progress --no-suggest
