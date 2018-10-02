@@ -22,6 +22,9 @@
 
 .intl-tel-input { width: 100%; }
 
+.iti-mobile .intl-tel-input.iti-container {
+	z-index: 1081;
+}
 // PNotify
 @import "~pnotify/dist/pnotify";
 @import "~pnotify/dist/pnotify.brighttheme";
