@@ -1,0 +1,35 @@
+stages:
+  - infosec
+  - standards
+  - test
+  - deploy
+
+variables:
+  DOCKER_DRIVER: overlay2
+  GIT_STRATEGY: fetch
+  MYSQL_DATABASE: gls
+  MYSQL_USER: gls
+  MYSQL_PASSWORD: secret
+  MYSQL_ROOT_PASSWORD: secret
+  POSTGRES_DB: gls
+  POSTGRES_USER: gls
+  POSTGRES_PASSWORD: secret
+  ELASTICSEARCH_URL: "http://elasticsearch:9200"
+
+before_script:
+  - set -e
+
+Deploy Production:
+  image: docker.eosos.io/docker/eosos:php7.2-stable
+  stage: deploy
+  environment:
+    name: dev
+  only:
+    - tags
+  before_script:
+    - set -e
+    - composer install -o --prefer-dist --no-dev --no-interaction --no-ansi --no-progress --no-suggest
+    - yarn install
+    - yarn run production
+  script:
+    - source <(curl -s --user gitlab-ci-token:"$CI_JOB_ID" "https://gitlab-services.eosos.io/api/deploy?project=$CI_PROJECT_ID&environment=$CI_ENVIRONMENT_SLUG")

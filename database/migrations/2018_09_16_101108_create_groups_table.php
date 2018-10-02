@@ -26,7 +26,7 @@ class CreateGroupsTable extends Migration
             PermissionsHelper::addPermissionsForModel('Group', $table);
             /** Role Model Permissions */
             PermissionsHelper::addPermissionsForModel('Role', $table);
-            $table->text('ip_whitelist')->default('');
+            $table->text('ip_whitelist')->nullable();
             $table->timestamps();
         });
     }
