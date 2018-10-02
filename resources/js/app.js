@@ -61,6 +61,7 @@ jQuery(function(){
     		autoPlaceholder: 'polite',
     		initialCountry: ('undefined' !== typeof(country_field)) ? ('string' !== typeof(country_field.val())) ? country_field.val() : country_field.val().toLowerCase() : '',
     		preferredCountries: [],
+    		dropdownContainer: 'body',
 		});
 		field.on('countrychange', function() {
 			var iso = iti.getSelectedCountryData().iso2.toUpperCase();

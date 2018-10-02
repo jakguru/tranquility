@@ -15,7 +15,11 @@ class Options extends Model
 
     public static function set($key, $value)
     {
-        if (!Schema::hasTable('options')) {
+        try {
+            if (!Schema::hasTable('options')) {
+                return false;
+            }
+        } catch (\Exception $e) {
             return false;
         }
         $c = get_called_class();
@@ -36,7 +40,11 @@ class Options extends Model
 
     public static function get($key, $default = null)
     {
-        if (!Schema::hasTable('options')) {
+        try {
+            if (!Schema::hasTable('options')) {
+                return $default;
+            }
+        } catch (\Exception $e) {
             return $default;
         }
         $cache_key = sprintf('option.%s', $key);

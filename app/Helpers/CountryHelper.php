@@ -2039,15 +2039,6 @@ class CountryHelper
             'nationality' => 'British',
             'currency' => 'GBP',
         ],
-        'UK' => [
-            'iso' => 'GB',
-            'name' => 'United Kingdom',
-            'iso3' => 'GBR',
-            'prefix' => '44',
-            'defaultLang' => 'en',
-            'nationality' => 'British',
-            'currency' => 'GBP',
-        ],
         'US' => [
             'iso' => 'US',
             'name' => 'United States',
