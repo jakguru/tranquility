@@ -58923,7 +58923,6 @@ jQuery(function () {
 			var iso = iti.getSelectedCountryData().iso2.toUpperCase();
 			if ('object' == (typeof country_field === 'undefined' ? 'undefined' : _typeof(country_field)) && 1 == country_field.length) {
 				country_field.val(iso);
-				console.log(country_field.val());
 			}
 		});
 		field.on('setCountry', function (e, data) {
@@ -58937,7 +58936,9 @@ jQuery(function () {
 			    name = field.attr('name'),
 			    country_field = field.closest('form').find(sprintf('[name="%s_country"]', name));
 			if ('object' == (typeof country_field === 'undefined' ? 'undefined' : _typeof(country_field)) && (0 == country_field.val().length || 'XX' == country_field.val())) {
-				field.trigger('setCountry', select.val().toLowerCase());
+				if (null !== select.val()) {
+					field.trigger('setCountry', select.val().toLowerCase());
+				}
 			}
 		});
 	});
@@ -58948,7 +58949,9 @@ jQuery(function () {
 			    name = field.attr('name'),
 			    country_field = field.closest('form').find(sprintf('[name="%s_country"]', name));
 			if ('object' == (typeof country_field === 'undefined' ? 'undefined' : _typeof(country_field)) && (0 == country_field.val().length || 'XX' == country_field.val())) {
-				field.trigger('setCountry', select.val().toLowerCase());
+				if (null !== select.val()) {
+					field.trigger('setCountry', select.val().toLowerCase());
+				}
 			}
 		});
 	});
@@ -58964,6 +58967,34 @@ jQuery(function () {
 		});
 		e.clearSelection();
 	});
+	jQuery('[reveal-password]').on('click', function (e) {
+		e.preventDefault();
+		var btn = jQuery(this),
+		    group = btn.closest('.input-group'),
+		    field = group.find('input'),
+		    type = field.attr('type');
+		if ('password' == type) {
+			field.attr('type', 'text');
+			btn.find('span, i').removeClass('fa-eye');
+			btn.find('span, i').addClass('fa-eye-slash');
+		} else {
+			field.attr('type', 'password');
+			btn.find('span, i').addClass('fa-eye');
+			btn.find('span, i').removeClass('fa-eye-slash');
+		}
+	});
+	jQuery('[generate-password]').on('click', function (e) {
+		e.preventDefault();
+		var btn = jQuery(this),
+		    group = btn.closest('.input-group'),
+		    field = group.find('input'),
+		    fieldname = field.attr('name'),
+		    confirmation_name = sprintf('%s_confirmation', fieldname),
+		    confirmation_field = group.closest('form').find(sprintf('[name="%s"]', confirmation_name)),
+		    pw = generatePassword();
+		field.val(pw);
+		confirmation_field.val(pw);
+	});
 });
 
 window.handleGoogleReCAPCHA = function (result) {
@@ -58974,6 +59005,54 @@ window.handleGoogleReCAPCHA = function (result) {
 		field.val(result);
 		form.submit();
 	});
+};
+
+window.generatePassword = function (length, countofuppers, countoflowers, countofnumbers, countofspecials) {
+	if ('number' !== typeof length) {
+		length = 12;
+	}
+	if (length < 6) {
+		length = 6;
+	}
+	if ('number' !== typeof countofuppers) {
+		countofuppers = 1;
+	}
+	if (countofuppers < 0) {
+		countofuppers = 0;
+	}
+	if ('number' !== typeof countoflowers) {
+		countoflowers = 1;
+	}
+	if (countoflowers < 0) {
+		countoflowers = 0;
+	}
+	if ('number' !== typeof countofnumbers) {
+		countofnumbers = 1;
+	}
+	if (countofnumbers < 0) {
+		countofnumbers = 0;
+	}
+	if ('number' !== typeof countofspecials) {
+		countofspecials = 1;
+	}
+	if (countofspecials < 0) {
+		countofspecials = 0;
+	}
+	var remainder = length - countofuppers - countoflowers - countofnumbers - countofspecials,
+	    specials = '!@#$%^&*()_+{}:"<>?\|[];\',./`~',
+	    lowercase = 'abcdefghijklmnopqrstuvwxyz',
+	    uppercase = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ',
+	    numbers = '0123456789',
+	    all = specials + lowercase + uppercase + numbers,
+	    password = '';
+	password += specials.pick(countofspecials);
+	password += lowercase.pick(countoflowers);
+	password += uppercase.pick(countofuppers);
+	if (remainder < 0) {
+		remainder = 0;
+	}
+	password += all.pick(remainder);
+	return password;
 };
 
 jQuery('[psuedo-type="datetime-local"]').each(function () {
@@ -59033,6 +59112,39 @@ var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol
 
 window._ = __webpack_require__("./node_modules/lodash/lodash.js");
 window.Popper = __webpack_require__("./node_modules/popper.js/dist/esm/popper.js").default;
+
+String.prototype.pick = function (min, max) {
+	var n,
+	    chars = '';
+
+	if (typeof max === 'undefined') {
+		n = min;
+	} else {
+		n = min + Math.floor(Math.random() * (max - min + 1));
+	}
+
+	for (var i = 0; i < n; i++) {
+		chars += this.charAt(Math.floor(Math.random() * this.length));
+	}
+
+	return chars;
+};
+
+String.prototype.shuffle = function () {
+	var array = this.split('');
+	var tmp,
+	    current,
+	    top = array.length;
+
+	if (top) while (--top) {
+		current = Math.floor(Math.random() * (top + 1));
+		tmp = array[current];
+		array[current] = array[top];
+		array[top] = tmp;
+	}
+
+	return array.join('');
+};
 
 /**
  * We'll load jQuery and the Bootstrap jQuery plugin which provides support

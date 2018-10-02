@@ -433,8 +433,14 @@
     				</div>
     				<div class="card-body">
     					<div class="form-group">
-							<label>{{ __('New Password') }}</label>
-							<input type="password" name="password" class="form-control form-control-sm{{ $errors->has('password') ? ' is-invalid' : '' }}" value="" />
+							<label>{{ __('Password') }}</label>
+							<div class="input-group input-group-sm{{ $errors->has('password') ? ' is-invalid' : '' }}">
+								<input type="password" name="password" class="form-control {{ $errors->has('password') ? ' is-invalid' : '' }}" value="" />
+								<div class="input-group-append">
+									<button class="btn btn-outline-secondary" type="button" reveal-password title="{{ __('Reveal Contents') }}"><i class="far fa-eye"></i></button>
+									<button class="btn btn-outline-secondary" type="button" generate-password title="{{ __('Generate Password') }}"><i class="fas fa-retweet"></i></button>
+								</div>
+							</div>
 							@if ($errors->has('password'))
 	                            <span class="invalid-feedback" role="alert">
 	                                <strong>{{ $errors->first('password') }}</strong>
@@ -443,7 +449,12 @@
 						</div>
 						<div class="form-group">
 							<label>{{ __('Confirm Password') }}</label>
-							<input type="password" name="password_confirmation" class="form-control form-control-sm{{ $errors->has('password_confirmation') ? ' is-invalid' : '' }}" value="" />
+							<div class="input-group input-group-sm{{ $errors->has('password') ? ' is-invalid' : '' }}">
+								<input type="password" name="password_confirmation" class="form-control {{ $errors->has('password_confirmation') ? ' is-invalid' : '' }}" value="" />
+								<div class="input-group-append">
+									<button class="btn btn-outline-secondary" type="button" reveal-password title="{{ __('Reveal Contents') }}"><i class="far fa-eye"></i></button>
+								</div>
+							</div>
 							@if ($errors->has('password_confirmation'))
 	                            <span class="invalid-feedback" role="alert">
 	                                <strong>{{ $errors->first('password_confirmation') }}</strong>
