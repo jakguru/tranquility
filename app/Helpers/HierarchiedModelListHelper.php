@@ -22,7 +22,11 @@ class HierarchiedModelListHelper extends ModelListHelper
             $this->page = 1;
         }
         $this->populateTotals();
-        if ($this->total_items > 100) {
+        if ($this->total_items > 100
+            || $this->request->has('filter')
+            || ($this->request->has('s') && strlen($this->request->input('s')) > 0)
+            || $this->request->has('sort')
+        ) {
             $this->populateCollection();
         } else {
             $this->populateFullCollection();
@@ -53,10 +57,6 @@ class HierarchiedModelListHelper extends ModelListHelper
                 }
             }
             $this->items = collect($new_item_collection);
-            //echo '<pre>';
-            //print_r( $new_item_collection );
-            //echo '</pre>';
-            //exit();
         }
     }
 
@@ -182,7 +182,7 @@ class HierarchiedModelListHelper extends ModelListHelper
                 $esq['body']['query']['bool']['minimum_should_match'] = 1;
                 $esq['body']['query']['bool']['boost'] = 1.0;
                 $sm = new $this->model;
-                $searchable = $sm->getSearchableColumns();
+                $searchable = (PermissionsHelper::modelHasTrait($this->model, 'ElasticSearchable')) ? $sm->getSearchableColumns() : ['name'];
                 foreach ($searchable as $field) {
                     switch ($field) {
                         case 'id':
@@ -299,7 +299,7 @@ class HierarchiedModelListHelper extends ModelListHelper
             }
             if ($this->request->has('s') && strlen($this->request->input('s')) > 0) {
                 $sm = new $this->model;
-                $searchable = $sm->getSearchableColumns();
+                $searchable = (PermissionsHelper::modelHasTrait($this->model, 'ElasticSearchable')) ? $sm->getSearchableColumns() : ['name'];
                 foreach ($searchable as $field) {
                     $query->orWhere($field, 'like', $this->request->input('s'));
                 }
@@ -411,7 +411,7 @@ class HierarchiedModelListHelper extends ModelListHelper
                 $esq['body']['query']['bool']['minimum_should_match'] = 1;
                 $esq['body']['query']['bool']['boost'] = 1.0;
                 $sm = new $this->model;
-                $searchable = $sm->getSearchableColumns();
+                $searchable = (PermissionsHelper::modelHasTrait($this->model, 'ElasticSearchable')) ? $sm->getSearchableColumns() : ['name'];
                 foreach ($searchable as $field) {
                     switch ($field) {
                         case 'id':
@@ -529,7 +529,7 @@ class HierarchiedModelListHelper extends ModelListHelper
             }
             if ($this->request->has('s') && strlen($this->request->input('s')) > 0) {
                 $sm = new $this->model;
-                $searchable = $sm->getSearchableColumns();
+                $searchable = (PermissionsHelper::modelHasTrait($this->model, 'ElasticSearchable')) ? $sm->getSearchableColumns() : ['name'];
                 foreach ($searchable as $field) {
                     if (is_null($countQuery)) {
                         $m = $this->model;

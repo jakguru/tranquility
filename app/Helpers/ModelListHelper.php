@@ -126,7 +126,7 @@ class ModelListHelper
                 $esq['body']['query']['bool']['minimum_should_match'] = 1;
                 $esq['body']['query']['bool']['boost'] = 1.0;
                 $sm = new $this->model;
-                $searchable = $sm->getSearchableColumns();
+                $searchable = (PermissionsHelper::modelHasTrait($this->model, 'ElasticSearchable')) ? $sm->getSearchableColumns() : ['name'];
                 foreach ($searchable as $field) {
                     switch ($field) {
                         case 'id':
@@ -275,7 +275,7 @@ class ModelListHelper
             }
             if ($this->request->has('s') && strlen($this->request->input('s')) > 0) {
                 $sm = new $this->model;
-                $searchable = $sm->getSearchableColumns();
+                $searchable = (PermissionsHelper::modelHasTrait($this->model, 'ElasticSearchable')) ? $sm->getSearchableColumns() : ['name'];
                 foreach ($searchable as $field) {
                     $query->orWhere($field, 'like', $this->request->input('s'));
                     if (is_null($countQuery)) {
