@@ -428,14 +428,14 @@
                         </div>
 						<div class="form-group">
 							<label>{{ __('Role') }}</label>
-							<select name="role_id" class="form-control form-control-sm{{ $errors->has('role') ? ' is-invalid' : '' }}">
+							<select name="role_id" class="form-control form-control-sm{{ $errors->has('role_id') ? ' is-invalid' : '' }}">
 								@foreach(\App\Role::getSelectChoices() as $value => $label)
 								<option value="{{$value}}"{{$value == $model->role_id ? ' selected' : ''}}>{{$label}}</option>
 								@endforeach
 							</select>
-							@if ($errors->has('role'))
+							@if ($errors->has('role_id'))
 	                            <span class="invalid-feedback" role="alert">
-	                                <strong>{{ $errors->first('role') }}</strong>
+	                                <strong>{{ $errors->first('role_id') }}</strong>
 	                            </span>
 	                        @endif
 						</div>

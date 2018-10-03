@@ -44,7 +44,7 @@ class RoleController extends Controller
         }
         Validator::make($request->all(), [
             'name' => 'required|string',
-            'role_id' => 'nullable|exists:roles,id',
+            'role_id' => ['nullable','exists:roles,id'],
         ])->validate();
         $role = new Role;
         $role->name = $request->input('name');
@@ -102,7 +102,7 @@ class RoleController extends Controller
         }
         Validator::make($request->all(), [
             'name' => 'required|string',
-            'role_id' => 'nullable|exists:roles,id',
+            'role_id' => ['nullable','exists:roles,id', Rule::notIn([$role->id]), new \App\Rules\RoleCannotBeItsOwnChild($role)],
         ])->validate();
         $role->name = $request->input('name');
         $role->role_id = $request->input('role_id');

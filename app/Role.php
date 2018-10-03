@@ -45,6 +45,24 @@ class Role extends Model
         return $this->hasMany('App\User');
     }
 
+    public function getChildrenRoles()
+    {
+        $collection = [];
+        foreach ($this->roles as $role) {
+            array_push($collection, $role);
+            self::appendChildrenToCollection($role, $collection);
+        }
+        return collect($collection);
+    }
+
+    protected static function appendChildrenToCollection($role, &$collection = [])
+    {
+        foreach ($role->roles as $role) {
+            array_push($collection, $role);
+            self::appendChildrenToCollection($role, $collection);
+        }
+    }
+
     public static function getHierarchalCollection()
     {
         $roles = self::all();

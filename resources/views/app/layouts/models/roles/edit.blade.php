@@ -57,15 +57,15 @@
                             <div class="col-md-6">
                                 <div class="form-group">
                                     <label>{{ __('Parent Role') }}</label>
-                                    <select name="role_id" class="form-control form-control-sm{{ $errors->has('role') ? ' is-invalid' : '' }}">
+                                    <select name="role_id" class="form-control form-control-sm{{ $errors->has('role_id') ? ' is-invalid' : '' }}">
                                         <option value=""{{is_null($model->role_id) || empty($model->role_id) ? ' selected' : ''}}>{{ __('No Parent') }}</option>
                                         @foreach(\App\Role::getSelectChoices() as $value => $label)
-                                        <option value="{{$value}}"{{$value == $model->role_id ? ' selected' : ''}}>{{$label}}</option>
+                                        <option value="{{$value}}"{{$value == $model->role_id ? ' selected' : ''}}{{$value == $model->id ? ' disabled' : ''}}>{{$label}}</option>
                                         @endforeach
                                     </select>
-                                    @if ($errors->has('role'))
+                                    @if ($errors->has('role_id'))
                                         <span class="invalid-feedback" role="alert">
-                                            <strong>{{ $errors->first('role') }}</strong>
+                                            <strong>{{ $errors->first('role_id') }}</strong>
                                         </span>
                                     @endif
                                 </div>
