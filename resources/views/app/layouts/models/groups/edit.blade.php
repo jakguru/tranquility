@@ -88,7 +88,7 @@
 	    					</div>
 	    				</div>
 	    				<div class="form-group">
-	    					<label>{{ __('Allowed Login IPs') }}<br /><small>{{ __('1 IP Address or CIDR per Line') }}</small><br /><small><code>any</code> & <code>all</code> {{ __('allows login from all locations') }}</small></label>
+	    					<label>{{ __('Allowed Login IPs') }}<br /><small>{{ __('1 IP Address or CIDR per Line') }}</small><br /><small><code>any</code> & <code>all</code> {{ __('allows login from all locations') }}<br />Use <code>none</code> if you do not have an IP Address</small></label>
 	    					<textarea name="ip_whitelist" class="form-control form-control-sm{{ $errors->has('ip_whitelist') ? ' is-invalid' : '' }}">{{ old('ip_whitelist', $model->ip_whitelist) }}</textarea>
 	    					@if ($errors->has('ip_whitelist'))
 	                            <span class="invalid-feedback" role="alert">
