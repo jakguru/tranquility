@@ -78,7 +78,7 @@
 						<tr>
 							@foreach($columns as $column => $info)
 							<th @if($column == array_keys($columns)[0]) colspan="2" @endif class="{{ $info['type'] }}-field">
-								@if(!in_array($info['type'], ['submodulecount']))
+								@if(!in_array($info['type'], ['submodulecount', 'model']))
 								<div class="input-group input-group-sm">
 								@switch($info['type'])
 									@case('boolean')
@@ -164,6 +164,10 @@
 
 											@case('submodulecount')
 												{{ $model->{$column}->count() }}
+												@break
+
+											@case('model')
+												{{ is_object($model->{$column}) ? $model->{$column}->name : '' }}
 												@break
 
 											@default

@@ -61,7 +61,7 @@ class GroupController extends Controller
             $group->{$key} = $request->input($key);
         }
         $group->save();
-        return Redirect::route('edit-group', ['id' => $group->id])->with('globalsuccessmessage', __('Updated Settings Successfully'));
+        return Redirect::route('edit-group', ['id' => $group->id])->with('globalsuccessmessage', __('Created Group Successfully'));
     }
 
     public function view(Request $request, $id)
