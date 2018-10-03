@@ -92,7 +92,7 @@ class PermissionsHelper
 
     public static function modelHasTrait($model, $trait)
     {
-        if (!class_exists($model)) {
+        if (!is_object($model) && !class_exists($model)) {
             return false;
         }
         $uses = class_uses($model);
