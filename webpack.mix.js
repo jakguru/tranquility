@@ -61,7 +61,7 @@ mix.js('resources/js/app.js', 'public/js')
    	], 'public/css/app.css')
    .copy('resources/img/', 'public/img')
    .copy('resources/sounds/', 'public/sounds')
-   .copy('node_modules/@fortawesome/fontawesome-free-webfonts/webfonts', 'public/webfonts')
+   .copy('node_modules/@fortawesome/fontawesome-free/webfonts', 'public/webfonts')
    .copy('node_modules/weather-icons/font', 'public/font')
    .sourceMaps()
    .version();
