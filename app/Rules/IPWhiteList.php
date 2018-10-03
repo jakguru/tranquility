@@ -31,7 +31,7 @@ class IPWhiteList implements Rule
         $rawList = array_map('trim', $rawList);
         $rawList = array_map('strtolower', $rawList);
         foreach ($rawList as $ipRaw) {
-            if ((!Validators::is_ip($ipRaw) || !Validators::is_cidr($ipRaw)) && !in_array($ipRaw, ['all', 'any'])) {
+            if (!Validators::is_ip($ipRaw) && !Validators::is_cidr($ipRaw) && !in_array($ipRaw, ['all', 'any'])) {
                 array_push($this->invalidIps, $ipRaw);
             }
         }
