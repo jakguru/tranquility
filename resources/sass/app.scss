@@ -14,20 +14,14 @@
 // Flag Icons
 @import '~flag-icon-css/sass/flag-icon';
 
-// Weather Icons
-@import '~weather-icons/css/weather-icons';
-
-// International Tel Input
-@import '~intl-tel-input/build/css/intlTelInput';
+// Intl Tel Input
+@import '~intl-tel-input/src/css/intlTelInput';
 
 .intl-tel-input { width: 100%; }
 
 .intl-tel-input.iti-container {
 	z-index: 1081;
 }
-// PNotify
-@import "~pnotify/dist/pnotify";
-@import "~pnotify/dist/pnotify.brighttheme";
 
 .ui-pnotify.growl .ui-pnotify-container {
 	background-color: rgba($dark,0.85) !important;
