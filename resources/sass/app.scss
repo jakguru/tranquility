@@ -17,11 +17,8 @@
 // Intl Tel Input
 @import '~intl-tel-input/src/css/intlTelInput';
 
-body.rtl {
-	direction: rtl;
-
-	
-}
+// Variables
+@import 'rtl';
 
 .intl-tel-input { width: 100%; }
 
