@@ -86,6 +86,7 @@ class SettingsController extends Controller
                     'dateformat' => 'required|string',
                     'timeformat' => 'required|string',
                     'datetimeformat' => 'required|string',
+                    'locale' => ['required', 'string', Rule::in(array_keys(\App\Http\Controllers\SettingsController::getListOfLanguages()))],
                 ])->validate();
                 $option = new \stdClass();
                 $option->name = $request->input('name');
@@ -94,6 +95,7 @@ class SettingsController extends Controller
                 $option->dateformat = $request->input('dateformat');
                 $option->timeformat = $request->input('timeformat');
                 $option->datetimeformat = $request->input('datetimeformat');
+                $option->locale = $request->input('locale');
                 $saved = \App\Options::set('system', $option);
                 if (true == $saved) {
                     return Redirect::route('settings-system')->with('globalsuccessmessage', __('Updated System Settings successfully.'));
@@ -278,5 +280,16 @@ class SettingsController extends Controller
                 return Redirect::route('settings')->with('globalerrormessage', sprintf(__('Invalid Setting Section Name "%s"'), $request->input('section')));
                 break;
         }
+    }
+
+    public static function getListOfLanguages()
+    {
+        $lang_dir = base_path('resources/lang');
+        $languages = array_diff(scandir($lang_dir), array('..', '.'));
+        $return = [];
+        foreach ($languages as $lang) {
+            $return[$lang] = __(sprintf('lang.%s', $lang));
+        }
+        return $return;
     }
 }

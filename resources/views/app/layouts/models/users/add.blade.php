@@ -343,6 +343,21 @@
     						</div>
     						<div class="col-lg-3 col-md-6">
     							<div class="form-group">
+    								<label>{{ __('Locale') }}</label>
+									<select name="locale" class="form-control form-control-sm{{ $errors->has('locale') ? ' is-invalid' : '' }}" required autocomplete="off">
+									@foreach(\App\Http\Controllers\SettingsController::getListOfLanguages() as $value => $label)
+									<option value="{{ $value }}"{{ $value == (old('locale', config('app.locale'))) ? ' selected' : '' }}>{{ $label }}</option>
+									@endforeach
+								</select>
+									@if ($errors->has('locale'))
+			                            <span class="invalid-feedback" role="alert">
+			                                <strong>{{ $errors->first('locale') }}</strong>
+			                            </span>
+			                        @endif
+    							</div>
+    						</div>
+    						<div class="col-lg-3 col-md-6">
+    							<div class="form-group">
     								<label>{{ __('Temperature Unit') }}</label>
 									<select name="temperature_unit" class="form-control form-control-sm{{ $errors->has('temperature_unit') ? ' is-invalid' : '' }}" required autocomplete="off">
 									@foreach(['celsius' => __('Metric'), 'fahrenheit' => __('Imperial')] as $tz => $label)

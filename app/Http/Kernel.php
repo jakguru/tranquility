@@ -38,6 +38,7 @@ class Kernel extends HttpKernel
             \App\Http\Middleware\IPWhiteList::class,
             \App\Http\Middleware\Enforce2FA::class,
             \App\Http\Middleware\CheckLogin2FA::class,
+            \App\Http\Middleware\SetUserLocale::class,
         ],
 
         'api' => [

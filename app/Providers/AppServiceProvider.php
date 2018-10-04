@@ -69,6 +69,9 @@ class AppServiceProvider extends ServiceProvider
             Config::set('app.dateformat', $system_options->dateformat);
             Config::set('app.timeformat', $system_options->timeformat);
             Config::set('app.datetimeformat', $system_options->datetimeformat);
+            if (property_exists($system_options, 'locale')) {
+                Config::set('app.locale', $system_options->locale);
+            }
         } else {
             Config::set('app.listsize', 20);
             Config::set('app.dateformat', 'F j, Y');

@@ -38,7 +38,7 @@
     <link rel="icon" type="image/png" href="{{ asset( 'img/favicon.png' ) }}" sizes="128x128" />
     @yield('rbg')
 </head>
-    <body>
+    <body class="{{ strlen(__('lang.rtl')) > 0 ? 'rtl' : '' }}">
         @yield('blueprint')
         <audio class="d-none" id="loaded">
             <source src="{{ asset( 'sounds/loaded.wav' ) }}" type="audio/wav">

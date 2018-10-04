@@ -125,6 +125,7 @@ class UserController extends Controller
             'googleplus' => 'url|nullable',
             'linkedin' => 'url|nullable',
             'timezone' => ['required', 'string', Rule::in(\DateTimeZone::listIdentifiers(\DateTimeZone::ALL))],
+            'locale' => ['required', 'string', Rule::in(array_keys(\App\Http\Controllers\SettingsController::getListOfLanguages()))],
             'temperature_unit' => ['required', 'string', Rule::in(['celsius', 'fahrenheit'])],
             'dateformat' => ['required', 'string'],
             'timeformat' => ['required', 'string'],
@@ -311,6 +312,7 @@ class UserController extends Controller
                     'dateformat',
                     'timeformat',
                     'datetimeformat',
+                    'locale',
                 ];
                 foreach ($updatable as $key) {
                     if (ends_with($key, '_phone')) {
@@ -323,6 +325,7 @@ class UserController extends Controller
                 }
                 Validator::make($request->all(), [
                     'timezone' => ['required', 'string', Rule::in(\DateTimeZone::listIdentifiers(\DateTimeZone::ALL))],
+                    'locale' => ['required', 'string', Rule::in(array_keys(\App\Http\Controllers\SettingsController::getListOfLanguages()))],
                     'temperature_unit' => ['required', 'string', Rule::in(['celsius', 'fahrenheit'])],
                     'dateformat' => ['required', 'string'],
                     'timeformat' => ['required', 'string'],

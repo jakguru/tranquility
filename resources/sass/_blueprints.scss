@@ -397,3 +397,33 @@ html, body {
 	  }
 	}
 }
+
+body.rtl #app {
+	> aside {
+		right: 0;
+		left: auto;
+
+		#left-nav-items {
+			> li > a {
+				> span {
+					&:first-child {
+						margin-right: 0px;
+						margin-left: 10px;
+					}
+				}
+			}
+		}
+	}
+
+	> main {
+		left: 0;
+		right: 50px;
+	}
+
+	&.expanded-sidebar {
+		> main {
+			left: -200px;
+			right: 250px;
+		}
+	}
+}

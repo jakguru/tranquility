@@ -58,6 +58,19 @@
 		                        @endif
 							</div>
 							<div class="form-group">
+								<label>System Locale</label>
+								<select name="locale" class="form-control{{ $errors->has('locale') ? ' is-invalid' : '' }}" required autocomplete="off">
+									@foreach(\App\Http\Controllers\SettingsController::getListOfLanguages() as $value => $label)
+									<option value="{{ $value }}"{{ $value == old('locale', config('app.locale')) ? ' selected' : '' }}>{{ $label }}</option>
+									@endforeach
+								</select>
+								@if ($errors->has('locale'))
+		                            <span class="invalid-feedback" role="alert">
+		                                <strong>{{ $errors->first('locale') }}</strong>
+		                            </span>
+		                        @endif
+							</div>
+							<div class="form-group">
 								<label>List Size</label>
 								<input type="number" min="1" max="100" name="listsize" class="form-control{{ $errors->has('listsize') ? ' is-invalid' : '' }}"  value="{{ old('listsize', config('app.listsize')) }}" required autocomplete="off" />
 								@if ($errors->has('listsize'))
