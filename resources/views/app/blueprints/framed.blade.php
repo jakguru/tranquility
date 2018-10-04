@@ -31,7 +31,7 @@
 		</form>
 		@auth
 		<div id="user-bar" class="text-right">
-			<a href="#" id="messages-indicator" class="indicator-with-label">
+			<a href="{{ route('my-inbox') }}" id="messages-indicator" class="indicator-with-label">
 				<span class="fas fa-envelope"></span>
 				<span class="indicator-label">0</span>
 			</a>
