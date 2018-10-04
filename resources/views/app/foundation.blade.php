@@ -55,6 +55,7 @@
         <audio class="d-none" id="ringtone">
             <source src="{{ asset( 'sounds/ringtone.mp3' ) }}" type="audio/mpeg">
         </audio>
+        @yield('modals')
         {{ \App\Http\Controllers\AuthenticatedSessionController::initializeRealtimeClient() }}
     </body>
 </html>

@@ -17,7 +17,13 @@
 // Intl Tel Input
 @import '~intl-tel-input/src/css/intlTelInput';
 
-// Variables
+// Cropper
+@import '~cropperjs/src/index';
+
+// Sweet Alert
+@import '~sweetalert2/src/sweetalert2';
+
+// RTL
 @import 'rtl';
 
 .intl-tel-input { width: 100%; }
@@ -167,4 +173,59 @@
 
 .invalid-feedback {
 	display: block;
+}
+
+.avatar-upload {
+	position: relative;
+	cursor: pointer;
+	max-width: 100%;
+
+	img {
+		max-width: 100%;
+	}
+
+	&::after {
+		transition: background 300ms;
+	}
+
+	&:hover,
+	&:focus,
+	&:active {
+
+		&::after {
+			position: absolute;
+			color: $white;
+			text-align: center;
+			content: "Click to Upload New Avatar";
+			padding: 2rem;
+			padding-top: calc(50% - 1rem);
+			top: 0;
+			left: 0;
+			bottom: 0;
+			right: 0;
+			background: rgba($dark, 0.85);
+		}
+	}
+}
+
+.modal-backdrop {
+	z-index: 1081;
+}
+
+.modal {
+	z-index: 1082;
+
+	> .modal-dialog {
+		z-index: 1082;
+	}
+}
+
+.drop {
+	padding: 2rem;
+	border: dashed 1px $dark;
+}
+
+#image-preview,
+#image-preview > img {
+	max-width: 100%;
 }

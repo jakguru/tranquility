@@ -1604,6 +1604,10 @@ create-hmac@^1.1.0, create-hmac@^1.1.2, create-hmac@^1.1.4:
     safe-buffer "^5.0.1"
     sha.js "^2.4.8"
 
+cropperjs@^1.4.1:
+  version "1.4.1"
+  resolved "https://registry.yarnpkg.com/cropperjs/-/cropperjs-1.4.1.tgz#41d9fcd87f9d9cd2e1dcf27c36680cac7a48cd6b"
+
 cross-env@^5.1:
   version "5.2.0"
   resolved "https://registry.yarnpkg.com/cross-env/-/cross-env-5.2.0.tgz#6ecd4c015d5773e614039ee529076669b9d126f2"
@@ -2248,6 +2252,10 @@ event-emitter@~0.3.5:
   dependencies:
     d "1"
     es5-ext "~0.10.14"
+
+eventemitter3@^0.1.5:
+  version "0.1.6"
+  resolved "https://registry.yarnpkg.com/eventemitter3/-/eventemitter3-0.1.6.tgz#8c7ac44b87baab55cd50c828dc38778eac052ea5"
 
 eventemitter3@^3.0.0:
   version "3.1.0"
@@ -3091,6 +3099,12 @@ html-minifier@^3.0.1:
     param-case "2.1.x"
     relateurl "0.2.x"
     uglify-js "3.4.x"
+
+html5-uploader@^0.1.1:
+  version "0.1.1"
+  resolved "https://registry.yarnpkg.com/html5-uploader/-/html5-uploader-0.1.1.tgz#107103090e47b29d2921c0026965eae8f6b9c1c3"
+  dependencies:
+    eventemitter3 "^0.1.5"
 
 http-deceiver@^1.2.7:
   version "1.2.7"
@@ -6341,6 +6355,10 @@ svgo@^0.7.0:
     mkdirp "~0.5.1"
     sax "~1.2.1"
     whet.extend "~0.9.9"
+
+sweetalert2@^7.28.4:
+  version "7.28.4"
+  resolved "https://registry.yarnpkg.com/sweetalert2/-/sweetalert2-7.28.4.tgz#523d9c3b63f26c8be0e7cbc259f34ddced83ef22"
 
 tapable@^0.2.7:
   version "0.2.8"

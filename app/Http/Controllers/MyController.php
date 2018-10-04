@@ -3,6 +3,11 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use \App\User;
+use Illuminate\Support\Facades\Redirect;
+use Illuminate\Support\Facades\Validator;
+use Illuminate\Validation\Rule;
+use Illuminate\Support\Facades\Hash;
 
 class MyController extends Controller
 {
@@ -23,6 +28,6 @@ class MyController extends Controller
 
     public function preferences(Request $request)
     {
-        abort(501);
+        return view('app.layouts.my.preferences', ['model' => $request->user()]);
     }
 }

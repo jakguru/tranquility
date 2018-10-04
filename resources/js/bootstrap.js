@@ -153,6 +153,12 @@ window.Modernizr = Modernizr;
 window.moment = require('moment');
 window['moment-timezone'] = require('moment-timezone');
 
+
+require('cropperjs');
+
+window.Swal = require('sweetalert2');
+window.Uploader = require('html5-uploader');
+
 try {
 	window.ajax = function(url, method, data, success, error, pending, redirect, progress) {
 	    if ( 'undefined' == typeof( url ) ) {
