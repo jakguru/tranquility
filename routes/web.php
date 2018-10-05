@@ -35,6 +35,7 @@ Route::group(['middleware' => ['auth']], function () {
     Route::get('/my/inbox', '\App\Http\Controllers\MyController@inbox')->name('my-inbox');
     Route::get('/my/calendar', '\App\Http\Controllers\MyController@calendar')->name('my-calendar');
     Route::get('/my/preferences', '\App\Http\Controllers\MyController@preferences')->name('my-preferences');
+    Route::put('/my/preferences', '\App\Http\Controllers\MyController@savePreferences')->name('my-preferences');
 
     Route::get('/backgrounds/{model}/{id}.png', '\App\Helpers\ModelImageHelper@getBackgroundImage')->name('get-model-background')->where('id', '[0-9]+');
     Route::get('/avatars/{model}/{id}.png', '\App\Helpers\ModelImageHelper@getAvatarImage')->name('get-model-avatar')->where('id', '[0-9]+');
