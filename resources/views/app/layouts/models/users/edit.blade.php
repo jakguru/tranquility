@@ -337,10 +337,10 @@
     							<div class="form-group">
     								<label>{{ __('Time Zone') }}</label>
 									<select name="timezone" class="form-control form-control-sm{{ $errors->has('timezone') ? ' is-invalid' : '' }}" required autocomplete="off">
-									@foreach(\DateTimeZone::listIdentifiers(\DateTimeZone::ALL) as $tz)
-									<option value="{{ $tz }}"{{ $tz == (old('timezone', $model->timezone)) ? ' selected' : '' }}>{{ ucwords(str_replace('_', ' ', $tz)) }}</option>
-									@endforeach
-								</select>
+										@foreach(\DateTimeZone::listIdentifiers(\DateTimeZone::ALL) as $tz)
+										<option value="{{ $tz }}"{{ $tz == (old('timezone', $model->timezone)) ? ' selected' : '' }}>{{ ucwords(str_replace('_', ' ', $tz)) }}</option>
+										@endforeach
+									</select>
 									@if ($errors->has('timezone'))
 			                            <span class="invalid-feedback" role="alert">
 			                                <strong>{{ $errors->first('timezone') }}</strong>
@@ -352,10 +352,10 @@
     							<div class="form-group">
     								<label>{{ __('Locale') }}</label>
 									<select name="locale" class="form-control form-control-sm{{ $errors->has('locale') ? ' is-invalid' : '' }}" required autocomplete="off">
-									@foreach(\App\Http\Controllers\SettingsController::getListOfLanguages() as $value => $label)
-									<option value="{{ $value }}"{{ $value == (old('locale', is_null($model->locale) ? config('app.locale') : $model->locale)) ? ' selected' : '' }}>{{ $label }}</option>
-									@endforeach
-								</select>
+										@foreach(\App\Http\Controllers\SettingsController::getListOfLanguages() as $value => $label)
+										<option value="{{ $value }}"{{ $value == (old('locale', is_null($model->locale) ? config('app.locale') : $model->locale)) ? ' selected' : '' }}>{{ $label }}</option>
+										@endforeach
+									</select>
 									@if ($errors->has('locale'))
 			                            <span class="invalid-feedback" role="alert">
 			                                <strong>{{ $errors->first('locale') }}</strong>
@@ -367,10 +367,10 @@
     							<div class="form-group">
     								<label>{{ __('Temperature Unit') }}</label>
 									<select name="temperature_unit" class="form-control form-control-sm{{ $errors->has('temperature_unit') ? ' is-invalid' : '' }}" required autocomplete="off">
-									@foreach(['celsius' => __('Metric'), 'fahrenheit' => __('Imperial')] as $tz => $label)
-									<option value="{{ $tz }}"{{ $tz == (old('temperature_unit', $model->temperature_unit)) ? ' selected' : '' }}>{{ ucwords(str_replace('_', ' ', $label)) }}</option>
-									@endforeach
-								</select>
+										@foreach(['celsius' => __('Metric'), 'fahrenheit' => __('Imperial')] as $tz => $label)
+										<option value="{{ $tz }}"{{ $tz == (old('temperature_unit', $model->temperature_unit)) ? ' selected' : '' }}>{{ ucwords(str_replace('_', ' ', $label)) }}</option>
+										@endforeach
+									</select>
 									@if ($errors->has('temperature_unit'))
 			                            <span class="invalid-feedback" role="alert">
 			                                <strong>{{ $errors->first('temperature_unit') }}</strong>
