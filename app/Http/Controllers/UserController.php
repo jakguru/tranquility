@@ -386,7 +386,7 @@ class UserController extends Controller
                     $user->password = Hash::make($request->input('password'));
                 }
                 $user->save();
-                return Redirect::route('edit-user', ['id' => $user->id])->with('globalsuccessmessage', __('Updated Security Settings Successfully'));
+                return Redirect::route('edit-user', ['id' => $user->id])->with('globalsuccessmessage', __('Updated Authentication Settings Successfully'));
                 break;
 
             case 'groups':

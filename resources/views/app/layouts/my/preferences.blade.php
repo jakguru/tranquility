@@ -40,6 +40,11 @@
 									<input type="text" class="d-none" name="avatar" id="avatar-field" value="{{ old('avatar') }}" />
 									<img src="{{ \App\Helpers\BusinessCardHelper::getUrlForAvatarImage($model, $model->id) }}" class="avatar" id="avatar" />
 								</div>
+								@if ($errors->has('avatar'))
+				                    <span class="invalid-feedback" role="alert">
+				                        <strong>{{ $errors->first('avatar') }}</strong>
+				                    </span>
+				                @endif
 							</div>
 							<div class="col-12 col-md-10 mb-3 mb-md-1">
 								<div class="row">

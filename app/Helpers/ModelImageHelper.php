@@ -138,7 +138,7 @@ class ModelImageHelper
             $obj = $model::find($model_id);
             if (is_subclass_of($obj, 'Illuminate\Database\Eloquent\Model', true)) {
                 if (!is_null($obj->avatar) && strlen($obj->avatar) > 0) {
-                    $img = @imagecreatefromstring(File::get($obj->avatar));
+                    $img = @imagecreatefromstring(Storage::get($obj->avatar));
                 } elseif (!is_null($obj->email) && strlen($obj->email) > 0) {
                     $url = sprintf('https://www.gravatar.com/avatar/%s?%s', md5($obj->email), http_build_query([
                         's' => intval($size),
@@ -169,6 +169,8 @@ class ModelImageHelper
                     }
                     $img = @imagecreatefromstring($contents);
                 }
+                imagealphablending($img, false);
+                imagesavealpha($img, true);
                 imagepng($img);
                 imagedestroy($img);
             }
@@ -190,5 +192,32 @@ class ModelImageHelper
             $model = get_class($model);
         }
         return route('get-model-avatar', ['model' => $model, 'id' => $model_id]);
+    }
+
+    public static function saveImageFromBase64($base64, $model = '')
+    {
+        if (false !== strpos($base64, ',')) {
+            $img = @imagecreatefrompng(sprintf('data://%s', $base64));
+            if (!$img) {
+                return null;
+            }
+            if (is_object($model)) {
+                $class = get_class($model);
+                $id = $model->id;
+            } else {
+                $class = $model;
+                $id = 0;
+            }
+            $hash = md5(sprintf('avatar-for-%s-model-%d', $model, $id));
+            ob_start();
+            imagealphablending($img, false);
+            imagesavealpha($img, true);
+            imagepng($img);
+            $contents = ob_get_clean();
+            imagedestroy($img);
+            $img_name = sprintf('%s.avatar.png', $hash);
+            $result = Storage::put($img_name, $contents, 'private');
+            return $img_name;
+        }
     }
 }

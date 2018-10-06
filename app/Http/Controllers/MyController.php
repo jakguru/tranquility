@@ -33,70 +33,88 @@ class MyController extends Controller
 
     public function savePreferences(Request $request)
     {
-    	$section = $request->input('section');
+        $section = $request->input('section');
         switch ($section) {
-        	case 'preferences':
-        		$rules = [
-        			'avatar' => 'nullable|string',
-        			'salutation' => 'string|nullable',
-        			'title' => 'string|nullable',
-		            'fName' => 'required|string',
-		            'lName' => 'required|string',
-		            'email' => [
-		                'required',
-		                'email',
-		                Rule::unique('users')->ignore($request->user()->id),
-		            ],
-		            'main_phone_country' => ['required_with:main_phone', Rule::in(\App\Helpers\CountryHelper::getCountriesForValidation(false))],
-		            'main_phone' => 'phone|nullable',
-		            'mobile_phone_country' => ['required_with:mobile_phone', Rule::in(\App\Helpers\CountryHelper::getCountriesForValidation(false))],
-		            'mobile_phone' => 'phone|mobile|nullable',
-		            'home_phone_country' => ['required_with:home_phone', Rule::in(\App\Helpers\CountryHelper::getCountriesForValidation(false))],
-		            'home_phone' => 'phone|nullable',
-		            'work_phone_country' => ['required_with:work_phone', Rule::in(\App\Helpers\CountryHelper::getCountriesForValidation(false))],
-		            'work_phone' => 'phone|nullable',
-		            'fax_phone_country' => ['required_with:fax_phone', Rule::in(\App\Helpers\CountryHelper::getCountriesForValidation(false))],
-		            'fax_phone' => 'phone|nullable',
-		            'birthday' => 'date|nullable|before_or_equal:18 years ago',
-		            'address_line_1' => 'string|nullable',
-		            'address_line_2' => 'string|nullable',
-		            'city' => 'string|nullable',
-		            'state' => 'string|nullable',
-		            'postal' => 'string|nullable',
-		            'country' => ['string', 'required', Rule::in(\App\Helpers\CountryHelper::getCountriesForValidation(false))],
-		            'whatsapp_phone_country' => ['required_with:whatsapp_phone', Rule::in(\App\Helpers\CountryHelper::getCountriesForValidation(false))],
-		            'whatsapp_phone' => 'phone|nullable',
-		            'telegram_phone_country' => ['required_with:telegram_phone', Rule::in(\App\Helpers\CountryHelper::getCountriesForValidation(false))],
-		            'telegram_phone' => 'phone|nullable',
-		            'viber_phone_country' => ['required_with:viber_phone', Rule::in(\App\Helpers\CountryHelper::getCountriesForValidation(false))],
-		            'viber_phone' => 'phone|nullable',
-		            'skype' => 'string|nullable',
-		            'facebook' => 'url|nullable',
-		            'googleplus' => 'url|nullable',
-		            'linkedin' => 'url|nullable',
-		            'timezone' => ['required', 'string', Rule::in(\DateTimeZone::listIdentifiers(\DateTimeZone::ALL))],
-		            'locale' => ['required', 'string', Rule::in(array_keys(\App\Http\Controllers\SettingsController::getListOfLanguages()))],
-		            'temperature_unit' => ['required', 'string', Rule::in(['celsius', 'fahrenheit'])],
-		            'dateformat' => ['required', 'string'],
-		            'timeformat' => ['required', 'string'],
-		            'datetimeformat' => ['required', 'string'],
-        		];
-        		echo '<pre>';
-        		print_r($request->all());
-        		echo '</pre>';
-        		exit();
-        		break;
+            case 'preferences':
+                $rules = [
+                    'avatar' => ['nullable','string', new \App\Rules\Base64EncodedImage],
+                    'salutation' => 'string|nullable',
+                    'title' => 'string|nullable',
+                    'fName' => 'required|string',
+                    'lName' => 'required|string',
+                    'email' => [
+                        'required',
+                        'email',
+                        Rule::unique('users')->ignore($request->user()->id),
+                    ],
+                    'main_phone_country' => ['required_with:main_phone', Rule::in(\App\Helpers\CountryHelper::getCountriesForValidation(false))],
+                    'main_phone' => 'phone|nullable',
+                    'mobile_phone_country' => ['required_with:mobile_phone', Rule::in(\App\Helpers\CountryHelper::getCountriesForValidation(false))],
+                    'mobile_phone' => 'phone|mobile|nullable',
+                    'home_phone_country' => ['required_with:home_phone', Rule::in(\App\Helpers\CountryHelper::getCountriesForValidation(false))],
+                    'home_phone' => 'phone|nullable',
+                    'work_phone_country' => ['required_with:work_phone', Rule::in(\App\Helpers\CountryHelper::getCountriesForValidation(false))],
+                    'work_phone' => 'phone|nullable',
+                    'fax_phone_country' => ['required_with:fax_phone', Rule::in(\App\Helpers\CountryHelper::getCountriesForValidation(false))],
+                    'fax_phone' => 'phone|nullable',
+                    'birthday' => 'date|nullable|before_or_equal:18 years ago',
+                    'address_line_1' => 'string|nullable',
+                    'address_line_2' => 'string|nullable',
+                    'city' => 'string|nullable',
+                    'state' => 'string|nullable',
+                    'postal' => 'string|nullable',
+                    'country' => ['string', 'required', Rule::in(\App\Helpers\CountryHelper::getCountriesForValidation(false))],
+                    'whatsapp_phone_country' => ['required_with:whatsapp_phone', Rule::in(\App\Helpers\CountryHelper::getCountriesForValidation(false))],
+                    'whatsapp_phone' => 'phone|nullable',
+                    'telegram_phone_country' => ['required_with:telegram_phone', Rule::in(\App\Helpers\CountryHelper::getCountriesForValidation(false))],
+                    'telegram_phone' => 'phone|nullable',
+                    'viber_phone_country' => ['required_with:viber_phone', Rule::in(\App\Helpers\CountryHelper::getCountriesForValidation(false))],
+                    'viber_phone' => 'phone|nullable',
+                    'skype' => 'string|nullable',
+                    'facebook' => 'url|nullable',
+                    'googleplus' => 'url|nullable',
+                    'linkedin' => 'url|nullable',
+                    'timezone' => ['required', 'string', Rule::in(\DateTimeZone::listIdentifiers(\DateTimeZone::ALL))],
+                    'locale' => ['required', 'string', Rule::in(array_keys(\App\Http\Controllers\SettingsController::getListOfLanguages()))],
+                    'temperature_unit' => ['required', 'string', Rule::in(['celsius', 'fahrenheit'])],
+                    'dateformat' => ['required', 'string'],
+                    'timeformat' => ['required', 'string'],
+                    'datetimeformat' => ['required', 'string'],
+                ];
+                Validator::make($request->all(), $rules)->validate();
+                if ($request->has('avatar') && !empty($request->input('avatar'))) {
+                    $request->merge(['avatar' => \App\Helpers\ModelImageHelper::saveImageFromBase64($request->input('avatar'), $request->user())]);
+                }
+                foreach ($rules as $field => $rules) {
+                    if ('avatar' == $field) {
+                        if (strlen($request->avatar) > 0) {
+                            $request->user()->{$field} = $request->input($field);
+                        }
+                    } else {
+                        $request->user()->{$field} = $request->input($field);
+                    }
+                }
+                $request->user()->save();
+                return Redirect::route('my-preferences')->with('globalsuccessmessage', __('Updated My Preferences Successfully'));
+                break;
 
-        	case 'security':
-        		echo '<pre>';
-        		print_r($request->all());
-        		echo '</pre>';
-        		exit();
-        		break;
-        	
-        	default:
-        		return Redirect::route('my-preferences')->with('globalerrormessage', sprintf(__('Unknown Section "%s"'), $section));
-        		break;
+            case 'security':
+                Validator::make($request->all(), [
+                    'password' => 'string|nullable|confirmed',
+                    'password_confirmation' => 'string|nullable|required_with:password',
+                    'google2fa_secret' => 'string|nullable|googlemfasecret',
+                ])->validate();
+                $request->user()->google2fa_secret = $request->input('google2fa_secret');
+                if ($request->has('password')) {
+                    $request->user()->password = Hash::make($request->input('password'));
+                }
+                $request->user()->save();
+                return Redirect::route('my-preferences')->with('globalsuccessmessage', __('Updated My Security Settings Successfully'));
+                break;
+            
+            default:
+                return Redirect::route('my-preferences')->with('globalerrormessage', sprintf(__('Unknown Section "%s"'), $section));
+                break;
         }
     }
 }
