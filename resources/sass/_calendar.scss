@@ -28,6 +28,14 @@ table.table-calendar {
 						border-radius: 50%;
 					}
 				}
+
+				&.current {
+					> a {
+						color: $white;
+						background: $primary;
+						border-radius: 50%;
+					}
+				}
 			}
 		}
 	}

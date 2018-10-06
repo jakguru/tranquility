@@ -42,7 +42,7 @@
 								$carbon = Carbon\Carbon::createFromDate($params->year, $params->month, $shownDates + 1);
 								@endphp
 								@if(strtolower($carbon->englishDayOfWeek) == $day && $shownDates < $params->cmonth->daysInMonth)
-									<td class="text-center{{$carbon->isSameDay($params->date) ? ' today' : ''}}">
+									<td class="text-center{{$carbon->isSameDay(Carbon\Carbon::today()) ? ' today' : ''}}{{ $carbon->isSameDay($params->date) ? ' current' : '' }}">
 										<a href="{{ \App\Http\Controllers\MyController::makeCalendardLink($params->year, $params->month, $carbon->toDateTimeString()) }}">{{ $shownDates + 1 }}</a>
 									</td>
 									@php $shownDates ++; @endphp
@@ -66,7 +66,7 @@
 								<tr>
 									<th class="text-center">{{ __('UTC') }}</th>
 									<th class="text-center">{{ ucwords(str_replace('_', ' ', $params->timezone)) }}</th>
-									<th class="appointments"></th>
+									<th class="appointments text-center">{{ __('Appointments') }}</th>
 								</tr>
 							</thead>
 							<tbody>
@@ -94,6 +94,15 @@
 							}
 							@endphp
 							@endwhile
+								@php
+								$dt = new Carbon\Carbon('1970-01-02 00:00:00', $params->timezone);
+								$utcdt = $dt->copy()->setTimezone('UTC');
+								@endphp
+								<tr>
+									<td class="text-center">{{ $utcdt->format($format) }}</td>
+									<td class="text-center">{{ $dt->format($format) }}</td>
+									<td class="appointments"></td>
+								</tr>
 							</tbody>
 						</table>
 					</div>

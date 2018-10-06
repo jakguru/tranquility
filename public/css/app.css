@@ -25740,6 +25740,12 @@ table.table-calendar > tbody > tr > td.today > a {
   border-radius: 50%;
 }
 
+table.table-calendar > tbody > tr > td.current > a {
+  color: #fff;
+  background: #3490dc;
+  border-radius: 50%;
+}
+
 table.table-schedule thead > tr > td:not(.appointments),
 table.table-schedule thead > tr > th:not(.appointments),
 table.table-schedule tbody > tr > td:not(.appointments),
