@@ -80,6 +80,19 @@
 		                        @endif
 							</div>
 							<div class="form-group">
+								<label>Beginning of Week</label>
+								<select name="beginningofweek" class="form-control{{ $errors->has('beginningofweek') ? ' is-invalid' : '' }}" required autocomplete="off">
+									@foreach(\App\Http\Controllers\SettingsController::getListOfDays() as $value => $label)
+									<option value="{{ $value }}"{{ $value == old('beginningofweek', config('app.beginningofweek', 'monday')) ? ' selected' : '' }}>{{ $label }}</option>
+									@endforeach
+								</select>
+								@if ($errors->has('beginningofweek'))
+		                            <span class="invalid-feedback" role="alert">
+		                                <strong>{{ $errors->first('beginningofweek') }}</strong>
+		                            </span>
+		                        @endif
+							</div>
+							<div class="form-group">
 								<label>Date Format</label>
 								<input type="text" name="dateformat" class="form-control{{ $errors->has('dateformat') ? ' is-invalid' : '' }}"  value="{{ old('dateformat', config('app.dateformat')) }}" required autocomplete="off" />
 								@if ($errors->has('dateformat'))

@@ -8,6 +8,7 @@ use Illuminate\Support\Facades\Redirect;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Validation\Rule;
 use Illuminate\Support\Facades\Hash;
+use Carbon\Carbon;
 
 class MyController extends Controller
 {
@@ -23,7 +24,32 @@ class MyController extends Controller
 
     public function calendar(Request $request)
     {
-        abort(501);
+        $timezone = (!is_null($request->user()->timezone)) ? $request->user()->timezone : config('app.timezone');
+        $params = new \stdClass();
+        $params->view = 'day';
+        $params->year = intval($request->input('year', date('Y')));
+        $params->month = intval($request->input('month', date('m')));
+        $params->date = new Carbon($request->input('date', date('Y-m-d')), $timezone);
+        $params->cmonth = Carbon::createFromDate($params->year, $params->month);
+        $params->items = [];
+        $params->timezone = $timezone;
+        $days = array_keys(\App\Http\Controllers\SettingsController::getListOfDays());
+        $first_day = null;
+        $params->days = [];
+        $attcount = 0;
+        while (count($params->days) < 7 && $attcount < 100) {
+            $day = array_shift($days);
+            if (is_null($first_day) && $day !== config('app.beginningofweek', 'monday')) {
+                array_push($days, $day);
+            } elseif ($day == config('app.beginningofweek', 'monday')) {
+                $first_day = $day;
+                array_push($params->days, $day);
+            } elseif (!is_null($first_day)) {
+                array_push($params->days, $day);
+            }
+            $attcount ++;
+        }
+        return view('app.layouts.my.calendar', ['params' => $params]);
     }
 
     public function preferences(Request $request)
@@ -116,5 +142,40 @@ class MyController extends Controller
                 return Redirect::route('my-preferences')->with('globalerrormessage', sprintf(__('Unknown Section "%s"'), $section));
                 break;
         }
+    }
+
+    public static function makeCalendardLink($year = null, $month = null, $date = null, $view = 'day')
+    {
+        $timezone = (!is_null(request()->user()->timezone)) ? request()->user()->timezone : config('app.timezone');
+        $query = [];
+        if (is_null($year)) {
+            $year = date('Y');
+        }
+        if (is_null($month)) {
+            $month = date('m');
+        }
+        if (is_null($date)) {
+            $date = date('Y-m-d');
+        }
+        if (is_null($view)) {
+            $view = 'day';
+        }
+        if (intval($year) !== intval(date('Y'))) {
+            $query['year'] = intval($year);
+        }
+        if (intval($month) !== intval(date('m'))) {
+            $query['month'] = intval($month);
+        }
+        if ('day' !== $view) {
+            $query['view'] = $view;
+        }
+        $today = Carbon::today($timezone)->setTime(0, 0, 0);
+        $today->setTime(0, 0, 0);
+        $date = new Carbon($date);
+        $date->setTime(0, 0, 0);
+        if (!$today->equalTo($date)) {
+            $query['date'] = $date->toDateTimeString();
+        }
+        return route('my-calendar', $query);
     }
 }

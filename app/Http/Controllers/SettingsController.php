@@ -96,6 +96,7 @@ class SettingsController extends Controller
                 $option->timeformat = $request->input('timeformat');
                 $option->datetimeformat = $request->input('datetimeformat');
                 $option->locale = $request->input('locale');
+                $option->beginningofweek = $request->input('beginningofweek');
                 $saved = \App\Options::set('system', $option);
                 if (true == $saved) {
                     return Redirect::route('settings-system')->with('globalsuccessmessage', __('Updated System Settings successfully.'));
@@ -291,5 +292,18 @@ class SettingsController extends Controller
             $return[$lang] = __(sprintf('lang.%s', $lang));
         }
         return $return;
+    }
+
+    public static function getListOfDays()
+    {
+        return [
+            'sunday' => __('Sunday'),
+            'monday' => __('Monday'),
+            'tuesday' => __('Tuesday'),
+            'wednesday' => __('Wednesday'),
+            'thursday' => __('Thursday'),
+            'friday' => __('Friday'),
+            'saturday' => __('Saturday'),
+        ];
     }
 }

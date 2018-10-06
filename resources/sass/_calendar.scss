@@ -1,0 +1,52 @@
+table.table-calendar {
+	font-size: 0.85rem;
+
+	> thead {
+		> tr {
+			> th {
+				font-weight: normal;
+				> a {
+					color: $primary;
+				}
+			}
+		}
+	}
+	> tbody {
+		> tr {
+			> td {
+				padding: 0;
+
+				> a {
+					display: block;
+					color: $primary;
+				}
+
+				&.today {
+					> a {
+						color: $white;
+						background: $dark;
+						border-radius: 50%;
+					}
+				}
+			}
+		}
+	}
+}
+
+table.table-schedule {
+	thead,
+	tbody {
+		> tr {
+			> td,
+			> th {
+				&:not(.appointments) {
+					white-space: nowrap;
+					width:0.1%;
+				}
+				.appointments {
+					width: 100%;
+				}
+			}
+		}
+	}
+}

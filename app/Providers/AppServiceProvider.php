@@ -72,6 +72,9 @@ class AppServiceProvider extends ServiceProvider
             if (property_exists($system_options, 'locale')) {
                 Config::set('app.locale', $system_options->locale);
             }
+            if (property_exists($system_options, 'beginningofweek')) {
+                Config::set('app.beginningofweek', $system_options->beginningofweek);
+            }
         } else {
             Config::set('app.listsize', 20);
             Config::set('app.dateformat', 'F j, Y');
