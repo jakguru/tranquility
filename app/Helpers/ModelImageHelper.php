@@ -183,7 +183,7 @@ class ModelImageHelper
         if (is_object($model)) {
             $model = get_class($model);
         }
-        return route('get-model-background', ['model' => $model, 'id' => $model_id]);
+        return route('get-model-background', ['model' => $model, 'id' => $model_id, 'version' => md5(time())]);
     }
 
     public static function getUrlForAvatarImage($model, $model_id)
@@ -191,7 +191,7 @@ class ModelImageHelper
         if (is_object($model)) {
             $model = get_class($model);
         }
-        return route('get-model-avatar', ['model' => $model, 'id' => $model_id]);
+        return route('get-model-avatar', ['model' => $model, 'id' => $model_id, 'version' => md5(time())]);
     }
 
     public static function saveImageFromBase64($base64, $model = '')

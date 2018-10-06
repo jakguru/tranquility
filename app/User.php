@@ -259,6 +259,7 @@ class User extends Authenticatable
             's' => $size,
             'd' => $default,
             'r' => $rating,
+            'version' => md5(time()),
         ]);
     }
 
