@@ -36,6 +36,7 @@ mix.js('resources/js/app.js', 'public/js')
 		'node_modules/weather-icons/css/weather-icons.css',
 		'node_modules/pnotify/dist/pnotify.css',
 		'node_modules/pnotify/dist/pnotify.brighttheme.css',
+		'node_modules/@fancyapps/fancybox/dist/jquery.fancybox.css',
 		'public/css/app.css',
    	], 'public/css/app.css')
    .copy('resources/img/', 'public/img')

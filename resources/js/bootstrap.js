@@ -60,6 +60,7 @@ try {
 	    }
 	  });
     window.ClipboardJS = require('clipboard');
+    require('@fancyapps/fancybox');
 } catch (e) {}
 
 try {

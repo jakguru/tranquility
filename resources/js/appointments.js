@@ -1,6 +1,10 @@
 window.openCreateAppointmentDialog = function(e) {
 	e.preventDefault();
-	Swal('Opened New Appointment Modal');
+	jQuery.fancybox.open({
+		closeExisting: true,
+		type: 'html',
+		src: '<p>Opened Modal</p>',
+	});
 }
 
 var dashboardAppointmentManager = function(identifier) {
