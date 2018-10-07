@@ -31,6 +31,9 @@
 		</form>
 		@auth
 		<div id="user-bar" class="text-right">
+			<a href="javascript:false" class="new-appointment-button" title="{{ __('Create an Appointment') }}">
+				<span class="far fa-calendar-plus"></span>
+			</a>
 			<a href="{{ route('my-inbox') }}" id="messages-indicator" class="indicator-with-label">
 				<span class="fas fa-envelope"></span>
 				<span class="indicator-label">0</span>
@@ -53,8 +56,7 @@
 				</div>
 			</div>
 			<span class="user-bar-seperator"></span>
-			<!--<a href="{{ route('logout') }}"><span class="fas fa-user-slash"></span></a>-->
-			<div class="system-clock" data-moment-format="{{ Auth::user()->getMomentDateTimeFormat('time') }}" data-moment-tz="{{ Auth::user()->getTimeZone() }}" data-moment="now"></div>
+			<div class="system-clock d-none d-md-block" data-moment-format="{{ Auth::user()->getMomentDateTimeFormat('time') }}" data-moment-tz="{{ Auth::user()->getTimeZone() }}" data-moment="now"></div>
 		</div>
 		@endauth
 	</header>
