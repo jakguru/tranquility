@@ -77,12 +77,13 @@
 							@while( $hour < 24 && $minute < 60 )
 							@php
 							$format = is_null(Auth::user()->timeformat) ? config('app.timeformat') : Auth::user()->timeformat;
+							$format = trim(str_replace([':s', 's'], '', $format));
 							$dt = new Carbon\Carbon(sprintf('1970-01-01 %s:%s:00', $hour, $minute), $params->timezone);
 							$utcdt = $dt->copy()->setTimezone('UTC');
 							@endphp
 							<tr>
-								<td class="text-center">{{ $utcdt->format($format) }}</td>
-								<td class="text-center">{{ $dt->format($format) }}</td>
+								<td class="text-center">{{ $utcdt->format($format) }} - {{ $utcdt->addMinutes(15)->format($format) }}</td>
+								<td class="text-center">{{ $dt->format($format) }} - {{ $dt->addMinutes(15)->format($format) }}</td>
 								<td class="appointments"></td>
 							</tr>
 							@php
@@ -94,15 +95,6 @@
 							}
 							@endphp
 							@endwhile
-								@php
-								$dt = new Carbon\Carbon('1970-01-02 00:00:00', $params->timezone);
-								$utcdt = $dt->copy()->setTimezone('UTC');
-								@endphp
-								<tr>
-									<td class="text-center">{{ $utcdt->format($format) }}</td>
-									<td class="text-center">{{ $dt->format($format) }}</td>
-									<td class="appointments"></td>
-								</tr>
 							</tbody>
 						</table>
 					</div>

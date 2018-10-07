@@ -14,11 +14,12 @@ table.table-calendar {
 	> tbody {
 		> tr {
 			> td {
-				padding: 0;
+				padding: 0.25rem 0;
 
 				> a {
-					display: block;
+					display: inline-block;
 					color: $primary;
+					padding: 0.1rem 0.5rem;
 				}
 
 				&.today {
