@@ -55,7 +55,7 @@
 					<a class="dropdown-item" href="{{ route('logout') }}">{{ __('Log Out') }}</a>
 				</div>
 			</div>
-			<span class="user-bar-seperator"></span>
+			<span class="user-bar-seperator d-none d-md-block"></span>
 			<div class="system-clock d-none d-md-block" data-moment-format="{{ Auth::user()->getMomentDateTimeFormat('time') }}" data-moment-tz="{{ Auth::user()->getTimeZone() }}" data-moment="now"></div>
 		</div>
 		@endauth

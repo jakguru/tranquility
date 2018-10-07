@@ -8,7 +8,7 @@
 				<input type="hidden" id="image-blob" value="" />
 				<input type="file" class="d-none" id="uploaded-image" accept="image/*" />
 				<div class="drop" id="dropbox">
-					<p class="text-center">{{ __('Drag and Drop Image Here') }}</p>
+					<p class="text-center d-none d-md-block">{{ __('Drag and Drop Image Here') }}</p>
 					<div class="text-center">
 						<button class="btn btn-dark" id="open-file-picker">{{ __('Open File Picker') }}</button>
 					</div>
