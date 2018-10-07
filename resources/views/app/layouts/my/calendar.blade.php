@@ -17,7 +17,7 @@
 	]])
 	<div class="container-fluid">
 		<div class="row">
-			<div class="col-md-2">
+			<div class="col-md-3">
 				<table class="table table-calendar table-sm table-bordered">
 					<thead>
 						<tr>
@@ -54,8 +54,11 @@
 						@endwhile
 					</tbody>
 				</table>
+				<div class="form-group">
+					<button class="btn btn-success btn-block add-appointment-button"><i class="far fa-calendar-plus mr-2"></i>{{ __('New Appointment') }}</button>
+				</div>
 			</div>
-			<div class="col-md-10">
+			<div class="col-md-9">
 				<div class="card">
 					<div class="card-header bg-dark text-white">
 						<h4 class="mb-0 mt-0">{{ sprintf(__('Schedule for %s'), $params->date->format(is_null(Auth::user()->dateformat) ? config('app.dateformat') : Auth::user()->dateformat      )) }}</h4>

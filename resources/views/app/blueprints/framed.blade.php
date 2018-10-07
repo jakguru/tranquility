@@ -31,8 +31,9 @@
 		</form>
 		@auth
 		<div id="user-bar" class="text-right">
-			<a href="javascript:false" class="new-appointment-button" title="{{ __('Create an Appointment') }}">
-				<span class="far fa-calendar-plus"></span>
+			<a href="javascript:false" id="appointments-button" class="indicator-with-label">
+				<span class="far fa-calendar-alt"></span>
+				<span class="indicator-label">0</span>
 			</a>
 			<a href="{{ route('my-inbox') }}" id="messages-indicator" class="indicator-with-label">
 				<span class="fas fa-envelope"></span>

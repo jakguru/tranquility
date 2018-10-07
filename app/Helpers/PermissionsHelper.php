@@ -27,6 +27,15 @@ class PermissionsHelper
         }
     }
 
+    public static function removePermissionsForModel($model, Blueprint &$table)
+    {
+        $columns = [];
+        foreach (self::getPermissionFieldsForModel($model) as $field) {
+            array_push($columns, $field);
+        }
+        $table->dropColumn($columns);
+    }
+
     public static function getClassName($classname)
     {
         if ($pos = strrpos($classname, '\\')) {

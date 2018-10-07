@@ -25762,6 +25762,10 @@ table.table-schedule tbody > tr > th .appointments {
   width: 100%;
 }
 
+.appointments-popover {
+  padding: 0;
+}
+
 .alert.alert-primary {
   color: #fff;
   background: #3490dc;

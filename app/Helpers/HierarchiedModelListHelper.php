@@ -60,7 +60,7 @@ class HierarchiedModelListHelper extends ModelListHelper
         }
     }
 
-    protected function appendHierarchyToModelLabel($model, $depth = 1, &$collection)
+    protected function appendHierarchyToModelLabel($model, $depth = 1, &$collection = [])
     {
         $new_name = str_repeat("     ", $depth);
         $new_name .= '⊢ ';

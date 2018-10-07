@@ -7,6 +7,7 @@
 
 require('./bootstrap');
 require('./rtu');
+require('./appointments');
 import Cropper from 'cropperjs';
 
 var setMoment = function() {

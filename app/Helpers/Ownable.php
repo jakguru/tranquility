@@ -6,18 +6,8 @@ namespace App\Helpers;
 
 trait Ownable
 {
-    public function creator()
-    {
-        return $this->hasOne('App\User');
-    }
-
     public function owner()
     {
-        return $this->hasOne('App\User');
-    }
-
-    public function group()
-    {
-        return $this->hasOne('App\Group');
+        return $this->hasOne('App\User', 'id', 'owner_id');
     }
 }
