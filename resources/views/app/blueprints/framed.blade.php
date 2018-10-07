@@ -31,10 +31,12 @@
 		</form>
 		@auth
 		<div id="user-bar" class="text-right">
-			<a href="javascript:false" id="appointments-button" class="indicator-with-label">
+			@if(Auth::user()->can('list', \App\Meeting::class))
+			<a href="javascript:false" id="appointments-button" class="indicator-with-label{{ Auth::user()->can('add', \App\Meeting::class) ? ' with-add' : '' }}">
 				<span class="far fa-calendar-alt"></span>
 				<span class="indicator-label">0</span>
 			</a>
+			@endif
 			<a href="{{ route('my-inbox') }}" id="messages-indicator" class="indicator-with-label">
 				<span class="fas fa-envelope"></span>
 				<span class="indicator-label">0</span>
@@ -51,7 +53,9 @@
 				</button>
 				<div class="dropdown-menu">
 					<a class="dropdown-item @if(Request::route()->getName() == 'my-inbox') active @endif" href="{{ route('my-inbox') }}">{{ __('My Inbox') }}</a>
+					@if(Auth::user()->can('list', \App\Meeting::class))
 					<a class="dropdown-item @if(Request::route()->getName() == 'my-calendar') active @endif" href="{{ route('my-calendar') }}">{{ __('My Calendar') }}</a>
+					@endif
 					<a class="dropdown-item @if(Request::route()->getName() == 'my-preferences') active @endif" href="{{ route('my-preferences') }}">{{ __('My Preferences') }}</a>
 					<a class="dropdown-item" href="{{ route('logout') }}">{{ __('Log Out') }}</a>
 				</div>

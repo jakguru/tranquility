@@ -10,7 +10,9 @@ var dashboardAppointmentManager = function(identifier) {
 	}
 	this.showAppointments = function() {
 		html = '';
-		html += '<button class="btn btn-success btn-block add-appointment-button"><i class="far fa-calendar-plus mr-2"></i>New Appointment</button>';
+		if (obj.obj.hasClass('with-add')) {
+			html += '<button class="btn btn-success btn-block add-appointment-button"><i class="far fa-calendar-plus mr-2"></i>New Appointment</button>';
+		}
 		return html;
 	}
 	var obj = this;

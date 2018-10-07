@@ -24,6 +24,9 @@ class MyController extends Controller
 
     public function calendar(Request $request)
     {
+        if (!$request->user()->can('list', \App\Meeting::class)) {
+            abort(403);
+        }
         $timezone = (!is_null($request->user()->timezone)) ? $request->user()->timezone : config('app.timezone');
         $params = new \stdClass();
         $params->view = 'day';

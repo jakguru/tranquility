@@ -54,9 +54,11 @@
 						@endwhile
 					</tbody>
 				</table>
+				@if(Auth::user()->can('add', \App\Meeting::class))
 				<div class="form-group">
 					<button class="btn btn-success btn-block add-appointment-button"><i class="far fa-calendar-plus mr-2"></i>{{ __('New Appointment') }}</button>
 				</div>
+				@endif
 			</div>
 			<div class="col-md-9">
 				<div class="card">
