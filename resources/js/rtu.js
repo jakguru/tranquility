@@ -115,7 +115,7 @@ var notificationIndicator = function(identifier) {
 					notifications = obj.getNotifications();
 					if ( 0 === notifications.length ) {
 						setTimeout(function() {
-							popover.find('.notification-popover').append('<span class="text-primary">You do not have any notifications.</span>');
+							popover.find('.notification-popover').append(sprintf('<span class="text-primary">%s</span>', __('You do not have any notifications.')));
 						}, 300);
 					}
 				}
@@ -149,7 +149,7 @@ var notificationIndicator = function(identifier) {
 		html = '';
 		var notifications = obj.getNotifications();
 		if ( 0 === notifications.length ) {
-			html += '<span class="text-primary">You do not have any notifications.</span>';
+			html += sprintf('<span class="text-primary">%s</span>', __('You do not have any notifications.'));
 		} else {
 			for (var i = 0; i < notifications.length; i++) {
 				var n = notifications[i];
@@ -214,7 +214,7 @@ var notificationIndicator = function(identifier) {
 					notifications = obj.getNotifications();
 					if ( 0 === notifications.length ) {
 						setTimeout(function() {
-							popover.find('.notification-popover').append('<span class="text-primary">You do not have any notifications.</span>');
+							popover.find('.notification-popover').append(sprintf('<span class="text-primary">%s</span>', __('You do not have any notifications.')));
 						}, 300);
 					}
 				}

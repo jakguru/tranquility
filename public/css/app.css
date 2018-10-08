@@ -28082,6 +28082,18 @@ table.table-schedule tbody > tr > th .appointments {
   padding: 0;
 }
 
+.fancybox-content.container {
+  padding: 0;
+}
+
+.fancybox-content.container > .card {
+  border-radius: 0;
+}
+
+.fancybox-content.container > .card > * {
+  border-radius: 0;
+}
+
 .alert.alert-primary {
   color: #fff;
   background: #3490dc;
