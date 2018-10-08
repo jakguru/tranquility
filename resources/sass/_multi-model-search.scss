@@ -1,0 +1,26 @@
+.multi-model-search {
+	@extend .form-control;
+	padding: 0;
+	position: relative;
+
+	> .form-control {
+		border: none;
+		background: transparent;
+		position: relative;
+		top: -1px;
+	}
+}
+
+@each $breakpoint in map-keys($grid-breakpoints) {
+	$infix: breakpoint-infix($breakpoint, $grid-breakpoints);
+	.multi-model-search#{$infix} {
+		@extend .form-control#{$infix} !optional;
+		padding: 0;
+
+		> .form-control {
+			border: none;
+			background: transparent;
+			@extend .form-control#{$infix} !optional;
+		}
+	}
+}

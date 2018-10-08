@@ -6780,7 +6780,10 @@ pre code {
   border: 0;
 }
 
-.form-control {
+.form-control,
+.multi-model-search,
+.multi-model-search > .form-control,
+.multi-model-search > .multi-model-search {
   display: block;
   width: 100%;
   height: calc(2.19rem + 2px);
@@ -6799,18 +6802,25 @@ pre code {
 }
 
 @media screen and (prefers-reduced-motion: reduce) {
-  .form-control {
+  .form-control,
+  .multi-model-search,
+  .multi-model-search > .form-control,
+  .multi-model-search > .multi-model-search {
     -webkit-transition: none;
     transition: none;
   }
 }
 
-.form-control::-ms-expand {
+.form-control::-ms-expand,
+.multi-model-search::-ms-expand,
+.multi-model-search > .form-control::-ms-expand,
+.multi-model-search > .multi-model-search::-ms-expand {
   background-color: transparent;
   border: 0;
 }
 
-.form-control:focus {
+.form-control:focus,
+.multi-model-search:focus {
   color: #495057;
   background-color: #fff;
   border-color: #a1cbef;
@@ -6819,28 +6829,40 @@ pre code {
           box-shadow: 0 0 0 0.2rem rgba(52, 144, 220, 0.25);
 }
 
-.form-control::-webkit-input-placeholder {
+.form-control::-webkit-input-placeholder,
+.multi-model-search::-webkit-input-placeholder,
+.multi-model-search > .form-control::-webkit-input-placeholder,
+.multi-model-search > .multi-model-search::-webkit-input-placeholder {
   color: #6c757d;
   opacity: 1;
 }
 
-.form-control::-ms-input-placeholder {
+.form-control::-ms-input-placeholder,
+.multi-model-search::-ms-input-placeholder,
+.multi-model-search > .form-control::-ms-input-placeholder,
+.multi-model-search > .multi-model-search::-ms-input-placeholder {
   color: #6c757d;
   opacity: 1;
 }
 
-.form-control::placeholder {
+.form-control::placeholder,
+.multi-model-search::placeholder,
+.multi-model-search > .form-control::placeholder,
+.multi-model-search > .multi-model-search::placeholder {
   color: #6c757d;
   opacity: 1;
 }
 
 .form-control:disabled,
-.form-control[readonly] {
+.multi-model-search:disabled,
+.form-control[readonly],
+.multi-model-search[readonly] {
   background-color: #e9ecef;
   opacity: 1;
 }
 
-select.form-control:focus::-ms-value {
+select.form-control:focus::-ms-value,
+select.multi-model-search:focus::-ms-value {
   color: #495057;
   background-color: #fff;
 }
@@ -6887,12 +6909,21 @@ select.form-control:focus::-ms-value {
 }
 
 .form-control-plaintext.form-control-sm,
-.form-control-plaintext.form-control-lg {
+.form-control-plaintext.multi-model-search-sm,
+.multi-model-search-sm > .form-control-plaintext.form-control,
+.multi-model-search-sm > .form-control-plaintext.multi-model-search,
+.form-control-plaintext.form-control-lg,
+.form-control-plaintext.multi-model-search-lg,
+.multi-model-search-lg > .form-control-plaintext.form-control,
+.multi-model-search-lg > .form-control-plaintext.multi-model-search {
   padding-right: 0;
   padding-left: 0;
 }
 
-.form-control-sm {
+.form-control-sm,
+.multi-model-search-sm,
+.multi-model-search-sm > .form-control,
+.multi-model-search-sm > .multi-model-search {
   height: calc(1.68125rem + 2px);
   padding: 0.25rem 0.5rem;
   font-size: 0.7875rem;
@@ -6900,7 +6931,10 @@ select.form-control:focus::-ms-value {
   border-radius: 0.2rem;
 }
 
-.form-control-lg {
+.form-control-lg,
+.multi-model-search-lg,
+.multi-model-search-lg > .form-control,
+.multi-model-search-lg > .multi-model-search {
   height: calc(2.6875rem + 2px);
   padding: 0.5rem 1rem;
   font-size: 1.125rem;
@@ -6909,11 +6943,16 @@ select.form-control:focus::-ms-value {
 }
 
 select.form-control[size],
-select.form-control[multiple] {
+select.multi-model-search[size],
+select.form-control[multiple],
+select.multi-model-search[multiple] {
   height: auto;
 }
 
-textarea.form-control {
+textarea.form-control,
+textarea.multi-model-search,
+.multi-model-search > textarea.form-control,
+.multi-model-search > textarea.multi-model-search {
   height: auto;
 }
 
@@ -7004,7 +7043,9 @@ textarea.form-control {
 }
 
 .was-validated .form-control:valid,
+.was-validated .multi-model-search:valid,
 .form-control.is-valid,
+.is-valid.multi-model-search,
 .was-validated
 .custom-select:valid,
 .custom-select.is-valid {
@@ -7012,7 +7053,9 @@ textarea.form-control {
 }
 
 .was-validated .form-control:valid:focus,
+.was-validated .multi-model-search:valid:focus,
 .form-control.is-valid:focus,
+.is-valid.multi-model-search:focus,
 .was-validated
 .custom-select:valid:focus,
 .custom-select.is-valid:focus {
@@ -7022,9 +7065,21 @@ textarea.form-control {
 }
 
 .was-validated .form-control:valid ~ .valid-feedback,
+.was-validated .multi-model-search:valid ~ .valid-feedback,
+.was-validated .multi-model-search > .form-control:valid ~ .valid-feedback,
+.was-validated .multi-model-search > .multi-model-search:valid ~ .valid-feedback,
 .was-validated .form-control:valid ~ .valid-tooltip,
+.was-validated .multi-model-search:valid ~ .valid-tooltip,
+.was-validated .multi-model-search > .form-control:valid ~ .valid-tooltip,
+.was-validated .multi-model-search > .multi-model-search:valid ~ .valid-tooltip,
 .form-control.is-valid ~ .valid-feedback,
+.is-valid.multi-model-search ~ .valid-feedback,
+.multi-model-search > .is-valid.form-control ~ .valid-feedback,
+.multi-model-search > .is-valid.multi-model-search ~ .valid-feedback,
 .form-control.is-valid ~ .valid-tooltip,
+.is-valid.multi-model-search ~ .valid-tooltip,
+.multi-model-search > .is-valid.form-control ~ .valid-tooltip,
+.multi-model-search > .is-valid.multi-model-search ~ .valid-tooltip,
 .was-validated
 .custom-select:valid ~ .valid-feedback,
 .was-validated
@@ -7128,7 +7183,9 @@ textarea.form-control {
 }
 
 .was-validated .form-control:invalid,
+.was-validated .multi-model-search:invalid,
 .form-control.is-invalid,
+.is-invalid.multi-model-search,
 .was-validated
 .custom-select:invalid,
 .custom-select.is-invalid {
@@ -7136,7 +7193,9 @@ textarea.form-control {
 }
 
 .was-validated .form-control:invalid:focus,
+.was-validated .multi-model-search:invalid:focus,
 .form-control.is-invalid:focus,
+.is-invalid.multi-model-search:focus,
 .was-validated
 .custom-select:invalid:focus,
 .custom-select.is-invalid:focus {
@@ -7146,9 +7205,21 @@ textarea.form-control {
 }
 
 .was-validated .form-control:invalid ~ .invalid-feedback,
+.was-validated .multi-model-search:invalid ~ .invalid-feedback,
+.was-validated .multi-model-search > .form-control:invalid ~ .invalid-feedback,
+.was-validated .multi-model-search > .multi-model-search:invalid ~ .invalid-feedback,
 .was-validated .form-control:invalid ~ .invalid-tooltip,
+.was-validated .multi-model-search:invalid ~ .invalid-tooltip,
+.was-validated .multi-model-search > .form-control:invalid ~ .invalid-tooltip,
+.was-validated .multi-model-search > .multi-model-search:invalid ~ .invalid-tooltip,
 .form-control.is-invalid ~ .invalid-feedback,
+.is-invalid.multi-model-search ~ .invalid-feedback,
+.multi-model-search > .is-invalid.form-control ~ .invalid-feedback,
+.multi-model-search > .is-invalid.multi-model-search ~ .invalid-feedback,
 .form-control.is-invalid ~ .invalid-tooltip,
+.is-invalid.multi-model-search ~ .invalid-tooltip,
+.multi-model-search > .is-invalid.form-control ~ .invalid-tooltip,
+.multi-model-search > .is-invalid.multi-model-search ~ .invalid-tooltip,
 .was-validated
 .custom-select:invalid ~ .invalid-feedback,
 .was-validated
@@ -7276,7 +7347,8 @@ textarea.form-control {
     margin-bottom: 0;
   }
 
-  .form-inline .form-control {
+  .form-inline .form-control,
+  .form-inline .multi-model-search {
     display: inline-block;
     width: auto;
     vertical-align: middle;
@@ -8489,6 +8561,7 @@ input[type="button"].btn-block {
 }
 
 .input-group > .form-control,
+.input-group > .multi-model-search,
 .input-group > .custom-select,
 .input-group > .custom-file {
   position: relative;
@@ -8500,18 +8573,26 @@ input[type="button"].btn-block {
 }
 
 .input-group > .form-control + .form-control,
+.input-group > .multi-model-search + .form-control,
+.input-group > .form-control + .multi-model-search,
+.input-group > .multi-model-search + .multi-model-search,
 .input-group > .form-control + .custom-select,
+.input-group > .multi-model-search + .custom-select,
 .input-group > .form-control + .custom-file,
+.input-group > .multi-model-search + .custom-file,
 .input-group > .custom-select + .form-control,
+.input-group > .custom-select + .multi-model-search,
 .input-group > .custom-select + .custom-select,
 .input-group > .custom-select + .custom-file,
 .input-group > .custom-file + .form-control,
+.input-group > .custom-file + .multi-model-search,
 .input-group > .custom-file + .custom-select,
 .input-group > .custom-file + .custom-file {
   margin-left: -1px;
 }
 
 .input-group > .form-control:focus,
+.input-group > .multi-model-search:focus,
 .input-group > .custom-select:focus,
 .input-group > .custom-file .custom-file-input:focus ~ .custom-file-label {
   z-index: 3;
@@ -8522,12 +8603,14 @@ input[type="button"].btn-block {
 }
 
 .input-group > .form-control:not(:last-child),
+.input-group > .multi-model-search:not(:last-child),
 .input-group > .custom-select:not(:last-child) {
   border-top-right-radius: 0;
   border-bottom-right-radius: 0;
 }
 
 .input-group > .form-control:not(:first-child),
+.input-group > .multi-model-search:not(:first-child),
 .input-group > .custom-select:not(:first-child) {
   border-top-left-radius: 0;
   border-bottom-left-radius: 0;
@@ -8611,6 +8694,7 @@ input[type="button"].btn-block {
 }
 
 .input-group-lg > .form-control,
+.input-group-lg > .multi-model-search,
 .input-group-lg > .input-group-prepend > .input-group-text,
 .input-group-lg > .input-group-append > .input-group-text,
 .input-group-lg > .input-group-prepend > .btn,
@@ -8623,6 +8707,7 @@ input[type="button"].btn-block {
 }
 
 .input-group-sm > .form-control,
+.input-group-sm > .multi-model-search,
 .input-group-sm > .input-group-prepend > .input-group-text,
 .input-group-sm > .input-group-append > .input-group-text,
 .input-group-sm > .input-group-prepend > .btn,
@@ -27714,30 +27799,38 @@ body.with-bg.dark-bg .btn-dynamic:not(:disabled):not(.disabled).active:focus,
           box-shadow: 0 0 0 0.2rem rgba(52, 58, 64, 0.5);
 }
 
-body.with-bg.dark-bg .form-control {
+body.with-bg.dark-bg .form-control,
+body.with-bg.dark-bg .multi-model-search {
   background: rgba(0, 0, 0, 0.05);
   border: 1px solid rgba(52, 58, 64, 0.3);
   color: #343a40;
 }
 
 body.with-bg.dark-bg .form-control:active,
-body.with-bg.dark-bg .form-control:focus {
+body.with-bg.dark-bg .multi-model-search:active,
+body.with-bg.dark-bg .form-control:focus,
+body.with-bg.dark-bg .multi-model-search:focus {
   color: #343a40;
 }
 
-body.with-bg.dark-bg .form-control:focus {
+body.with-bg.dark-bg .form-control:focus,
+body.with-bg.dark-bg .multi-model-search:focus {
   border-color: rgba(52, 58, 64, 0.4);
 }
 
 body.with-bg.dark-bg .form-control[disabled],
+body.with-bg.dark-bg .multi-model-search[disabled],
 body.with-bg.dark-bg .form-control[readonly],
-body.with-bg.dark-bg .form-control.disabled {
+body.with-bg.dark-bg .multi-model-search[readonly],
+body.with-bg.dark-bg .form-control.disabled,
+body.with-bg.dark-bg .disabled.multi-model-search {
   cursor: not-allowed;
   background-color: rgba(108, 117, 125, 0.09);
   opacity: 1;
 }
 
 body.with-bg .form-control,
+body.with-bg .multi-model-search,
 body.with-bg .message-search {
   background: rgba(0, 0, 0, 0.05);
   border: 1px solid rgba(255, 255, 255, 0.3);
@@ -27749,7 +27842,9 @@ body.with-bg .message-search {
 }
 
 body.with-bg .form-control:active,
+body.with-bg .multi-model-search:active,
 body.with-bg .form-control:focus,
+body.with-bg .multi-model-search:focus,
 body.with-bg .message-search:active,
 body.with-bg .message-search:focus {
   outline: none !important;
@@ -27757,6 +27852,7 @@ body.with-bg .message-search:focus {
 }
 
 body.with-bg .form-control:focus,
+body.with-bg .multi-model-search:focus,
 body.with-bg .message-search:focus {
   border-color: rgba(255, 255, 255, 0.4);
   background: transparent;
@@ -27765,8 +27861,11 @@ body.with-bg .message-search:focus {
 }
 
 body.with-bg .form-control[disabled],
+body.with-bg .multi-model-search[disabled],
 body.with-bg .form-control[readonly],
+body.with-bg .multi-model-search[readonly],
 body.with-bg .form-control.disabled,
+body.with-bg .disabled.multi-model-search,
 body.with-bg .message-search[disabled],
 body.with-bg .message-search[readonly],
 body.with-bg .message-search.disabled {
@@ -28028,6 +28127,69 @@ h2 {
 	}
 }
 **/
+
+.multi-model-search {
+  padding: 0;
+  position: relative;
+}
+
+.multi-model-search > .form-control,
+.multi-model-search > .multi-model-search {
+  border: none;
+  background: transparent;
+  position: relative;
+  top: -1px;
+}
+
+.multi-model-search {
+  padding: 0;
+}
+
+.multi-model-search > .form-control,
+.multi-model-search > .multi-model-search {
+  border: none;
+  background: transparent;
+}
+
+.multi-model-search-sm {
+  padding: 0;
+}
+
+.multi-model-search-sm > .form-control,
+.multi-model-search-sm > .multi-model-search {
+  border: none;
+  background: transparent;
+}
+
+.multi-model-search-md {
+  padding: 0;
+}
+
+.multi-model-search-md > .form-control,
+.multi-model-search-md > .multi-model-search {
+  border: none;
+  background: transparent;
+}
+
+.multi-model-search-lg {
+  padding: 0;
+}
+
+.multi-model-search-lg > .form-control,
+.multi-model-search-lg > .multi-model-search {
+  border: none;
+  background: transparent;
+}
+
+.multi-model-search-xl {
+  padding: 0;
+}
+
+.multi-model-search-xl > .form-control,
+.multi-model-search-xl > .multi-model-search {
+  border: none;
+  background: transparent;
+}
 
 table.table-calendar {
   font-size: 0.85rem;

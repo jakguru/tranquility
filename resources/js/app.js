@@ -6,6 +6,7 @@
  */
 
 require('./bootstrap');
+require('./multi-model-search');
 require('./rtu');
 require('./appointments');
 import Cropper from 'cropperjs';

@@ -4,8 +4,8 @@ window.setMinimumFromDateTimeForForm = function(form) {
 		fromfield.attr('min', mindatetime);
 }
 
-window.openCreateAppointmentDialog = function(e) {
-	e.preventDefault();
+window.showAppointmentDialog = function(subject, start, end, participants, description)
+{
 	jQuery.fancybox.open({
 		closeExisting: true,
 		type: 'html',
@@ -46,15 +46,50 @@ window.openCreateAppointmentDialog = function(e) {
 				});
 			});
 			fromfield.on('dp.change', function(e) {
-				tofield.data('DateTimePicker').minDate(e.date.add(15, 'minutes'));
+				var newdate = e.date.add(15, 'minutes');
+				tofield.data('DateTimePicker').minDate(newdate);
+				if (tofield.data('DateTimePicker').date().isBefore(newdate)) {
+					tofield.data('DateTimePicker').date(newdate);
+				}
 			})
 			setMinimumFromDateTimeForForm(form);
+			if ('undefined' !== typeof(subject)) {
+				form.find('[name="subject"]').val(subject);
+			}
+			if ('undefined' !== typeof(start)) {
+				form.find('[name="start"]').val(start);
+			}
+			if ('undefined' !== typeof(end)) {
+				form.find('[name="end"]').val(end);
+			}
+			if ('undefined' !== typeof(participants)) {
+				form.find('[name="participants"]').val(participants);
+			}
+			if ('undefined' !== typeof(description)) {
+				form.find('[name="description"]').val(description);
+			}
 			form.on('submit', function(e) {
 				e.preventDefault();
+				jQuery.fancybox.close();
 				Swal('Submitted!');
+				console.log(form.serialize());
+				setTimeout(function() {
+					showAppointmentDialog(
+						form.find('[name="subject"]').val(),
+						form.find('[name="start"]').val(),
+						form.find('[name="end"]').val(),
+						form.find('[name="participants"]').val(),
+						form.find('[name="description"]').val()
+					);
+				}, 1000);
 			});
 		}
 	});
+}
+
+window.openCreateAppointmentDialog = function(e) {
+	e.preventDefault();
+	showAppointmentDialog();
 }
 
 var dashboardAppointmentManager = function(identifier) {

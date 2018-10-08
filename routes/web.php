@@ -80,6 +80,12 @@ Route::group(['middleware' => ['auth']], function () {
     }
 });
 
+if (true == config('app.debug')) {
+    Route::get('/debug', function() {
+        return view('debug');
+    })->name('debug');
+}
+
 Route::get('/login', '\App\Http\Controllers\Auth\LoginController@showLoginForm')->name('login')->middleware('guest');
 Route::post('/login', '\App\Http\Controllers\Auth\LoginController@login')->name('submit-login')->middleware('guest');
 
