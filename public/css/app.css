@@ -28347,3 +28347,8 @@ table.table-schedule tbody > tr > th .appointments {
   max-width: 100%;
 }
 
+textarea.twohundredtall {
+  height: 200px;
+  resize: none;
+}
+
