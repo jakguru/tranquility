@@ -14,6 +14,12 @@ class JavascriptTranslationHelper
         'Participants',
         'Description',
         'Schedule Appointment',
+        'Cancel',
+        'Processing',
+        'Error',
+        'Retry',
+        'An unknown error occured while trying to create your meeting.',
+        'Could not create your meeting due to the following errors:',
     ];
 
     protected $translations = [];

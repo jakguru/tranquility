@@ -1,4 +1,4 @@
-var multiModelSearch = function(selector, debug) {
+window.multiModelSearch = function(selector, debug) {
 	if (jQuery(selector).length > 1) {
 		var ret = [];
 		jQuery(selector).each(function() {
@@ -29,6 +29,18 @@ var multiModelSearch = function(selector, debug) {
 			}
 			field = jQuery(field);
 			var timer;
+			field.on('click', function() {
+				clearTimeout(timer);
+				timer = setTimeout(function() {
+					callback(field);
+				}, interval);
+			});
+			field.on('focus', function() {
+				clearTimeout(timer);
+				timer = setTimeout(function() {
+					callback(field);
+				}, interval);
+			});
 			field.on('keyup', function() {
 				clearTimeout(timer);
 				timer = setTimeout(function() {
@@ -45,31 +57,114 @@ var multiModelSearch = function(selector, debug) {
 			if ('object' !== typeof(choices)) {
 				choices = [];
 			}
-			choices.push({
-				type: 'email',
-				value: pps.field.val(),
-				display: pps.field.val(),
-				icon: 'far fa-envelope',
-			});
+			if (pms.isEmail(pps.field.val())) {
+				choices.push({
+					type: 'email',
+					value: pps.field.val().toLowerCase(),
+					display: pps.field.val().toLowerCase(),
+				});
+			}
+			choices = pms.filterOutSelectedChoices(choices);
 			if ('object' == typeof(choices) && choices.length > 0) {
 				for (var i = 0; i < choices.length; i++) {
 					var choice = choices[i],
 						cobj = jQuery('<li></li>'),
 						link = jQuery('<a href="#"></a>'),
-						field = jQuery(sprintf('<input type="hidden" name="%s[]" value="%s.%s" />', pps.fieldName, choice.type, choice.value));
-						console.log(choice);
+						field = jQuery(sprintf('<input type="hidden" name="%s[]" />', pps.fieldName));
+						field.val(JSON.stringify(choice));
 						cobj.append(field);
-						link.append(sprintf('<i class="%s mr-1"></i> %s', choice.icon, choice.display));
+						link.append(sprintf('<i class="%s mr-1"></i> %s', pms.getIconForType(choice.type), choice.display));
 						cobj.append(link);
 						list.append(cobj);
+						link.on('click', function(e) {
+							e.preventDefault();
+							obj.addPreselectedChoice(choice);
+							cobj.remove();
+							if (dropdown.find('li').length == 0) {
+								dropdown.remove();
+							}
+							pps.field.val('');
+							pps.field.focus();
+						});
 				}
 			}
 			dropdown.append(list);
-			pps.obj.find('.choices-dropdown').remove();
-			pps.obj.append(dropdown);
+			jQuery('body').find('.choices-dropdown').remove();
+			if (list.find('li').length > 0) {
+				pms.addPositioningInfoToDropdown(dropdown);
+				jQuery(document).on('resize', function(e) {
+					pms.addPositioningInfoToDropdown(dropdown);
+				});
+				jQuery(window).on('resize', function(e) {
+					pms.addPositioningInfoToDropdown(dropdown);
+				});
+				jQuery('body').on('resize', function(e) {
+					pms.addPositioningInfoToDropdown(dropdown);
+				});
+				pps.obj.on('resize', function(e) {
+					pms.addPositioningInfoToDropdown(dropdown);
+				});
+				jQuery('body').on('scroll', function(e) {
+					pms.addPositioningInfoToDropdown(dropdown);
+				});
+				pps.obj.on('scroll', function(e) {
+					pms.addPositioningInfoToDropdown(dropdown);
+				});
+				jQuery('#app>main').on('scroll', function(e) {
+					pms.addPositioningInfoToDropdown(dropdown);
+				});
+				jQuery('body').append(dropdown);
+				jQuery( document ).on( 'mouseup', function(e) {
+					var tgt = e.target;
+					if (! dropdown.is(tgt) && 0 === dropdown.has(tgt).length) {
+						dropdown.remove();
+					}
+				});
+			}
+		},
+		isEmail: function(value) {
+			return /^[a-zA-Z0-9.!#$%&'*+\/=?^_`{|}~-]+@[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?(?:\.[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?)*$/.test( value );
+		},
+		addPositioningInfoToDropdown: function(dropdown) {
+			var offset = pps.obj.offset(),
+				width = pps.obj.width(),
+				height = pps.obj.height(),
+				css = {
+					top: (offset.top + height + 1),
+					left: offset.left + 1,
+					width: width - 1,
+				};
+				if (pps.obj.closest('.fancybox-inner').length > 0) {
+					css.zIndex = 99995;
+				}
+				dropdown.css(css);
+		},
+		filterOutSelectedChoices: function(choices) {
+			var filtered = [];
+			for (var i = 0; i < choices.length; i++) {
+				var c = choices[i],
+					query = sprintf('[value="%s.%s"]', c.type, c.value),
+					existing = pps.obj.find(query);
+				if (existing.length == 0) {
+					filtered.push(c);
+				}
+			}
+			return filtered;
+		},
+		getIconForType: function(type) {
+			if ('undefined' == typeof(obj.icons[type])) {
+				return obj.icons.unknown;
+			}
+			return obj.icons[type];
 		}
 	};
 	// Public Properties
+	this.icons = {
+		email: 'far fa-envelope',
+		user: 'fas fa-user-tie',
+		lead: 'far fa-id-card',
+		unknown: 'fas fa-question',
+	}
 	// Public Methods
 	this.getObject = function() {
 		return pps.obj;
@@ -77,20 +172,51 @@ var multiModelSearch = function(selector, debug) {
 	this.getField = function() {
 		return pps.field;
 	}
+	this.getIconForType = function(type) {
+		return pms.getIconForType(type);
+	}
+	this.addPreselectedChoices = function(choices) {
+		for (var i = 0; i < choices.length; i++) {
+			var c = JSON.parse(choices[i]);
+			obj.addPreselectedChoice(c);
+		}
+	}
+	this.addPreselectedChoice = function(choice) {
+		if ('object' !== typeof(choice)) {
+			return;
+		}
+		var input = jQuery(sprintf('<input type="hidden" name="%s[]" />', pps.fieldName));
+			badge = jQuery('<span class="badge badge-dark"></span>'),
+			removelink = jQuery('<a href="#" class="ml-1"><i class="fas fa-times"></i></a>');
+		input.val(JSON.stringify(choice));
+		removelink.on('click', function(e) {
+			e.preventDefault();
+			badge.remove();
+		});
+		badge.css({
+			marginTop: pps.field.css('padding-top'),
+		})
+		badge.append(input);
+		badge.append(sprintf('<i class="%s mr-1"></i> %s', pms.getIconForType(choice.type), choice.display));
+		badge.append(removelink);
+		pps.obj.find('.selected-results').append(badge);
+	}
 	pps.fieldName = pms.getFieldName();
 	pps.field.removeAttr('name');
 	pms.runWhenDoneTyping(pps.field, function(field) {
-		ajax(
-			'/multi-model-search',
-			'GET',
-			{"search": field.val()},
-			function(data) {
-				pms.showChoicesDropDown(data);
-			},
-			function(error) {
-				pms.showChoicesDropDown();
-			}
-		);
+		if (field.val().length > 0) {
+			ajax(
+				'/multi-model-search',
+				'GET',
+				{"search": field.val()},
+				function(data) {
+					pms.showChoicesDropDown(data);
+				},
+				function(error) {
+					pms.showChoicesDropDown();
+				}
+			);
+		}
 	});
 	var obj = this;
 	if (true === debug) {

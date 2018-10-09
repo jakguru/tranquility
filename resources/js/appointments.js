@@ -10,13 +10,14 @@ window.showAppointmentDialog = function(subject, start, end, participants, descr
 		closeExisting: true,
 		type: 'html',
 		src: sprintf(
-			'<div class="container"><form class="card" action="#" method="POST" id="schedule-appointment-form"><div class="card-header bg-dark text-white"><h4>%s</h4></div><div class="card-body"><div class="form-group"><label>%s</label><input name="subject" type="text" class="form-control form-control-sm" required /></div><div class="row"><div class="col-md-6"><div class="form-group"><label>%s</label><input name="from" type="text" psuedo-type="datetime-local" class="form-control form-control-sm" required /></div></div><div class="col-md-6"><div class="form-group"><label>%s</label><input name="to" type="text" psuedo-type="datetime-local" class="form-control form-control-sm" required /></div></div></div><div class="form-group"><label>%s</label><input type="hidden" name="participants" /><input id="participant-display" type="text" class="form-control form-control-sm"/></div><div class="form-group"><label>%s</label><textarea name="description" class="form-control twohundredtall"></textarea></div></div><div class="card-footer text-right"><input type="submit" class="btn btn-success" value="%s" /></div></form></div>',
+			'<div class="container"><form class="card" action="#" method="POST" id="schedule-appointment-form"><div class="card-header bg-dark text-white"><h4>%s</h4></div><div class="card-body"><div class="form-group"><label>%s</label><input name="subject" type="text" class="form-control form-control-sm" required /></div><div class="row"><div class="col-md-6"><div class="form-group"><label>%s</label><input name="from" type="text" psuedo-type="datetime-local" class="form-control form-control-sm" required /></div></div><div class="col-md-6"><div class="form-group"><label>%s</label><input name="to" type="text" psuedo-type="datetime-local" class="form-control form-control-sm" required /></div></div></div><div class="form-group"><label>%s</label><div class="multi-model-search multi-model-search-sm"><div class="selected-results"></div><input type="search" name="participants" class="form-control" /></div></div><div class="form-group"><label>%s</label><textarea name="description" class="form-control twohundredtall"></textarea></div></div><div class="card-footer text-right"><a href="#" class="btn btn-secondary btn-close mr-1">%s</a><input type="submit" class="btn btn-success" value="%s" /></div></form></div>',
 			__('Schedule an Appointment'),
 			__('Subject'),
 			__('Start'),
 			__('Ends'),
 			__('Participants'),
 			__('Description'),
+			__('Cancel'),
 			__('Schedule Appointment')
 		),
 		afterShow: function() {
@@ -53,6 +54,7 @@ window.showAppointmentDialog = function(subject, start, end, participants, descr
 				}
 			})
 			setMinimumFromDateTimeForForm(form);
+			var recipientsField = new multiModelSearch(form.find('.multi-model-search'), false)
 			if ('undefined' !== typeof(subject)) {
 				form.find('[name="subject"]').val(subject);
 			}
@@ -62,26 +64,90 @@ window.showAppointmentDialog = function(subject, start, end, participants, descr
 			if ('undefined' !== typeof(end)) {
 				form.find('[name="end"]').val(end);
 			}
-			if ('undefined' !== typeof(participants)) {
-				form.find('[name="participants"]').val(participants);
+			if ('object' == typeof(participants)) {
+				recipientsField.addPreselectedChoices(participants);
 			}
 			if ('undefined' !== typeof(description)) {
 				form.find('[name="description"]').val(description);
 			}
-			form.on('submit', function(e) {
+			form.find('.btn-close').on('click', function(e) {
 				e.preventDefault();
 				jQuery.fancybox.close();
-				Swal('Submitted!');
-				console.log(form.serialize());
-				setTimeout(function() {
-					showAppointmentDialog(
-						form.find('[name="subject"]').val(),
-						form.find('[name="start"]').val(),
-						form.find('[name="end"]').val(),
-						form.find('[name="participants"]').val(),
-						form.find('[name="description"]').val()
-					);
-				}, 1000);
+			});
+			form.on('submit', function(e) {
+				e.preventDefault();
+				var participants = [];
+				form.find('[name="participants[]"]').each(function() {
+					participants.push(jQuery(this).val());
+				});
+				ajax(
+					'/my/calendar',
+					'post',
+					{"search": form.serialize()},
+					function(data) {
+						console.log(data);
+					},
+					function(error) {
+						if ('object' == typeof(error)) {
+							var text = __('Could not create your meeting due to the following errors:') + "\n";
+							for (var i = 0; i < error.length; i++) {
+								text += error[i] + "\n";
+							}
+							Swal({
+								title: __('Error'),
+								showCancelButton: true,
+								allowOutsideClick: true,
+								showConfirmButton: true,
+								type: 'error',
+								allowEscapeKey: true,
+								allowEnterKey: true,
+								confirmButtonText: __('Retry'),
+								text: text,
+							}).then(() => {
+								showAppointmentDialog(
+									form.find('[name="subject"]').val(),
+									form.find('[name="start"]').val(),
+									form.find('[name="end"]').val(),
+									participants,
+									form.find('[name="description"]').val()
+								);
+							});
+						}
+						else {
+							Swal({
+								title: __('Error'),
+								showCancelButton: true,
+								allowOutsideClick: true,
+								showConfirmButton: true,
+								type: 'error',
+								allowEscapeKey: true,
+								allowEnterKey: true,
+								confirmButtonText: __('Retry'),
+								text: __('An unknown error occured while trying to create your meeting.')
+							}).then(() => {
+								showAppointmentDialog(
+									form.find('[name="subject"]').val(),
+									form.find('[name="start"]').val(),
+									form.find('[name="end"]').val(),
+									participants,
+									form.find('[name="description"]').val()
+								);
+							});	
+						}
+					},
+					function() {
+						jQuery.fancybox.close();
+						Swal({
+							title: __('Processing'),
+							showCancelButton: false,
+							allowOutsideClick: false,
+							showConfirmButton: false,
+							type: 'info',
+							allowEscapeKey: false,
+							allowEnterKey: false,
+						});
+					}
+				);
 			});
 		}
 	});

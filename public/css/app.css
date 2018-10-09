@@ -28131,14 +28131,112 @@ h2 {
 .multi-model-search {
   padding: 0;
   position: relative;
+  height: auto;
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-orient: horizontal;
+  -webkit-box-direction: normal;
+      -ms-flex-direction: row;
+          flex-direction: row;
+  -ms-flex-wrap: wrap;
+      flex-wrap: wrap;
+  -webkit-box-pack: start;
+      -ms-flex-pack: start;
+          justify-content: flex-start;
+  -webkit-box-align: start;
+      -ms-flex-align: start;
+          align-items: flex-start;
+  -ms-flex-line-pack: start;
+      align-content: flex-start;
+}
+
+.multi-model-search > * {
+  border-radius: 0;
+  -webkit-box-flex: 0;
+      -ms-flex-positive: 0;
+          flex-grow: 0;
 }
 
 .multi-model-search > .form-control,
 .multi-model-search > .multi-model-search {
+  display: inline-block;
   border: none;
   background: transparent;
   position: relative;
   top: -1px;
+  -webkit-box-flex: 1;
+      -ms-flex-positive: 1;
+          flex-grow: 1;
+  -ms-flex-preferred-size: 100px;
+      flex-basis: 100px;
+  -ms-flex-item-align: end;
+      align-self: flex-end;
+}
+
+.multi-model-search > .selected-results {
+  font-size: 0.85rem;
+  line-height: 1.2rem;
+  padding-left: 0;
+  padding-right: 0;
+}
+
+.multi-model-search > .selected-results > .badge {
+  font-size: 100%;
+  font-weight: normal;
+  margin-left: 0.5rem;
+}
+
+.multi-model-search > .selected-results > .badge:last-child {
+  margin-right: 0.5rem;
+}
+
+.multi-model-search > .selected-results > .badge > a {
+  color: #e3342f;
+}
+
+.choices-dropdown {
+  position: fixed;
+  border: solid 1px #cdcdcd;
+  -webkit-box-shadow: 0px 0px 5px 0px #343a40;
+          box-shadow: 0px 0px 5px 0px #343a40;
+  z-index: 1079;
+}
+
+.choices-dropdown > ul {
+  padding: 0;
+  list-style-type: none;
+  margin: 0;
+}
+
+.choices-dropdown > ul > li {
+  display: block;
+}
+
+.choices-dropdown > ul > li > a {
+  display: block;
+  line-height: 1.72rem;
+  font-size: 0.85rem;
+  padding: 0 0.5rem;
+  background: #ffffff;
+  background: -webkit-gradient(linear, left top, left bottom, from(#ffffff), to(#eeeeee));
+  background: linear-gradient(to bottom, #ffffff 0%, #eeeeee 100%);
+  filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#ffffff', endColorstr='#eeeeee',GradientType=0 );
+  border-bottom: solid 1px #cdcdcd;
+  color: #212529;
+  -webkit-transition: color 300ms;
+  transition: color 300ms;
+}
+
+.choices-dropdown > ul > li > a:hover,
+.choices-dropdown > ul > li > a:focus,
+.choices-dropdown > ul > li > a:active {
+  text-decoration: none;
+  color: #3490dc;
+}
+
+.choices-dropdown > ul > li:last-child > a {
+  border-bottom: none;
 }
 
 .multi-model-search {

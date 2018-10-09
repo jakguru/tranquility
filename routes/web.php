@@ -81,7 +81,7 @@ Route::group(['middleware' => ['auth']], function () {
 });
 
 if (true == config('app.debug')) {
-    Route::get('/debug', function() {
+    Route::get('/debug', function () {
         return view('debug');
     })->name('debug');
 }
