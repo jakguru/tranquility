@@ -6,6 +6,8 @@
 */storage/framework/views/*.php
 */storage/app/public/
 !*/storage/app/public/.gitignore
+*/storage/app/
+!*/storage/app/.gitignore
 /node_modules
 /.idea
 /.vscode
