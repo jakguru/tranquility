@@ -1,5 +1,4 @@
 stages:
-  - infosec
   - standards
   - test
   - deploy
