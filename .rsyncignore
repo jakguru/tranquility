@@ -4,6 +4,8 @@
 */cache/data/*
 */storage/framework/session/*
 */storage/framework/views/*.php
+*/storage/app/public/
+!*/storage/app/public/.gitignore
 /node_modules
 /.idea
 /.vscode
