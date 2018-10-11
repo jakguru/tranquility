@@ -16,6 +16,7 @@ class User extends Authenticatable
     use \App\Helpers\ElasticSearchable;
     use \App\Helpers\Listable;
     use \App\Helpers\Permitable;
+    use \App\Helpers\Receivable;
 
     public static $list_columns = [
         'email' => [

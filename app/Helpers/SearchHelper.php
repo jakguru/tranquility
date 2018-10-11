@@ -4,6 +4,7 @@ namespace App\Helpers;
 
 use Illuminate\Database\Eloquent\Model;
 use App\Helpers\ElasticSearchClientHelper;
+use Illuminate\Support\Facades\Log;
 
 class SearchHelper
 {
@@ -33,19 +34,20 @@ class SearchHelper
 
     public function searchModelForResults($term, $model, &$return = [])
     {
+        self::log(sprintf('Searching for term "%s" in model %s', $term, $model));
         if (!in_array($model, $this->models)) {
+            self::log(sprintf('Model "%s" is not in the list "%s"', $model, implode(', ', $this->models)), 'warning');
             return false;
         }
+        self::log(sprintf('Continuing to search for term "%s" in model %s', $term, $model));
         $sm = new $model;
         $searchable = $sm->getSearchableColumns();
-        if (!is_a($this->client, '\Elasticsearch\Client') || !\App\Helpers\ElasticSearchClientHelper::clientCanConnect($this->client)) {
-            $ids = $this->searchEloquentModelForResults($term, $model, $searchable);
-        } else {
-            $ids = $this->searchElasticModelForResults($term, $model, $searchable);
-        }
+        $ids = $this->searchEloquentModelForResults($term, $model, $searchable);
         if (!is_array($ids) || count($ids) <= 0) {
+            self::log('Search returned no results.', 'warning');
             return false;
         }
+        self::log(sprintf('Found IDs "%s"', implode(', ', $ids)));
         $ids = array_unique($ids);
         $ids = array_map('intval', $ids);
         $models = $model::find($ids);
@@ -156,6 +158,7 @@ class SearchHelper
                 $query->orWhere($field, 'like', $term);
             }
         }
+        self::log(sprintf('Query is "%s"', $query->toSql()));
         return $query->pluck('id')->toArray();
     }
 
@@ -251,14 +254,29 @@ class SearchHelper
         return (is_a($this->client, '\Elasticsearch\Client') && \App\Helpers\ElasticSearchClientHelper::clientCanConnect($this->client));
     }
 
+    protected static function log($what, $type = 'info', $force = false)
+    {
+        if (true == config('app.debug') || true == $force) {
+            forward_static_call(['Log', $type], $what);
+        }
+    }
+
     public static function search($term, array $models = [])
     {
         $return = [];
         $c = get_called_class();
         $obj = new $c;
+        $models = array_map(function ($model) {
+            if ('\\' == substr($model, 0, 1)) {
+                $model = substr($model, 1);
+            }
+            return $model;
+        }, $models);
         if ($obj->canUseElasticSearch()) {
+            self::log('Using ElasticSearch for Search');
             $obj->searchAllElasticModelsForResults($term, $models, $return);
         } else {
+            self::log('Using Eloquent for Search');
             foreach ($models as $model) {
                 $obj->searchModelForResults($term, $model, $return);
             }

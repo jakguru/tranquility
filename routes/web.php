@@ -78,6 +78,8 @@ Route::group(['middleware' => ['auth']], function () {
     if ('polling' == config('app.rtu.method')) {
         Route::get('/rtu', '\App\Http\Controllers\AuthenticatedSessionController@onPolling')->name('rtu');
     }
+
+    Route::get('/multi-model-search', '\App\Http\Controllers\MultiModelSearchController@search')->name('multi-model-search');
 });
 
 if (true == config('app.debug')) {

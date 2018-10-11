@@ -112,7 +112,7 @@ class PermissionsHelper
         return (in_array($trait, $traits));
     }
 
-    public static function getPermitableModels($namespace = '\\App')
+    public static function getModelsWithTrait($trait, $namespace = '\\App')
     {
         $return = [];
         $path = app_path();
@@ -128,10 +128,18 @@ class PermissionsHelper
         } catch (\Exception $e) {
             throw $e;
         }
-        $return = array_filter($return, function ($class) {
-            return self::modelHasTrait($class, 'Permitable');
-        });
-        return $return;
+        $real_return = [];
+        foreach ($return as $class) {
+            if (self::modelHasTrait($class, $trait)) {
+                array_push($real_return, $class);
+            }
+        }
+        return $real_return;
+    }
+
+    public static function getPermitableModels($namespace = '\\App')
+    {
+        return self::getModelsWithTrait('Permitable');
     }
 
     protected static function getTraitWithoutNamespace($trait)

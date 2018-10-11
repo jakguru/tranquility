@@ -28,6 +28,7 @@
         }
     </script>
     {{ \App\Helpers\JavascriptTranslationHelper::render('tt', true) }}
+    {{ \App\Helpers\JavascriptTranslationHelper::renderRoutes('tr', true) }}
     <script type="text/javascript" src="{{ mix('js/app.js') }}" async defer></script>
     <link href="{{ mix('css/app.css') }}" rel="stylesheet">
     <link rel="apple-touch-icon" sizes="114x114" href="{{ asset( 'img/favicon.png' ) }}" />

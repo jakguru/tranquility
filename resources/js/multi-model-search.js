@@ -10,6 +10,7 @@ window.multiModelSearch = function(selector, debug) {
 	var pps = {
 		obj: jQuery(selector),
 		field: jQuery(selector).find('[name]'),
+		searching: false,
 	};
 	// Private Methods
 	var pms = {
@@ -29,23 +30,27 @@ window.multiModelSearch = function(selector, debug) {
 			}
 			field = jQuery(field);
 			var timer;
-			field.on('click', function() {
+			field.on('click', function(e) {
 				clearTimeout(timer);
 				timer = setTimeout(function() {
 					callback(field);
 				}, interval);
 			});
-			field.on('focus', function() {
+			field.on('focus', function(e) {
 				clearTimeout(timer);
-				timer = setTimeout(function() {
-					callback(field);
-				}, interval);
+				if (field.val().length > 0) {
+					timer = setTimeout(function() {
+						callback(field);
+					}, interval);
+				}
 			});
-			field.on('keyup', function() {
+			field.on('keyup', function(e) {
 				clearTimeout(timer);
-				timer = setTimeout(function() {
-					callback(field);
-				}, interval);
+				if (e.keyCode !== 13) {
+					timer = setTimeout(function() {
+						callback(field);
+					}, interval);
+				}
 			});
 			field.on('keydown', function() {
 				clearTimeout(timer);
@@ -72,14 +77,15 @@ window.multiModelSearch = function(selector, debug) {
 						link = jQuery('<a href="#"></a>'),
 						field = jQuery(sprintf('<input type="hidden" name="%s[]" />', pps.fieldName));
 						field.val(JSON.stringify(choice));
+						link.data('choice', choice);
 						cobj.append(field);
 						link.append(sprintf('<i class="%s mr-1"></i> %s', pms.getIconForType(choice.type), choice.display));
 						cobj.append(link);
 						list.append(cobj);
 						link.on('click', function(e) {
 							e.preventDefault();
-							obj.addPreselectedChoice(choice);
-							cobj.remove();
+							obj.addPreselectedChoice(jQuery(this).data('choice'));
+							jQuery(this).closest('li').remove();
 							if (dropdown.find('li').length == 0) {
 								dropdown.remove();
 							}
@@ -143,8 +149,9 @@ window.multiModelSearch = function(selector, debug) {
 			var filtered = [];
 			for (var i = 0; i < choices.length; i++) {
 				var c = choices[i],
-					query = sprintf('[value="%s.%s"]', c.type, c.value),
-					existing = pps.obj.find(query);
+					existing = pps.obj.find('input[type="hidden"]').filter(function() {
+						return jQuery(this).val() == JSON.stringify(c);
+					});
 				if (existing.length == 0) {
 					filtered.push(c);
 				}
@@ -156,6 +163,26 @@ window.multiModelSearch = function(selector, debug) {
 				return obj.icons.unknown;
 			}
 			return obj.icons[type];
+		},
+		runSearch: function(field) {
+			if (field.val().length > 0 && false == pps.searching) {
+				ajax(
+					route('multi-model-search') + '?' + jQuery.param({"search": field.val()}),
+					'GET',
+					{},
+					function(data) {
+						pms.showChoicesDropDown(data);
+						pps.searching = false;
+					},
+					function(error) {
+						pms.showChoicesDropDown();
+						pps.searching = false;
+					},
+					function() {
+						pps.searching = true;
+					}
+				);
+			}
 		}
 	};
 	// Public Properties
@@ -191,7 +218,7 @@ window.multiModelSearch = function(selector, debug) {
 		input.val(JSON.stringify(choice));
 		removelink.on('click', function(e) {
 			e.preventDefault();
-			badge.remove();
+			jQuery(this).closest('span.badge').remove();
 		});
 		badge.css({
 			marginTop: pps.field.css('padding-top'),
@@ -203,21 +230,12 @@ window.multiModelSearch = function(selector, debug) {
 	}
 	pps.fieldName = pms.getFieldName();
 	pps.field.removeAttr('name');
-	pms.runWhenDoneTyping(pps.field, function(field) {
-		if (field.val().length > 0) {
-			ajax(
-				'/multi-model-search',
-				'GET',
-				{"search": field.val()},
-				function(data) {
-					pms.showChoicesDropDown(data);
-				},
-				function(error) {
-					pms.showChoicesDropDown();
-				}
-			);
+	pps.field.on('keyup', function(e) {
+		if (e.keyCode === 13) {
+			pms.runSearch(pps.field);
 		}
 	});
+	pms.runWhenDoneTyping(pps.field, pms.runSearch);
 	var obj = this;
 	if (true === debug) {
 		obj.pps = pps;

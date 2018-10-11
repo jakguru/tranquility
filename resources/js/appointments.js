@@ -103,14 +103,16 @@ window.showAppointmentDialog = function(subject, start, end, participants, descr
 								allowEnterKey: true,
 								confirmButtonText: __('Retry'),
 								text: text,
-							}).then(() => {
-								showAppointmentDialog(
-									form.find('[name="subject"]').val(),
-									form.find('[name="start"]').val(),
-									form.find('[name="end"]').val(),
-									participants,
-									form.find('[name="description"]').val()
-								);
+							}).then((retry) => {
+								if ( true == retry.value ) {
+									showAppointmentDialog(
+										form.find('[name="subject"]').val(),
+										form.find('[name="start"]').val(),
+										form.find('[name="end"]').val(),
+										participants,
+										form.find('[name="description"]').val()
+									);
+								}
 							});
 						}
 						else {
@@ -124,14 +126,16 @@ window.showAppointmentDialog = function(subject, start, end, participants, descr
 								allowEnterKey: true,
 								confirmButtonText: __('Retry'),
 								text: __('An unknown error occured while trying to create your meeting.')
-							}).then(() => {
-								showAppointmentDialog(
-									form.find('[name="subject"]').val(),
-									form.find('[name="start"]').val(),
-									form.find('[name="end"]').val(),
-									participants,
-									form.find('[name="description"]').val()
-								);
+							}).then((retry) => {
+								if ( true == retry.value ) {
+									showAppointmentDialog(
+										form.find('[name="subject"]').val(),
+										form.find('[name="start"]').val(),
+										form.find('[name="end"]').val(),
+										participants,
+										form.find('[name="description"]').val()
+									);
+								}
 							});	
 						}
 					},
