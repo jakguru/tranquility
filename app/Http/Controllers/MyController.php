@@ -59,14 +59,14 @@ class MyController extends Controller
     public function createAppointment(Request $request)
     {
         if (!$request->user()->can('add', \App\Meeting::class)) {
-            return AjaxFeedbackHelper::failureReponse(null, __('You are not allowed to create an appointment.'), 403, [__('You are not allowed to create an appointment.')]);
+            return AjaxFeedbackHelper::failureReponse(null, __('You are not allowed to create an appointment.'), 200, [__('You are not allowed to create an appointment.')]);
         }
         $rules = [
             'subject' => 'required|string',
             'from' => 'required|date|after_or_equal:now',
             'to' => 'required|date|after:from',
             'description' => 'nullable|string',
-            'participants' => ['required', 'array', 'min:1', new \App\Rules\ValidParticipant('participant')],
+            'participants' => ['required', 'array', 'min:1', new \App\Rules\ValidParticipant('participant'), new \App\Rules\NotSelf],
         ];
         $validator = Validator::make($request->all(), $rules);
         $errors = $validator->errors()->toArray();
@@ -81,9 +81,35 @@ class MyController extends Controller
                     array_push($returnerrors, $err);
                 }
             }
-            return AjaxFeedbackHelper::failureReponse(null, __('Your form has errors'), 400, $returnerrors);
+            return AjaxFeedbackHelper::failureReponse(null, __('Your form has errors'), 200, $returnerrors);
         }
-        return AjaxFeedbackHelper::debugReponse($request->all());
+        $meeting = new \App\Meeting;
+        $meeting->subject = $request->input('subject');
+        $meeting->starts_at = \Carbon\Carbon::parse($request->input('from'));
+        $meeting->ends_at = \Carbon\Carbon::parse($request->input('to'));
+        $meeting->description = $request->input('description');
+        $meeting->owner_id = $request->user()->id;
+        $emails = [];
+        $participants = [];
+        foreach ($request->input('participants') as $rawchoice) {
+            $choice = @json_decode($rawchoice);
+            if (!is_object($choice)) {
+                array_push($this->invalid, $choice);
+            }
+            $receivable = \App\Helpers\PermissionsHelper::getModelsWithTrait('Receivable');
+            if ('email' == $choice->type) {
+                array_push($emails, $choice->value);
+            } elseif ('user' == $choice->type) {
+                $model = sprintf('\\App\\%s', ucfirst($choice->type));
+                $obj = $model::find($choice->value);
+                array_push($participants, $obj);
+            }
+        }
+        foreach ($participants as $p) {
+            $meeting->participants()->attach($p);
+        }
+        $meeting->save();
+        return AjaxFeedbackHelper::debugReponse($meeting->participants()->toArray());
     }
 
     public function preferences(Request $request)

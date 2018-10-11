@@ -85,6 +85,7 @@ window.showAppointmentDialog = function(subject, start, end, participants, descr
 					'POST',
 					form.serialize(),
 					function(data) {
+						Swal.close();
 						console.log(data);
 						showAppointmentDialog(
 							form.find('[name="subject"]').val(),
@@ -95,6 +96,7 @@ window.showAppointmentDialog = function(subject, start, end, participants, descr
 						);
 					},
 					function(error) {
+						Swal.close();
 						if ('object' == typeof(error)) {
 							if ( error.length == 1 ) {
 								text = error[0];
@@ -152,7 +154,7 @@ window.showAppointmentDialog = function(subject, start, end, participants, descr
 					},
 					function() {
 						jQuery.fancybox.close();
-						Swal({
+						processingmodal = Swal({
 							title: __('Processing'),
 							showCancelButton: false,
 							allowOutsideClick: false,

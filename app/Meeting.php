@@ -18,4 +18,9 @@ class Meeting extends Model
     protected $searchable_columns = [
         'subject','description'
     ];
+
+    public function participants()
+    {
+        return $this->morphTo('meeting_participants');
+    }
 }

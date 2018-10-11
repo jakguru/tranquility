@@ -24,4 +24,9 @@ trait Receivable
         }
         return $display;
     }
+
+    public function meetings()
+    {
+        return $this->morphMany('App\Meeting', 'participant');
+    }
 }
