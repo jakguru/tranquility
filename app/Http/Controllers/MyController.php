@@ -9,6 +9,7 @@ use Illuminate\Support\Facades\Validator;
 use Illuminate\Validation\Rule;
 use Illuminate\Support\Facades\Hash;
 use Carbon\Carbon;
+use \App\Helpers\AjaxFeedbackHelper;
 
 class MyController extends Controller
 {
@@ -53,6 +54,36 @@ class MyController extends Controller
             $attcount ++;
         }
         return view('app.layouts.my.calendar', ['params' => $params]);
+    }
+
+    public function createAppointment(Request $request)
+    {
+        if (!$request->user()->can('add', \App\Meeting::class)) {
+            return AjaxFeedbackHelper::failureReponse(null, __('You are not allowed to create an appointment.'), 403, [__('You are not allowed to create an appointment.')]);
+        }
+        $rules = [
+            'subject' => 'required|string',
+            'from' => 'required|date|after_or_equal:now',
+            'to' => 'required|date|after:from',
+            'description' => 'nullable|string',
+            'participants' => ['required', 'array', 'min:1', new \App\Rules\ValidParticipant('participant')],
+        ];
+        $validator = Validator::make($request->all(), $rules);
+        $errors = $validator->errors()->toArray();
+        if (count($errors) > 0) {
+            $returnerrors = [];
+            foreach ($errors as $field => $err) {
+                if (is_array($err)) {
+                    foreach ($err as $e) {
+                        array_push($returnerrors, $e);
+                    }
+                } else {
+                    array_push($returnerrors, $err);
+                }
+            }
+            return AjaxFeedbackHelper::failureReponse(null, __('Your form has errors'), 400, $returnerrors);
+        }
+        return AjaxFeedbackHelper::debugReponse($request->all());
     }
 
     public function preferences(Request $request)

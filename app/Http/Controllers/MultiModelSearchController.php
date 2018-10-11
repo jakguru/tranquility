@@ -18,7 +18,7 @@ class MultiModelSearchController extends Controller
     public function search(Request $request)
     {
         $return = [];
-        if (strlen($request->input('search')) > 0) {
+        if (strlen($request->input('search')) > 0 && is_a($request->user(), '\App\User')) {
             $modelsToSearch = PermissionsHelper::getModelsWithTrait('Receivable');
             $results = SearchHelper::search($request->input('search'), $modelsToSearch);
             foreach ($results as $model) {

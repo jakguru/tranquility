@@ -215,7 +215,7 @@ try {
 			},
 			cache: true,
 			crossDomain: false,
-			data: {},
+			data: data,
 			error: function(jqXHR, textStatus, errorThrown) {
 				var redata = jqXHR.responseJSON;
 	            if ( 'object' !== typeof( redata ) || 'undefined' == typeof( redata.status ) ) {
@@ -226,8 +226,9 @@ try {
 			},
 			headers: {
 	            'Accept': 'application/json',
+	             'X-CSRF-TOKEN': jQuery('meta[name="csrf-token"]').attr('content')
 	        },
-			method: 'GET',
+			method: method,
 			success: function(redata, textStatus, jqXHR) {
 				if ( 'object' !== typeof( redata ) ) {
 	                error( 'Invalid AJAX Feedback' );

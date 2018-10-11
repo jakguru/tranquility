@@ -23,7 +23,8 @@ class JavascriptTranslationHelper
     ];
 
     public static $routes = [
-        'multi-model-search'
+        'multi-model-search',
+        'create-appointment',
     ];
 
     protected $translations = [];

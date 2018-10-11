@@ -235,6 +235,16 @@ window.multiModelSearch = function(selector, debug) {
 			pms.runSearch(pps.field);
 		}
 	});
+	pps.field.on('keydown', function(e) {
+		if (e.keyCode === 13) {
+			e.preventDefault();
+		}
+	});
+	jQuery(window).on('keydown', function(e){
+		if (e.keyCode === 13 && pps.field.is(e.target)) {
+			e.preventDefault();
+		}
+	});
 	pms.runWhenDoneTyping(pps.field, pms.runSearch);
 	var obj = this;
 	if (true === debug) {

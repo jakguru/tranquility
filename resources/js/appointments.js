@@ -81,17 +81,28 @@ window.showAppointmentDialog = function(subject, start, end, participants, descr
 					participants.push(jQuery(this).val());
 				});
 				ajax(
-					'/my/calendar',
-					'post',
-					{"search": form.serialize()},
+					route('create-appointment'),
+					'POST',
+					form.serialize(),
 					function(data) {
 						console.log(data);
+						showAppointmentDialog(
+							form.find('[name="subject"]').val(),
+							form.find('[name="start"]').val(),
+							form.find('[name="end"]').val(),
+							participants,
+							form.find('[name="description"]').val()
+						);
 					},
 					function(error) {
 						if ('object' == typeof(error)) {
-							var text = __('Could not create your meeting due to the following errors:') + "\n";
-							for (var i = 0; i < error.length; i++) {
-								text += error[i] + "\n";
+							if ( error.length == 1 ) {
+								text = error[0];
+							} else {
+								var text = __('Could not create your meeting due to the following errors:') + "\n";
+								for (var i = 0; i < error.length; i++) {
+									text += error[i] + "\n";
+								}
 							}
 							Swal({
 								title: __('Error'),
