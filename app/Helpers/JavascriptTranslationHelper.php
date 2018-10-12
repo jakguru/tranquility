@@ -18,8 +18,13 @@ class JavascriptTranslationHelper
         'Processing',
         'Error',
         'Retry',
+        'Success',
         'An unknown error occured while trying to create your meeting.',
         'Could not create your meeting due to the following errors:',
+        'You may need to reload the page to view your new appointment.',
+        'OK',
+        'Reload Page',
+        'Go to Appointment'
     ];
 
     public static $routes = [

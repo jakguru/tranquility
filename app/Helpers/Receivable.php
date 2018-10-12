@@ -27,6 +27,6 @@ trait Receivable
 
     public function meetings()
     {
-        return $this->morphMany('App\Meeting', 'participant');
+        return $this->morphToMany('App\Meeting', 'participant', 'receivables');
     }
 }

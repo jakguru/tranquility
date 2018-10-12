@@ -86,14 +86,36 @@ window.showAppointmentDialog = function(subject, start, end, participants, descr
 					form.serialize(),
 					function(data) {
 						Swal.close();
-						console.log(data);
-						showAppointmentDialog(
-							form.find('[name="subject"]').val(),
-							form.find('[name="start"]').val(),
-							form.find('[name="end"]').val(),
-							participants,
-							form.find('[name="description"]').val()
-						);
+						var html = jQuery(sprintf('<div><p>%s</p></div>', __('You may need to reload the page to view your new appointment.'))),
+							viewButton = jQuery('<button class="btn btn-sm btn-dark mr-1 d-inline-block" class="button" role="button" data-action="view"></button>'),
+							reloadButton = jQuery('<button class="btn btn-sm btn-dark mr-1 d-inline-block" class="button" role="button" data-action="reload"></button>'),
+							closeButton = jQuery('<button class="btn btn-sm btn-success d-inline-block" class="button" role="button" data-action="close"></button>');
+						viewButton.text(__('View Appointment'));
+						reloadButton.text(__('Reload Current Page'));
+						closeButton.text(__('OK'));
+						html.append(viewButton);
+						html.append(reloadButton);
+						html.append(closeButton);
+						Swal({
+							title: __('Success'),
+							type: 'success',
+							showConfirmButton: false,
+      						showCancelButton: false,
+      						cancelButtonText: __('OK'),
+							html: html,
+							onOpen: function(model) {
+								jQuery(model).find('[data-action="view"]').on('click', function(e) {
+									window.location.href = data;
+								});
+								jQuery(model).find('[data-action="reload"]').on('click', function(e) {
+									Swal.close();
+									window.location.reload();
+								});
+								jQuery(model).find('[data-action="close"]').on('click', function(e) {
+									Swal.close();
+								});
+							}
+						});
 					},
 					function(error) {
 						Swal.close();

@@ -19,8 +19,25 @@ class Meeting extends Model
         'subject','description'
     ];
 
-    public function participants()
+    protected $casts = [
+        'email_participants' => 'array',
+    ];
+
+    public function getParticipants()
     {
-        return $this->morphTo('meeting_participants');
+        $full = [];
+        $receivable = \App\Helpers\PermissionsHelper::getModelsWithTrait('Receivable');
+        foreach ($receivable as $model) {
+            $property = \App\Helpers\ModelListHelper::getPluralLabelForClass($model);
+            foreach ($this->{$property} as $participant) {
+                array_push($full, $participant);
+            }
+        }
+        return collect($full);
+    }
+
+    public function users()
+    {
+        return $this->morphedByMany('App\User', 'participant', 'receivables');
     }
 }

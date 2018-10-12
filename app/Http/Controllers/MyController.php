@@ -90,11 +90,12 @@ class MyController extends Controller
         $meeting->description = $request->input('description');
         $meeting->owner_id = $request->user()->id;
         $emails = [];
-        $participants = [];
+        $meeting->email_participants = $emails;
+        $meeting->save();
         foreach ($request->input('participants') as $rawchoice) {
             $choice = @json_decode($rawchoice);
             if (!is_object($choice)) {
-                array_push($this->invalid, $choice);
+                array_push($this->invalid, $choice->value);
             }
             $receivable = \App\Helpers\PermissionsHelper::getModelsWithTrait('Receivable');
             if ('email' == $choice->type) {
@@ -102,14 +103,13 @@ class MyController extends Controller
             } elseif ('user' == $choice->type) {
                 $model = sprintf('\\App\\%s', ucfirst($choice->type));
                 $obj = $model::find($choice->value);
-                array_push($participants, $obj);
+                $property = \App\Helpers\ModelListHelper::getPluralLabelForClass($model);
+                $relationship = call_user_func(array($meeting, $property));
+                $relationship->attach($obj);
             }
         }
-        foreach ($participants as $p) {
-            $meeting->participants()->attach($p);
-        }
-        $meeting->save();
-        return AjaxFeedbackHelper::debugReponse($meeting->participants()->toArray());
+        $url = route('view-meeting', ['id' => $meeting->id]);
+        return AjaxFeedbackHelper::successResponse($url, __('Created Meeting Successfully'));
     }
 
     public function preferences(Request $request)
