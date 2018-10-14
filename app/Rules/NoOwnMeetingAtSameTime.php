@@ -23,7 +23,7 @@ class NoOwnMeetingAtSameTime implements Rule
     {
         $timezone = (!is_null(request()->user()->timezone)) ? request()->user()->timezone : config('app.timezone');
         $this->user = $request->user();
-        $this->start = \Carbon\Carbon::parse($request->input('from'), $timezone)->setTimezone('UTC');
+        $this->start = \Carbon\Carbon::parse($request->input('from'), $timezone)->setTimezone('UTC')->addSeconds(1);
         $this->end = \Carbon\Carbon::parse($request->input('to'), $timezone)->setTimezone('UTC')->subSeconds(1);
     }
 
