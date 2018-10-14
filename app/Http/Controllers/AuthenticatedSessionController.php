@@ -120,6 +120,19 @@ class AuthenticatedSessionController extends Controller
         $return->poll = URL::temporarySignedRoute('rtu', now()->addMinutes(1));
         $return->events = $obj->getCurrentSessionEvents(true);
         $return->messages = 0;
+        $now = \Carbon\Carbon::now();
+        $eod = \Carbon\Carbon::now()->setTime(23, 59, 59);
+        $appointments = MyController::getMyAppointmentsBetweenDates($now, $eod);
+        $return->appointments = [];
+        foreach ($appointments as $appt) {
+            array_push($return->appointments, [
+                'subject' => $appt->subject,
+                'own' => ($request->user()->id == $appt->owner_id),
+                'start' => $request->user()->formatDateTime($appt->starts_at),
+                'end' => $request->user()->formatDateTime($appt->ends_at),
+                'url' => route('view-meeting', ['id' => $appt->id]),
+            ]);
+        }
         return AjaxFeedbackHelper::successResponse($return);
     }
 

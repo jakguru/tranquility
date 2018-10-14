@@ -38,6 +38,6 @@ class Meeting extends Model
 
     public function users()
     {
-        return $this->morphedByMany('App\User', 'participant', 'receivables');
+        return $this->morphedByMany('App\User', 'participant', 'participants');
     }
 }

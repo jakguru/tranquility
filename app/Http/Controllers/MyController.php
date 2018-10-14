@@ -13,6 +13,10 @@ use \App\Helpers\AjaxFeedbackHelper;
 
 class MyController extends Controller
 {
+
+    use \App\Helpers\DebugLoggable;
+
+
     public function __construct()
     {
         $this->middleware('auth');
@@ -40,6 +44,9 @@ class MyController extends Controller
         $days = array_keys(\App\Http\Controllers\SettingsController::getListOfDays());
         $first_day = null;
         $params->days = [];
+        $myAppointmentStart = $params->date->copy()->setTime(0, 0, 0)->setTimezone('UTC');
+        $myAppointmentEnd = $params->date->copy()->setTime(23, 59, 59)->setTimezone('UTC');
+        $params->myappointmentstoday = self::getMyAppointmentsBetweenDates($myAppointmentStart, $myAppointmentEnd);
         $attcount = 0;
         while (count($params->days) < 7 && $attcount < 100) {
             $day = array_shift($days);
@@ -58,15 +65,16 @@ class MyController extends Controller
 
     public function createAppointment(Request $request)
     {
+        $timezone = (!is_null(request()->user()->timezone)) ? request()->user()->timezone : config('app.timezone');
         if (!$request->user()->can('add', \App\Meeting::class)) {
             return AjaxFeedbackHelper::failureReponse(null, __('You are not allowed to create an appointment.'), 200, [__('You are not allowed to create an appointment.')]);
         }
         $rules = [
-            'subject' => 'required|string',
+            'subject' => ['required', 'string', new \App\Rules\NoOwnMeetingAtSameTime($request)],
             'from' => 'required|date|after_or_equal:now',
             'to' => 'required|date|after:from',
             'description' => 'nullable|string',
-            'participants' => ['required', 'array', 'min:1', new \App\Rules\ValidParticipant('participant'), new \App\Rules\NotSelf],
+            'participants' => ['nullable', 'array', new \App\Rules\ValidParticipant('participant'), new \App\Rules\NotSelf, new \App\Rules\NoMeetingAtSameTime($request)],
         ];
         $validator = Validator::make($request->all(), $rules);
         $errors = $validator->errors()->toArray();
@@ -85,30 +93,50 @@ class MyController extends Controller
         }
         $meeting = new \App\Meeting;
         $meeting->subject = $request->input('subject');
-        $meeting->starts_at = \Carbon\Carbon::parse($request->input('from'));
-        $meeting->ends_at = \Carbon\Carbon::parse($request->input('to'));
+        $meeting->starts_at = \Carbon\Carbon::parse($request->input('from'), $timezone)->setTimezone('UTC');
+        $meeting->ends_at = \Carbon\Carbon::parse($request->input('to'), $timezone)->setTimezone('UTC');
         $meeting->description = $request->input('description');
         $meeting->owner_id = $request->user()->id;
         $emails = [];
         $meeting->email_participants = $emails;
         $meeting->save();
-        foreach ($request->input('participants') as $rawchoice) {
-            $choice = @json_decode($rawchoice);
-            if (!is_object($choice)) {
-                array_push($this->invalid, $choice->value);
+        $users = [];
+        if (is_array($request->input('participants'))) {
+            foreach ($request->input('participants') as $rawchoice) {
+                $choice = @json_decode($rawchoice);
+                if (!is_object($choice)) {
+                    array_push($this->invalid, $choice->value);
+                }
+                $receivable = \App\Helpers\PermissionsHelper::getModelsWithTrait('Receivable');
+                if ('email' == $choice->type) {
+                    array_push($emails, $choice->value);
+                } else {
+                    $model = sprintf('\\App\\%s', ucfirst($choice->type));
+                    $obj = $model::find($choice->value);
+                    $property = \App\Helpers\ModelListHelper::getPluralLabelForClass($model);
+                    $relationship = call_user_func(array($meeting, $property));
+                    $relationship->attach($obj, ['status' => 'pending']);
+                    if ('\\App\\User' == $model) {
+                        array_push($users, $obj);
+                    }
+                }
             }
-            $receivable = \App\Helpers\PermissionsHelper::getModelsWithTrait('Receivable');
-            if ('email' == $choice->type) {
-                array_push($emails, $choice->value);
-            } elseif ('user' == $choice->type) {
-                $model = sprintf('\\App\\%s', ucfirst($choice->type));
-                $obj = $model::find($choice->value);
-                $property = \App\Helpers\ModelListHelper::getPluralLabelForClass($model);
-                $relationship = call_user_func(array($meeting, $property));
-                $relationship->attach($obj);
-            }
+            $meeting->email_participants = $emails;
         }
+        $meeting->save();
         $url = route('view-meeting', ['id' => $meeting->id]);
+        foreach ($users as $user) {
+            \App\Realtime\Events\RealtimeAlert::emitAlert(
+                $user,
+                sprintf(__('You have been invited to participate in a meeting with the subject "%s"'), $meeting->subject),
+                $url,
+                'info',
+                'far fa-calendar-check'
+            );
+        }
+        foreach ($emails as $email) {
+            // @TODO: Send an email with an ical file with the details of the meeting
+        }
         return AjaxFeedbackHelper::successResponse($url, __('Created Meeting Successfully'));
     }
 
@@ -168,6 +196,18 @@ class MyController extends Controller
                     'datetimeformat' => ['required', 'string'],
                 ];
                 Validator::make($request->all(), $rules)->validate();
+                foreach ($rules as $key => $rule) {
+                    if (ends_with($key, '_phone')) {
+                        $val = $request->input($key);
+                        if (is_null($val) || 0 == strlen($val)) {
+                            $countryKey = sprintf('%s_country', $key);
+                            $request->merge([$countryKey => '']);
+                        }
+                    }
+                    if ('boolean' == $rule) {
+                        $request->merge([$key => $request->has($key)]);
+                    }
+                }
                 if ($request->has('avatar') && !empty($request->input('avatar'))) {
                     $request->merge(['avatar' => \App\Helpers\ModelImageHelper::saveImageFromBase64($request->input('avatar'), $request->user())]);
                 }
@@ -237,5 +277,58 @@ class MyController extends Controller
             $query['date'] = $date->toDateTimeString();
         }
         return route('my-calendar', $query);
+    }
+
+    public static function getMyAppointmentsBetweenDates($start = null, $end = null, $children = false, $pending = false)
+    {
+        $timezone = (!is_null(request()->user()->timezone)) ? request()->user()->timezone : config('app.timezone');
+        if (!is_a($start, '\Carbon\Carbon')) {
+            if (is_null($start)) {
+                $start = Carbon::today($timezone)->setTime(0, 0, 0);
+            } else {
+                $start = Carbon::parse($start, $timezone);
+            }
+        }
+        if (!is_a($end, '\Carbon\Carbon')) {
+            if (is_null($end)) {
+                $end = Carbon::today($timezone)->setTime(23, 59, 59);
+            } else {
+                $end = Carbon::parse($end, $timezone);
+            }
+        }
+        $start->setTimezone('UTC');
+        $end->setTimezone('UTC');
+        $collection = [];
+        $ownMeetingsQuery = request()->user()->ownMeetings();
+        \App\Helpers\RangeWithinRangeQueryHelper::modifyQuery($ownMeetingsQuery, $start, $end);
+        $participatingMeetingsQuery = request()->user()->meetings();
+        \App\Helpers\RangeWithinRangeQueryHelper::modifyQuery($participatingMeetingsQuery, $start, $end);
+        if (false == $pending) {
+            $participatingMeetingsQuery->wherePivot('status', '=', 'accepted');
+        }
+        foreach ($ownMeetingsQuery->get() as $meeting) {
+            array_push($collection, $meeting);
+        }
+        foreach ($participatingMeetingsQuery->get() as $meeting) {
+            array_push($collection, $meeting);
+        }
+        if (true == $children) {
+            // get all the data for all of the children too!
+        }
+        return collect($collection)->sortBy('starts_at');
+    }
+
+    public static function getAppointmentDisplayClass(\App\Meeting $meeting, $prefix = '')
+    {
+        $now = Carbon::now();
+        $return = '';
+        if (Carbon::parse($meeting->ends_at)->lessThan($now)) {
+            $return .= ' ' . $prefix . 'light';
+        } elseif ($now->greaterThanOrEqualTo(Carbon::parse($meeting->starts_at)) && $now->lessThanOrEqualTo(Carbon::parse($meeting->ends_at))) {
+            $return .= ' ' . $prefix . 'success';
+        } elseif (request()->user()->id !== $meeting->owner_id) {
+            $return .= ' ' . $prefix . 'warning';
+        }
+        return trim($return);
     }
 }

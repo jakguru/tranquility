@@ -24,12 +24,14 @@ class JavascriptTranslationHelper
         'You may need to reload the page to view your new appointment.',
         'OK',
         'Reload Page',
-        'Go to Appointment'
+        'Go to Appointment',
+        'View Calendar',
     ];
 
     public static $routes = [
         'multi-model-search',
         'create-appointment',
+        'my-calendar',
     ];
 
     protected $translations = [];

@@ -16,11 +16,12 @@ class MeetingParticipants extends Migration
         Schema::table('meetings', function($table) {
             $table->json('email_participants')->nullable();
         });
-        Schema::create('receivables', function (Blueprint $table) {
+        Schema::create('participants', function (Blueprint $table) {
             $table->increments('id');
             $table->integer('meeting_id')->unsigned(); 
         	$table->string('participant_type');
-            $table->integer('participant_id')->unsigned(); 
+            $table->integer('participant_id')->unsigned();
+            $table->enum('status', ['pending', 'accepted', 'rejected']);
         });
     }
 
@@ -34,6 +35,6 @@ class MeetingParticipants extends Migration
         Schema::table('meetings', function($table) {
             $table->dropColumn('email_participants');
         });
-        Schema::dropIfExists('receivables');
+        Schema::dropIfExists('participants');
     }
 }

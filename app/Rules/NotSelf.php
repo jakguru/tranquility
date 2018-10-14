@@ -28,10 +28,13 @@ class NotSelf implements Rule
      */
     public function passes($attribute, $value)
     {
+        if (!is_array($value)) {
+            return true;
+        }
         foreach ($value as $rawchoice) {
             $choice = @json_decode($rawchoice);
             if (!is_object($choice)) {
-                array_push($this->invalid, $choice);
+                return false;
             }
             $receivable = \App\Helpers\PermissionsHelper::getModelsWithTrait('Receivable');
             if ('email' == $choice->type) {

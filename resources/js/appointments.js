@@ -10,8 +10,9 @@ window.showAppointmentDialog = function(subject, start, end, participants, descr
 		closeExisting: true,
 		type: 'html',
 		src: sprintf(
-			'<div class="container"><form class="card" action="#" method="POST" id="schedule-appointment-form"><div class="card-header bg-dark text-white"><h4>%s</h4></div><div class="card-body"><div class="form-group"><label>%s</label><input name="subject" type="text" class="form-control form-control-sm" required /></div><div class="row"><div class="col-md-6"><div class="form-group"><label>%s</label><input name="from" type="text" psuedo-type="datetime-local" class="form-control form-control-sm" required /></div></div><div class="col-md-6"><div class="form-group"><label>%s</label><input name="to" type="text" psuedo-type="datetime-local" class="form-control form-control-sm" required /></div></div></div><div class="form-group"><label>%s</label><div class="multi-model-search multi-model-search-sm"><div class="selected-results"></div><input type="search" name="participants" class="form-control" /></div></div><div class="form-group"><label>%s</label><textarea name="description" class="form-control twohundredtall"></textarea></div></div><div class="card-footer text-right"><a href="#" class="btn btn-secondary btn-close mr-1">%s</a><input type="submit" class="btn btn-success" value="%s" /></div></form></div>',
+			'<div class="container"><form class="card" action="#" method="POST" id="schedule-appointment-form"><div class="card-header bg-dark text-white"><h4>%s</h4></div><div class="card-body"><div class="alert alert-info">%s</div><div class="form-group"><label>%s</label><input name="subject" type="text" class="form-control form-control-sm" required /></div><div class="row"><div class="col-md-6"><div class="form-group"><label>%s</label><input name="from" type="text" psuedo-type="datetime-local" class="form-control form-control-sm" required /></div></div><div class="col-md-6"><div class="form-group"><label>%s</label><input name="to" type="text" psuedo-type="datetime-local" class="form-control form-control-sm" required /></div></div></div><div class="form-group"><label>%s</label><div class="multi-model-search multi-model-search-sm"><div class="selected-results"></div><input type="search" name="participants" class="form-control" /></div></div><div class="form-group"><label>%s</label><textarea name="description" class="form-control twohundredtall"></textarea></div></div><div class="card-footer text-right"><a href="#" class="btn btn-secondary btn-close mr-1">%s</a><input type="submit" class="btn btn-success" value="%s" /></div></form></div>',
 			__('Schedule an Appointment'),
+			__('All times are in the time zone set in your preferences.'),
 			__('Subject'),
 			__('Start'),
 			__('Ends'),
@@ -203,17 +204,32 @@ var dashboardAppointmentManager = function(identifier) {
 		return obj.obj.find(identifier);
 	}
 	this.showAppointments = function() {
-		html = '';
+		var html = '',
+			appts_json = obj.obj.attr('appts-list'),
+			appts_obj = ('undefined' !== typeof(appts_json)) ? JSON.parse(appts_json) : [];
 		if (obj.obj.hasClass('with-add')) {
-			html += sprintf('<button class="btn btn-success btn-block add-appointment-button"><i class="far fa-calendar-plus mr-2"></i>%s</button>', __('New Appointment'));
+			html += sprintf('<button class="squared-corners btn btn-success btn-block add-appointment-button mb-0 mt-0 text-left"><i class="far fa-calendar-plus mr-2"></i>%s</button>', __('New Appointment'));
 		}
+		for (var i = 0; i < appts_obj.length; i++) {
+			var a = appts_obj[i];
+			html += sprintf(
+				'<a href="%s" class="squared-corners btn btn-secondary btn-block mb-0 mt-0 text-left"><i class="far fa-calendar-check mr-2"></i>%s<br /><small>%s %s<br />%s %s</small></a>',
+				a.url,
+				a.subject,
+				__('From'),
+				a.start,
+				__('To'),
+				a.end
+			);
+		}
+		html += sprintf('<a href="%s" class="squared-corners btn btn-primary btn-block mb-0 mt-0 text-left"><i class="far fa-calendar-alt mr-2"></i>%s</a>', route('my-calendar'), __('View Calendar'));
 		return html;
 	}
 	var obj = this;
 	this.obj.popover({
 		content: obj.showAppointments,
 		placement: 'bottom',
-		template: '<div class="popover" role="tooltip"><div class="arrow"></div><div class="popover-body appointments-popover"></div></div>',
+		template: '<div class="popover" role="tooltip"><div class="arrow"></div><div class="popover-body squared-corners appointments-popover"></div></div>',
 		trigger: 'click',
 		html: true,
 	});

@@ -27,6 +27,16 @@ try {
 						jQuery('#messages-indicator').find('.indicator-label').removeClass('indicator-label-danger');
 					}
 				}
+				if ('object' == typeof(data.appointments)) {
+					var count = data.appointments.length;
+					if ( count > 0 ) {
+						jQuery('#appointments-button').find('.indicator-label').addClass('indicator-label-danger');
+					} else {
+						jQuery('#appointments-button').find('.indicator-label').removeClass('indicator-label-danger');
+					}
+					jQuery('#appointments-button').find('.indicator-label').text(count);
+					jQuery('#appointments-button').attr('appts-list', JSON.stringify(data.appointments));
+				}
 				if ('string' == typeof(data.poll)) {
 					setTimeout(function() {
 						runRTU(data.poll);

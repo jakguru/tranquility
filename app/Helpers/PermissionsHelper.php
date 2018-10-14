@@ -6,6 +6,8 @@ use Illuminate\Database\Schema\Blueprint;
 
 class PermissionsHelper
 {
+    use \App\Helpers\DebugLoggable;
+
     public static $permissionOptions = ['none', 'own', 'all'];
 
     public static function getPermissionFieldsForModel($model)
@@ -41,7 +43,7 @@ class PermissionsHelper
         if ($pos = strrpos($classname, '\\')) {
             return substr($classname, $pos + 1);
         }
-        return $pos;
+        return $classname;
     }
 
     public static function onUserSaved(\App\User $user)

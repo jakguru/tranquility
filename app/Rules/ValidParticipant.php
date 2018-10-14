@@ -29,6 +29,9 @@ class ValidParticipant implements Rule
      */
     public function passes($attribute, $value)
     {
+        if (!is_array($value)) {
+            return true;
+        }
         foreach ($value as $rawchoice) {
             $choice = @json_decode($rawchoice);
             if (!is_object($choice)) {

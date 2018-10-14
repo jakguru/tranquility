@@ -17,6 +17,7 @@ class User extends Authenticatable
     use \App\Helpers\Listable;
     use \App\Helpers\Permitable;
     use \App\Helpers\Receivable;
+    use \App\Helpers\DebugLoggable;
 
     public static $list_columns = [
         'email' => [
@@ -96,6 +97,11 @@ class User extends Authenticatable
         return $this->hasMany('App\Activity', 'user_id');
     }
 
+    public function ownMeetings()
+    {
+        return $this->hasMany('App\Meeting', 'owner_id');
+    }
+
     public function isSudo()
     {
         foreach ($this->groups as $group) {
@@ -119,6 +125,8 @@ class User extends Authenticatable
     public function getPermissionForVerb($model, $verb = 'list', $allowSudo = true)
     {
         if (is_object($model)) {
+            $model = PermissionsHelper::getClassName(get_class($model));
+        } else {
             $model = PermissionsHelper::getClassName($model);
         }
         $verb = strtolower($verb);

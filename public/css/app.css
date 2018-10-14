@@ -28612,3 +28612,7 @@ textarea.twohundredtall {
   resize: none;
 }
 
+.squared-corners {
+  border-radius: 0 !important;
+}
+

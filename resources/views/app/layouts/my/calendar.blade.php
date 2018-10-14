@@ -59,11 +59,27 @@
 					<button class="btn btn-success btn-block add-appointment-button"><i class="far fa-calendar-plus mr-2"></i>{{ __('New Appointment') }}</button>
 				</div>
 				@endif
+				@if($params->myappointmentstoday->isNotEmpty())
+				<div class="card">
+					<div class="card-header bg-dark text-white">
+						<h5 class="mb-0 mt-0">{{ sprintf(__('Appointment List for %s'), $params->date->format(is_null(Auth::user()->dateformat) ? config('app.dateformat') : Auth::user()->dateformat )) }}</h5>
+					</div>
+					<div class="list-group">
+						@foreach($params->myappointmentstoday as $meeting)
+						<a href="{{ route('view-meeting', ['id' => $meeting->id]) }}" class="list-group-item {{ \App\Http\Controllers\MyController::getAppointmentDisplayClass($meeting, 'list-group-item-') }}">
+							<h6 class="mb-1">{{ $meeting->subject }}</h6>
+							<p class="mb-0"><small>{{ __('Starts') }}: {{ Auth::user()->formatDateTime($meeting->starts_at) }}</small></p>
+							<p class="mb-0"><small>{{ __('Ends') }}: {{ Auth::user()->formatDateTime($meeting->ends_at) }}</small></p>
+						</a>
+						@endforeach
+					</div>
+				</div>
+				@endif
 			</div>
 			<div class="col-md-9">
 				<div class="card">
 					<div class="card-header bg-dark text-white">
-						<h4 class="mb-0 mt-0">{{ sprintf(__('Schedule for %s'), $params->date->format(is_null(Auth::user()->dateformat) ? config('app.dateformat') : Auth::user()->dateformat      )) }}</h4>
+						<h4 class="mb-0 mt-0">{{ sprintf(__('Schedule for %s'), $params->date->format(is_null(Auth::user()->dateformat) ? config('app.dateformat') : Auth::user()->dateformat )) }}</h4>
 					</div>
 					<div class="table-responsive mb-0">
 						<table class="table table-sm table-striped table-hover mb-0 table-schedule table-bordered">

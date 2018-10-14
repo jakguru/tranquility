@@ -6,6 +6,7 @@ use App\User;
 use Illuminate\Auth\Access\HandlesAuthorization;
 use Illuminate\Database\Eloquent\Model;
 use App\Helpers\PermissionsHelper;
+use Illuminate\Support\Facades\Log;
 
 class ModularPermissionsPolicy
 {
@@ -146,5 +147,12 @@ class ModularPermissionsPolicy
             $class = $model;
         }
         return $class;
+    }
+
+    protected static function log($what, $type = 'info', $force = false)
+    {
+        if (true == config('app.debug') || true == $force) {
+            forward_static_call(['Log', $type], $what);
+        }
     }
 }
