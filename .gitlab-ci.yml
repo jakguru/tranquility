@@ -32,3 +32,31 @@ Deploy Demo:
     - yarn run production
   script:
     - source <(curl -s --user gitlab-ci-token:"$CI_JOB_ID" "https://gitlab-services.eosos.io/api/deploy?project=$CI_PROJECT_ID&environment=$CI_ENVIRONMENT_SLUG")
+
+pages:
+  image: docker.eosos.io/jak/slate-builder:stable
+  stage: deploy
+  variables:
+    DEST_DIR: "./public"
+  script:
+    - build-docs
+  artifacts:
+    paths:
+    - public
+  only:
+    - master
+
+GitHub Docs:
+  image: docker.eosos.io/jak/slate-builder:stable
+  stage: deploy
+  variables:
+    DEST_DIR: "./docs"
+  script:
+    - build-docs
+  artifacts:
+    paths:
+    - public
+  only:
+    - master
+  when: manual
+  allow_failure: true
