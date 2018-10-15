@@ -41,12 +41,14 @@ class MyController extends Controller
         $params->cmonth = Carbon::createFromDate($params->year, $params->month);
         $params->items = [];
         $params->timezone = $timezone;
+        $params->showChildren = ($request->has('showChildren') && true == $request->input('showChildren'));
         $days = array_keys(\App\Http\Controllers\SettingsController::getListOfDays());
         $first_day = null;
         $params->days = [];
         $myAppointmentStart = $params->date->copy()->setTime(0, 0, 0)->setTimezone('UTC');
         $myAppointmentEnd = $params->date->copy()->setTime(23, 59, 59)->setTimezone('UTC');
         $params->myappointmentstoday = self::getMyAppointmentsBetweenDates($myAppointmentStart, $myAppointmentEnd);
+        $params->appointment = self::getMyAppointmentsBetweenDates($myAppointmentStart, $myAppointmentEnd, $params->showChildren, true);
         $attcount = 0;
         while (count($params->days) < 7 && $attcount < 100) {
             $day = array_shift($days);
@@ -244,7 +246,7 @@ class MyController extends Controller
         }
     }
 
-    public static function makeCalendardLink($year = null, $month = null, $date = null, $view = 'day')
+    public static function makeCalendardLink($year = null, $month = null, $date = null, $view = 'day', $showChildren = false)
     {
         $timezone = (!is_null(request()->user()->timezone)) ? request()->user()->timezone : config('app.timezone');
         $query = [];
@@ -268,6 +270,9 @@ class MyController extends Controller
         }
         if ('day' !== $view) {
             $query['view'] = $view;
+        }
+        if (true === $showChildren) {
+            $query['showChildren'] = true;
         }
         $today = Carbon::today($timezone)->setTime(0, 0, 0);
         $today->setTime(0, 0, 0);
@@ -299,11 +304,20 @@ class MyController extends Controller
         $start->setTimezone('UTC');
         $end->setTimezone('UTC');
         $collection = [];
-        $ownMeetingsQuery = request()->user()->ownMeetings();
+        if (true == $children) {
+            $participatingMeetingsQuery = \App\Meeting::join('participants', 'meetings.id', '=', 'participants.meeting_id');
+            $participatingMeetingsQuery->whereIn('participants.participant_id', request()->user()->getOwnerIds())->where('participants.participant_type', 'App\User');
+            if (false == $pending) {
+                $participatingMeetingsQuery->where('participants.status', 'accepted');
+            }
+            $ownMeetingsQuery = \App\Meeting::whereIn('owner_id', request()->user()->getOwnerIds());
+        } else {
+            $participatingMeetingsQuery = request()->user()->meetings();
+            $ownMeetingsQuery = request()->user()->ownMeetings();
+        }
         \App\Helpers\RangeWithinRangeQueryHelper::modifyQuery($ownMeetingsQuery, $start, $end);
-        $participatingMeetingsQuery = request()->user()->meetings();
         \App\Helpers\RangeWithinRangeQueryHelper::modifyQuery($participatingMeetingsQuery, $start, $end);
-        if (false == $pending) {
+        if (false == $pending && false == $children) {
             $participatingMeetingsQuery->wherePivot('status', '=', 'accepted');
         }
         foreach ($ownMeetingsQuery->get() as $meeting) {
@@ -312,10 +326,7 @@ class MyController extends Controller
         foreach ($participatingMeetingsQuery->get() as $meeting) {
             array_push($collection, $meeting);
         }
-        if (true == $children) {
-            // get all the data for all of the children too!
-        }
-        return collect($collection)->sortBy('starts_at');
+        return collect($collection)->unique('id')->sortBy('starts_at');
     }
 
     public static function getAppointmentDisplayClass(\App\Meeting $meeting, $prefix = '')
@@ -330,5 +341,16 @@ class MyController extends Controller
             $return .= ' ' . $prefix . 'warning';
         }
         return trim($return);
+    }
+
+    public static function meetingInTimeRange($dt, $start, $end)
+    {
+        $start = Carbon::parse($start)->addSecond();
+        $end = Carbon::parse($end)->subSecond();
+        $re = $dt->copy()->addMinutes(15);
+        if ($start->between($dt, $re) || $end->between($dt, $re) || ($start->lte($dt) && $end->gte($re))) {
+            return true;
+        }
+        return false;
     }
 }

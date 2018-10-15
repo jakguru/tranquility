@@ -22,8 +22,8 @@
 					<thead>
 						<tr>
 							<th colspan="5">{{ __($params->cmonth->englishMonth) }} {{$params->cmonth->year}}</th>
-							<th class="text-center"><a href="{{ \App\Http\Controllers\MyController::makeCalendardLink($params->month == 1 ? $params->year - 1 : $params->year, $params->month == 1 ? 12 : $params->month - 1) }}"><i class="fas fa-chevron-left"></i></a></th>
-							<th class="text-center"><a href="{{ \App\Http\Controllers\MyController::makeCalendardLink($params->month == 12 ? $params->year + 1 : $params->year, $params->month == 12 ? 1 : $params->month + 1) }}"><i class="fas fa-chevron-right"></i></a></th>
+							<th class="text-center"><a href="{{ \App\Http\Controllers\MyController::makeCalendardLink($params->month == 1 ? $params->year - 1 : $params->year, $params->month == 1 ? 12 : $params->month - 1, $params->date, 'day', $params->showChildren) }}"><i class="fas fa-chevron-left"></i></a></th>
+							<th class="text-center"><a href="{{ \App\Http\Controllers\MyController::makeCalendardLink($params->month == 12 ? $params->year + 1 : $params->year, $params->month == 12 ? 1 : $params->month + 1, $params->date, 'day', $params->showChildren) }}"><i class="fas fa-chevron-right"></i></a></th>
 						</tr>
 						<tr>
 							@foreach($params->days as $day)
@@ -43,7 +43,7 @@
 								@endphp
 								@if(strtolower($carbon->englishDayOfWeek) == $day && $shownDates < $params->cmonth->daysInMonth)
 									<td class="text-center{{$carbon->isSameDay(Carbon\Carbon::today()) ? ' today' : ''}}{{ $carbon->isSameDay($params->date) ? ' current' : '' }}">
-										<a href="{{ \App\Http\Controllers\MyController::makeCalendardLink($params->year, $params->month, $carbon->toDateTimeString()) }}">{{ $shownDates + 1 }}</a>
+										<a href="{{ \App\Http\Controllers\MyController::makeCalendardLink($params->year, $params->month, $carbon->toDateTimeString(), 'day', $params->showChildren) }}">{{ $shownDates + 1 }}</a>
 									</td>
 									@php $shownDates ++; @endphp
 								@else
@@ -79,7 +79,13 @@
 			<div class="col-md-9">
 				<div class="card">
 					<div class="card-header bg-dark text-white">
-						<h4 class="mb-0 mt-0">{{ sprintf(__('Schedule for %s'), $params->date->format(is_null(Auth::user()->dateformat) ? config('app.dateformat') : Auth::user()->dateformat )) }}</h4>
+						<h4 class="mb-0 mt-0">
+							<span class="pull-right">
+								<a href="{{ \App\Http\Controllers\MyController::makeCalendardLink($params->year, $params->month, $params->date, 'day', true) }}" class="btn btn-sm btn-light {{ $params->showChildren ? 'disabled' : '' }}">{{ __('All') }}</a>
+								<a href="{{ \App\Http\Controllers\MyController::makeCalendardLink($params->year, $params->month, $params->date, 'day') }}" class="btn btn-sm btn-light {{ $params->showChildren ? '' : 'disabled' }}">{{ __('Only Mine') }}</a>
+							</span>
+							{{ sprintf(__('Schedule for %s'), $params->date->format(is_null(Auth::user()->dateformat) ? config('app.dateformat') : Auth::user()->dateformat )) }}
+						</h4>
 					</div>
 					<div class="table-responsive mb-0">
 						<table class="table table-sm table-striped table-hover mb-0 table-schedule table-bordered">
@@ -99,13 +105,23 @@
 							@php
 							$format = is_null(Auth::user()->timeformat) ? config('app.timeformat') : Auth::user()->timeformat;
 							$format = trim(str_replace([':s', 's'], '', $format));
-							$dt = new Carbon\Carbon(sprintf('1970-01-01 %s:%s:00', $hour, $minute), $params->timezone);
+							$dt = $params->date->copy()->setTimezone($params->timezone)->setTime($hour, $minute, 0);
 							$utcdt = $dt->copy()->setTimezone('UTC');
 							@endphp
 							<tr>
-								<td class="text-center">{{ $utcdt->format($format) }} - {{ $utcdt->addMinutes(15)->format($format) }}</td>
-								<td class="text-center">{{ $dt->format($format) }} - {{ $dt->addMinutes(15)->format($format) }}</td>
-								<td class="appointments"></td>
+								<td class="text-center">{{ $utcdt->format($format) }} - {{ $utcdt->copy()->addMinutes(15)->format($format) }}</td>
+								<td class="text-center">{{ $dt->format($format) }} - {{ $dt->copy()->addMinutes(15)->format($format) }}</td>
+								<td class="appointments">
+									<div class="d-flex">
+										@foreach($params->appointment as $meeting)
+											@if(\App\Http\Controllers\MyController::meetingInTimeRange($dt, $meeting->starts_at, $meeting->ends_at))
+											<a href="{{ route('view-meeting', ['id' => $meeting->id]) }}" class="d-inline-block mb-0 pt-0 pb-0 pl-1 pr-1 alert alert-{{ \Auth::user()->id == $meeting->owner_id ? 'primary' : 'warning' }}">
+												<small>{{ $meeting->subject }}</small>
+											</a>
+											@endif
+										@endforeach
+									</div>
+								</td>
 							</tr>
 							@php
 							if ( $minute + 15 >= 60 ) {
