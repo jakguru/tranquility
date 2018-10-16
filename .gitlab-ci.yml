@@ -55,7 +55,7 @@ GitHub Docs:
     - build-docs
   artifacts:
     paths:
-    - public
+    - docs
   only:
     - master
   when: manual
