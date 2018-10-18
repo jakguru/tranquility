@@ -307,16 +307,17 @@ class MyController extends Controller
         if (true == $children) {
             // TODO, if the permission is for "all", change to all meetings
             $permission_level = request()->user()->getPermissionForVerb('Meeting', 'view');
-            if ('all' == $permission_level ) {
+            if ('all' == $permission_level) {
                 $participatingMeetingsQuery = \App\Meeting::select('meetings.*');
+                $ownMeetingsQuery = \App\Meeting::select('meetings.*');
             } else {
                 $participatingMeetingsQuery = \App\Meeting::join('participants', 'meetings.id', '=', 'participants.meeting_id')->select('meetings.*');
                 $participatingMeetingsQuery->whereIn('participants.participant_id', request()->user()->getOwnerIds())->where('participants.participant_type', 'App\User');
-            }          
+                $ownMeetingsQuery = \App\Meeting::whereIn('owner_id', request()->user()->getOwnerIds());
+            }
             if (false == $pending) {
                 $participatingMeetingsQuery->where('participants.status', 'accepted');
             }
-            $ownMeetingsQuery = \App\Meeting::select('meetings.*');
         } else {
             $participatingMeetingsQuery = request()->user()->meetings();
             $ownMeetingsQuery = request()->user()->ownMeetings();
