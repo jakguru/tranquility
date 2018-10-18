@@ -305,12 +305,18 @@ class MyController extends Controller
         $end->setTimezone('UTC');
         $collection = [];
         if (true == $children) {
-            $participatingMeetingsQuery = \App\Meeting::join('participants', 'meetings.id', '=', 'participants.meeting_id');
-            $participatingMeetingsQuery->whereIn('participants.participant_id', request()->user()->getOwnerIds())->where('participants.participant_type', 'App\User');
+            // TODO, if the permission is for "all", change to all meetings
+            $permission_level = request()->user()->getPermissionForVerb('Meeting', 'view');
+            if ('all' == $permission_level ) {
+                $participatingMeetingsQuery = \App\Meeting::select('meetings.*');
+            } else {
+                $participatingMeetingsQuery = \App\Meeting::join('participants', 'meetings.id', '=', 'participants.meeting_id')->select('meetings.*');
+                $participatingMeetingsQuery->whereIn('participants.participant_id', request()->user()->getOwnerIds())->where('participants.participant_type', 'App\User');
+            }          
             if (false == $pending) {
                 $participatingMeetingsQuery->where('participants.status', 'accepted');
             }
-            $ownMeetingsQuery = \App\Meeting::whereIn('owner_id', request()->user()->getOwnerIds());
+            $ownMeetingsQuery = \App\Meeting::select('meetings.*');
         } else {
             $participatingMeetingsQuery = request()->user()->meetings();
             $ownMeetingsQuery = request()->user()->ownMeetings();
