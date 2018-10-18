@@ -305,7 +305,6 @@ class MyController extends Controller
         $end->setTimezone('UTC');
         $collection = [];
         if (true == $children) {
-            // TODO, if the permission is for "all", change to all meetings
             $permission_level = request()->user()->getPermissionForVerb('Meeting', 'view');
             if ('all' == $permission_level) {
                 $participatingMeetingsQuery = \App\Meeting::select('meetings.*');
