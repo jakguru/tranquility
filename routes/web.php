@@ -35,6 +35,7 @@ Route::group(['middleware' => ['auth']], function () {
     Route::get('/my/inbox', '\App\Http\Controllers\MyController@inbox')->name('my-inbox');
     Route::get('/my/calendar', '\App\Http\Controllers\MyController@calendar')->name('my-calendar');
     Route::get('/my/calendar/{id}', '\App\Http\Controllers\MyController@appointment')->where('id', '[0-9]+')->name('view-meeting');
+    Route::put('/my/calendar/{id}', '\App\Http\Controllers\MyController@updateAppointment')->where('id', '[0-9]+')->name('update-meeting');
 
     Route::get('/my/preferences', '\App\Http\Controllers\MyController@preferences')->name('my-preferences');
     Route::put('/my/preferences', '\App\Http\Controllers\MyController@savePreferences')->name('my-preferences');

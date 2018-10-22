@@ -142,6 +142,23 @@ class MyController extends Controller
         return AjaxFeedbackHelper::successResponse($url, __('Created Meeting Successfully'));
     }
 
+    public function appointment(Request $request, $id)
+    {
+        $meeting = \App\Meeting::find($id);
+        if (!is_a($meeting, '\App\Meeting')) {
+            abort(404);
+        }
+        if (!$request->user()->can('view', $meeting)) {
+            abort(403);
+        }
+        return view('app.layouts.models.meetings.view', [
+            'model' => $meeting,
+            'mymeeting' => ($request->user()->id == $meeting->owner_id),
+            'ongoing' => ('success' == self::getAppointmentDisplayClass($meeting)),
+            'past' => ('light' == self::getAppointmentDisplayClass($meeting)),
+        ]);
+    }
+
     public function preferences(Request $request)
     {
         return view('app.layouts.my.preferences', ['model' => $request->user()]);
