@@ -4,6 +4,8 @@ $body-bg: #f8fafc;
 
 // Typography
 $font-family-sans-serif: "Nunito", sans-serif;
+$font-family-monospace: "Ubuntu Mono", monospace;
+$font-family-base: "Nunito", sans-serif;
 $font-size-base: 0.9rem;
 $line-height-base: 1.6;
 
@@ -18,3 +20,11 @@ $yellow: #ffed4a;
 $green: #38c172;
 $teal: #4dc0b5;
 $cyan: #6cb2eb;
+
+// Theme Colors
+// https://coolors.co/2f6690-3a7ca5-d9dcd6-16425b-81c3d7
+$theme-prime: #2F6690;
+$theme-second: #3A7CA5;
+$theme-light: #D9DCD6;
+$theme-dark: #16425B;
+$theme-highlight: #81C3D7;

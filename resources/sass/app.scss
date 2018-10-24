@@ -1,3 +1,6 @@
+// Fonts
+@import 'fonts';
+
 // Variables
 @import 'variables';
 
@@ -25,6 +28,10 @@
 
 // RTL
 @import 'rtl';
+
+h1, h2, h3, h4, h5, h6 {
+	font-family: "Ubuntu", "Nunito", sans-serif;
+}
 
 .intl-tel-input { width: 100%; }
 
@@ -244,3 +251,6 @@ textarea.twohundredtall {
 .squared-corners {
 	border-radius: 0 !important;
 }
+
+// Theme
+@import 'theme';

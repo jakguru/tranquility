@@ -14,7 +14,7 @@
 			<div class="input-group input-group-sm">
 				<input type="search" name="s" class="form-control" placeholder="{{ __('Search') }}" aria-label="{{ __('Search') }}" value="{{ old('s', app('request')->query('s')) }}" required />
 				<div class="input-group-append">
-					<button type="button" class="btn btn-outline-dark dropdown-toggle dropdown-toggle-split" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+					<button type="button" class="btn btn-light dropdown-toggle dropdown-toggle-split" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
 						<span class="sr-only">Toggle Dropdown</span>
 					</button>
 					<div class="dropdown-menu">
@@ -25,7 +25,7 @@
 						</div>
 						@endforeach
 					</div>
-					<button class="btn btn-outline-dark" type="submit" role="submit"><span class="fas fa-search"></span></button>
+					<button class="btn btn-light" type="submit" role="submit"><span class="fas fa-search"></span></button>
 				</div>
 			</div>
 		</form>
@@ -48,7 +48,7 @@
 			<!-- <span class="user-bar-seperator"></span> -->
 			<div id="user-menu" class="dropdown">
 				<button class="btn btn-link btn-user-menu-link dropdown-toggle" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-					<img src="{{ Auth::user()->getAvatarUrl(50) }}" class="user-avatar" />
+					<img src="{{ Auth::user()->getAvatarUrl(50) }}" class="user-avatar" width="20" height="20" />
 					{{ Auth::user()->name }}
 				</button>
 				<div class="dropdown-menu">
@@ -60,8 +60,8 @@
 					<a class="dropdown-item" href="{{ route('logout') }}">{{ __('Log Out') }}</a>
 				</div>
 			</div>
-			<span class="user-bar-seperator d-none d-md-block"></span>
-			<div class="system-clock d-none d-md-block" data-moment-format="{{ Auth::user()->getMomentDateTimeFormat('time') }}" data-moment-tz="{{ Auth::user()->getTimeZone() }}" data-moment="now"></div>
+			<!-- <span class="user-bar-seperator d-none d-md-block"></span> -->
+			<!-- <div class="system-clock d-none d-md-block" data-moment-format="{{ Auth::user()->getMomentDateTimeFormat('time') }}" data-moment-tz="{{ Auth::user()->getTimeZone() }}" data-moment="now"></div> -->
 		</div>
 		@endauth
 	</header>
@@ -69,10 +69,10 @@
 		<form action="{{ route('search') }}" method="GET" id="left-menu-search" class="d-sm-none">
 			@csrf
 
-			<div class="input-group input-group-sm">
+			<div class="input-group input-group-sm mb-1">
 				<input type="search" name="s" class="form-control" placeholder="{{ __('Search') }}" aria-label="{{ __('Search') }}" value="{{ old('s', app('request')->query('s')) }}" required />
 				<div class="input-group-append">
-					<button type="button" class="btn btn-outline-dark dropdown-toggle dropdown-toggle-split" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+					<button type="button" class="btn btn-light dropdown-toggle dropdown-toggle-split" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
 						<span class="sr-only">Toggle Dropdown</span>
 					</button>
 					<div class="dropdown-menu">
@@ -83,7 +83,7 @@
 						</div>
 						@endforeach
 					</div>
-					<button class="btn btn-outline-dark" type="submit" role="submit"><span class="fas fa-search"></span></button>
+					<button class="btn btn-light" type="submit" role="submit"><span class="fas fa-search"></span></button>
 				</div>
 			</div>
 		</form>

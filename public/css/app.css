@@ -4561,6 +4561,162 @@ body.compensate-for-scrollbar {
   .fancybox-thumbs__list a {
     max-width: calc(100% - 10px); } }
 
+/* nunito-200 - latin */
+
+@font-face {
+  font-family: 'Nunito';
+  font-style: normal;
+  font-weight: 200;
+  src: url(/fonts/nunito-v9-latin-200.eot?1cfac69a1fda0a892166e52e8b582b1d);
+  /* IE9 Compat Modes */
+  src: local("Nunito ExtraLight"), local("Nunito-ExtraLight"), url(/fonts/nunito-v9-latin-200.eot?1cfac69a1fda0a892166e52e8b582b1d) format("embedded-opentype"), url(/fonts/nunito-v9-latin-200.woff2?6716dd950cb0425751afd0890d5e26f5) format("woff2"), url(/fonts/nunito-v9-latin-200.woff?4b3dd3e005c2850f7299928bf3a96420) format("woff"), url(/fonts/nunito-v9-latin-200.ttf?7307e9b3ce7c32a56cb84f97bd542898) format("truetype"), url(/fonts/nunito-v9-latin-200.svg?01389714238154b3c120c0ede4075414) format("svg");
+  /* Legacy iOS */
+}
+
+/* nunito-300 - latin */
+
+@font-face {
+  font-family: 'Nunito';
+  font-style: normal;
+  font-weight: 300;
+  src: url(/fonts/nunito-v9-latin-300.eot?517e8cc0c346ac16a69842002fae7505);
+  /* IE9 Compat Modes */
+  src: local("Nunito Light"), local("Nunito-Light"), url(/fonts/nunito-v9-latin-300.eot?517e8cc0c346ac16a69842002fae7505) format("embedded-opentype"), url(/fonts/nunito-v9-latin-300.woff2?f708870c910aac39d7c23b67e6dff69a) format("woff2"), url(/fonts/nunito-v9-latin-300.woff?3eb1a100f527e8139eafee00d6ce77db) format("woff"), url(/fonts/nunito-v9-latin-300.ttf?18ef56f8c879dcf8b60952a65a9bfba3) format("truetype"), url(/fonts/nunito-v9-latin-300.svg?4e3eb2cff8c4643565eb1f30de9d20da) format("svg");
+  /* Legacy iOS */
+}
+
+/* nunito-regular - latin */
+
+@font-face {
+  font-family: 'Nunito';
+  font-style: normal;
+  font-weight: 400;
+  src: url(/fonts/nunito-v9-latin-regular.eot?75cb2deae35a5d180317999e8e8cf952);
+  /* IE9 Compat Modes */
+  src: local("Nunito Regular"), local("Nunito-Regular"), url(/fonts/nunito-v9-latin-regular.eot?75cb2deae35a5d180317999e8e8cf952) format("embedded-opentype"), url(/fonts/nunito-v9-latin-regular.woff2?fe67e10445323683dab69663f6a4718a) format("woff2"), url(/fonts/nunito-v9-latin-regular.woff?feb87cc98b5b4c5c706bd5745e1e3b14) format("woff"), url(/fonts/nunito-v9-latin-regular.ttf?daa2089f6a9fb8fd0bf8c5642f915039) format("truetype"), url(/fonts/nunito-v9-latin-regular.svg?5106101c6cb1300b7d2837eed71677df) format("svg");
+  /* Legacy iOS */
+}
+
+/* nunito-600 - latin */
+
+@font-face {
+  font-family: 'Nunito';
+  font-style: normal;
+  font-weight: 600;
+  src: url(/fonts/nunito-v9-latin-600.eot?b7233e68f4b0d1fd0594f40812e23fc1);
+  /* IE9 Compat Modes */
+  src: local("Nunito SemiBold"), local("Nunito-SemiBold"), url(/fonts/nunito-v9-latin-600.eot?b7233e68f4b0d1fd0594f40812e23fc1) format("embedded-opentype"), url(/fonts/nunito-v9-latin-600.woff2?e57dde6f29f1255d69b2a7daf9bde8d9) format("woff2"), url(/fonts/nunito-v9-latin-600.woff?ae6d08e9151bfae03736df358d0ab384) format("woff"), url(/fonts/nunito-v9-latin-600.ttf?d114e31f0b972198c38ebde97866397e) format("truetype"), url(/fonts/nunito-v9-latin-600.svg?ba9b2e02a58599680d85a776fc1053d5) format("svg");
+  /* Legacy iOS */
+}
+
+/* nunito-700 - latin */
+
+@font-face {
+  font-family: 'Nunito';
+  font-style: normal;
+  font-weight: 700;
+  src: url(/fonts/nunito-v9-latin-700.eot?b17d522e40fce8e5a4a39572753597b2);
+  /* IE9 Compat Modes */
+  src: local("Nunito Bold"), local("Nunito-Bold"), url(/fonts/nunito-v9-latin-700.eot?b17d522e40fce8e5a4a39572753597b2) format("embedded-opentype"), url(/fonts/nunito-v9-latin-700.woff2?dd42f32ac2e37e4d8705820d0b8dd202) format("woff2"), url(/fonts/nunito-v9-latin-700.woff?086733827e6d24ba33e7301e9fda2c49) format("woff"), url(/fonts/nunito-v9-latin-700.ttf?5cac58a3310eb316612afc82ce551f19) format("truetype"), url(/fonts/nunito-v9-latin-700.svg?8fd515791307ea222a8c5378c2480dde) format("svg");
+  /* Legacy iOS */
+}
+
+/* nunito-800 - latin */
+
+@font-face {
+  font-family: 'Nunito';
+  font-style: normal;
+  font-weight: 800;
+  src: url(/fonts/nunito-v9-latin-800.eot?3491c7dbfc5ce2dde8eed3eda8964566);
+  /* IE9 Compat Modes */
+  src: local("Nunito ExtraBold"), local("Nunito-ExtraBold"), url(/fonts/nunito-v9-latin-800.eot?3491c7dbfc5ce2dde8eed3eda8964566) format("embedded-opentype"), url(/fonts/nunito-v9-latin-800.woff2?389848e315f1e04362c57cb4432bfd3a) format("woff2"), url(/fonts/nunito-v9-latin-800.woff?e345e7e8dd10a08f0d77e083aca4aea2) format("woff"), url(/fonts/nunito-v9-latin-800.ttf?d47a4f8f0190260f4e4e931f6ec1a466) format("truetype"), url(/fonts/nunito-v9-latin-800.svg?8663e517dcbe260a7355935453cce982) format("svg");
+  /* Legacy iOS */
+}
+
+/* nunito-900 - latin */
+
+@font-face {
+  font-family: 'Nunito';
+  font-style: normal;
+  font-weight: 900;
+  src: url(/fonts/nunito-v9-latin-900.eot?4019454f100bef8a5cc96f853c2e50e8);
+  /* IE9 Compat Modes */
+  src: local("Nunito Black"), local("Nunito-Black"), url(/fonts/nunito-v9-latin-900.eot?4019454f100bef8a5cc96f853c2e50e8) format("embedded-opentype"), url(/fonts/nunito-v9-latin-900.woff2?6d3158a3e4568c98aafa029b35d0937a) format("woff2"), url(/fonts/nunito-v9-latin-900.woff?b1b0d941775ac87980e5542551603dfb) format("woff"), url(/fonts/nunito-v9-latin-900.ttf?eae7bca6065b1b26f6e7c7e5a3701620) format("truetype"), url(/fonts/nunito-v9-latin-900.svg?4f564312313386d89aabe2e59a4416c6) format("svg");
+  /* Legacy iOS */
+}
+
+/* ubuntu-mono-regular - latin */
+
+@font-face {
+  font-family: 'Ubuntu Mono';
+  font-style: normal;
+  font-weight: 400;
+  src: url(/fonts/ubuntu-mono-v7-latin-regular.eot?44f390a461c0adc46fe9ebf65a0d86a3);
+  /* IE9 Compat Modes */
+  src: local("Ubuntu Mono"), local("UbuntuMono-Regular"), url(/fonts/ubuntu-mono-v7-latin-regular.eot?44f390a461c0adc46fe9ebf65a0d86a3) format("embedded-opentype"), url(/fonts/ubuntu-mono-v7-latin-regular.woff2?9937c52ecf1224033b83886cbfb10ae6) format("woff2"), url(/fonts/ubuntu-mono-v7-latin-regular.woff?fda3eddd27016d48d3ca4225d1e7df18) format("woff"), url(/fonts/ubuntu-mono-v7-latin-regular.ttf?96aae57f112742c99e5aaea8826fa45f) format("truetype"), url(/fonts/ubuntu-mono-v7-latin-regular.svg?285242112735d950bbf1bb4ca576cd8b) format("svg");
+  /* Legacy iOS */
+}
+
+/* ubuntu-mono-700 - latin */
+
+@font-face {
+  font-family: 'Ubuntu Mono';
+  font-style: normal;
+  font-weight: 700;
+  src: url(/fonts/ubuntu-mono-v7-latin-700.eot?6c200946b6520cb60ff7549e2a87265a);
+  /* IE9 Compat Modes */
+  src: local("Ubuntu Mono Bold"), local("UbuntuMono-Bold"), url(/fonts/ubuntu-mono-v7-latin-700.eot?6c200946b6520cb60ff7549e2a87265a) format("embedded-opentype"), url(/fonts/ubuntu-mono-v7-latin-700.woff2?35243340e820a1bc839372337634ee5f) format("woff2"), url(/fonts/ubuntu-mono-v7-latin-700.woff?15a5b8c85d5080819335d2164e843e31) format("woff"), url(/fonts/ubuntu-mono-v7-latin-700.ttf?f5d2f4daa340df04c61313b8dce07fd3) format("truetype"), url(/fonts/ubuntu-mono-v7-latin-700.svg?31bea302a9542803a0a5a9cdab7ea865) format("svg");
+  /* Legacy iOS */
+}
+
+/* ubuntu-300 - latin */
+
+@font-face {
+  font-family: 'Ubuntu';
+  font-style: normal;
+  font-weight: 300;
+  src: url(/fonts/ubuntu-v12-latin-300.eot?a4ac003800b0614c5fea55bd06c8f493);
+  /* IE9 Compat Modes */
+  src: local("Ubuntu Light"), local("Ubuntu-Light"), url(/fonts/ubuntu-v12-latin-300.eot?a4ac003800b0614c5fea55bd06c8f493) format("embedded-opentype"), url(/fonts/ubuntu-v12-latin-300.woff2?16a73d944d9825af5a5c1a1f55de8f28) format("woff2"), url(/fonts/ubuntu-v12-latin-300.woff?f47318810718978402787f6c97d80b3c) format("woff"), url(/fonts/ubuntu-v12-latin-300.ttf?ee4afab8127f94ac1db1014c13f4048a) format("truetype"), url(/fonts/ubuntu-v12-latin-300.svg?1d78262dd49a4677830582ed949bb6a4) format("svg");
+  /* Legacy iOS */
+}
+
+/* ubuntu-regular - latin */
+
+@font-face {
+  font-family: 'Ubuntu';
+  font-style: normal;
+  font-weight: 400;
+  src: url(/fonts/ubuntu-v12-latin-regular.eot?03c831f7b9cdf705e0565484d568b6f6);
+  /* IE9 Compat Modes */
+  src: local("Ubuntu Regular"), local("Ubuntu-Regular"), url(/fonts/ubuntu-v12-latin-regular.eot?03c831f7b9cdf705e0565484d568b6f6) format("embedded-opentype"), url(/fonts/ubuntu-v12-latin-regular.woff2?5b23eeb3a32b30e91682d601535d2a89) format("woff2"), url(/fonts/ubuntu-v12-latin-regular.woff?1e926e228a9e2e1e77034f624211e2b4) format("woff"), url(/fonts/ubuntu-v12-latin-regular.ttf?694f32f4f139e578f8303309a343cfa0) format("truetype"), url(/fonts/ubuntu-v12-latin-regular.svg?3c51cf95e0cf5b2145510b36882a66ed) format("svg");
+  /* Legacy iOS */
+}
+
+/* ubuntu-500 - latin */
+
+@font-face {
+  font-family: 'Ubuntu';
+  font-style: normal;
+  font-weight: 500;
+  src: url(/fonts/ubuntu-v12-latin-500.eot?de3a6d819afca9e52159c2107e83b988);
+  /* IE9 Compat Modes */
+  src: local("Ubuntu Medium"), local("Ubuntu-Medium"), url(/fonts/ubuntu-v12-latin-500.eot?de3a6d819afca9e52159c2107e83b988) format("embedded-opentype"), url(/fonts/ubuntu-v12-latin-500.woff2?b4e565dcfc8f6cb332be0fc03302ad99) format("woff2"), url(/fonts/ubuntu-v12-latin-500.woff?e5613b0c875443174f948840c8ce07f6) format("woff"), url(/fonts/ubuntu-v12-latin-500.ttf?d4ee1476ddc3dedb306bbd3b7ad6501b) format("truetype"), url(/fonts/ubuntu-v12-latin-500.svg?c6d4b87d6dcae52931ee0ed61274b542) format("svg");
+  /* Legacy iOS */
+}
+
+/* ubuntu-700 - latin */
+
+@font-face {
+  font-family: 'Ubuntu';
+  font-style: normal;
+  font-weight: 700;
+  src: url(/fonts/ubuntu-v12-latin-700.eot?1e132953aa425e8163f781fa522203d6);
+  /* IE9 Compat Modes */
+  src: local("Ubuntu Bold"), local("Ubuntu-Bold"), url(/fonts/ubuntu-v12-latin-700.eot?1e132953aa425e8163f781fa522203d6) format("embedded-opentype"), url(/fonts/ubuntu-v12-latin-700.woff2?b91fae466c698c775adb2ae92cecc8b2) format("woff2"), url(/fonts/ubuntu-v12-latin-700.woff?669545b14b8032954bfe46909785c19f) format("woff"), url(/fonts/ubuntu-v12-latin-700.ttf?6e9abfc756fa14b703ed6a0a943408e8) format("truetype"), url(/fonts/ubuntu-v12-latin-700.svg?231056e6c20ad688dbf77a425d552ede) format("svg");
+  /* Legacy iOS */
+}
+
 /*!
  * Bootstrap v4.1.3 (https://getbootstrap.com/)
  * Copyright 2011-2018 The Bootstrap Authors
@@ -4596,7 +4752,7 @@ body.compensate-for-scrollbar {
   --breakpoint-lg: 992px;
   --breakpoint-xl: 1200px;
   --font-family-sans-serif: "Nunito", sans-serif;
-  --font-family-monospace: SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
+  --font-family-monospace: "Ubuntu Mono", monospace;
 }
 
 *,
@@ -4771,7 +4927,7 @@ pre,
 code,
 kbd,
 samp {
-  font-family: SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
+  font-family: "Ubuntu Mono", monospace;
   font-size: 1em;
 }
 
@@ -14806,7 +14962,7 @@ button.bg-dark:focus {
 }
 
 .text-monospace {
-  font-family: SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
+  font-family: "Ubuntu Mono", monospace;
 }
 
 .text-justify {
@@ -26394,6 +26550,15 @@ body.rtl {
   direction: rtl;
 }
 
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+  font-family: "Ubuntu", "Nunito", sans-serif;
+}
+
 .intl-tel-input {
   width: 100%;
 }
@@ -28614,5 +28779,169 @@ textarea.twohundredtall {
 
 .squared-corners {
   border-radius: 0 !important;
+}
+
+.display-4 {
+  font-size: 3.2rem;
+}
+
+body:not(.with-bg) > #app > header {
+  background: #2F6690;
+  background: -webkit-gradient(linear, left top, left bottom, from(#2F6690), to(#3A7CA5));
+  background: linear-gradient(to bottom, #2F6690 0%, #3A7CA5 100%);
+  filter: progid:DXImageTransform.Microsoft.gradient( startColorstr=$theme-prime, endColorstr=$theme-second,GradientType=0 );
+  color: #D9DCD6;
+}
+
+body:not(.with-bg) > #app > header > #app-name,
+body:not(.with-bg) > #app > header > #menu-toggle,
+body:not(.with-bg) > #app > header > #menu-toggle,
+body:not(.with-bg) > #app > header > #user-bar,
+body:not(.with-bg) > #app > header > #user-menu {
+  color: #D9DCD6;
+}
+
+body:not(.with-bg) > #app > header > #app-name > a,
+body:not(.with-bg) > #app > header > #app-name > button,
+body:not(.with-bg) > #app > header > #app-name .btn-user-menu-link,
+body:not(.with-bg) > #app > header > #menu-toggle > a,
+body:not(.with-bg) > #app > header > #menu-toggle > button,
+body:not(.with-bg) > #app > header > #menu-toggle .btn-user-menu-link,
+body:not(.with-bg) > #app > header > #menu-toggle > a,
+body:not(.with-bg) > #app > header > #menu-toggle > button,
+body:not(.with-bg) > #app > header > #menu-toggle .btn-user-menu-link,
+body:not(.with-bg) > #app > header > #user-bar > a,
+body:not(.with-bg) > #app > header > #user-bar > button,
+body:not(.with-bg) > #app > header > #user-bar .btn-user-menu-link,
+body:not(.with-bg) > #app > header > #user-menu > a,
+body:not(.with-bg) > #app > header > #user-menu > button,
+body:not(.with-bg) > #app > header > #user-menu .btn-user-menu-link {
+  color: #D9DCD6;
+  border: none;
+  height: 48px;
+}
+
+body:not(.with-bg) > #app > header > #app-name > a:hover,
+body:not(.with-bg) > #app > header > #app-name > a:focus,
+body:not(.with-bg) > #app > header > #app-name > a:active,
+body:not(.with-bg) > #app > header > #app-name > button:hover,
+body:not(.with-bg) > #app > header > #app-name > button:focus,
+body:not(.with-bg) > #app > header > #app-name > button:active,
+body:not(.with-bg) > #app > header > #app-name .btn-user-menu-link:hover,
+body:not(.with-bg) > #app > header > #app-name .btn-user-menu-link:focus,
+body:not(.with-bg) > #app > header > #app-name .btn-user-menu-link:active,
+body:not(.with-bg) > #app > header > #menu-toggle > a:hover,
+body:not(.with-bg) > #app > header > #menu-toggle > a:focus,
+body:not(.with-bg) > #app > header > #menu-toggle > a:active,
+body:not(.with-bg) > #app > header > #menu-toggle > button:hover,
+body:not(.with-bg) > #app > header > #menu-toggle > button:focus,
+body:not(.with-bg) > #app > header > #menu-toggle > button:active,
+body:not(.with-bg) > #app > header > #menu-toggle .btn-user-menu-link:hover,
+body:not(.with-bg) > #app > header > #menu-toggle .btn-user-menu-link:focus,
+body:not(.with-bg) > #app > header > #menu-toggle .btn-user-menu-link:active,
+body:not(.with-bg) > #app > header > #menu-toggle > a:hover,
+body:not(.with-bg) > #app > header > #menu-toggle > a:focus,
+body:not(.with-bg) > #app > header > #menu-toggle > a:active,
+body:not(.with-bg) > #app > header > #menu-toggle > button:hover,
+body:not(.with-bg) > #app > header > #menu-toggle > button:focus,
+body:not(.with-bg) > #app > header > #menu-toggle > button:active,
+body:not(.with-bg) > #app > header > #menu-toggle .btn-user-menu-link:hover,
+body:not(.with-bg) > #app > header > #menu-toggle .btn-user-menu-link:focus,
+body:not(.with-bg) > #app > header > #menu-toggle .btn-user-menu-link:active,
+body:not(.with-bg) > #app > header > #user-bar > a:hover,
+body:not(.with-bg) > #app > header > #user-bar > a:focus,
+body:not(.with-bg) > #app > header > #user-bar > a:active,
+body:not(.with-bg) > #app > header > #user-bar > button:hover,
+body:not(.with-bg) > #app > header > #user-bar > button:focus,
+body:not(.with-bg) > #app > header > #user-bar > button:active,
+body:not(.with-bg) > #app > header > #user-bar .btn-user-menu-link:hover,
+body:not(.with-bg) > #app > header > #user-bar .btn-user-menu-link:focus,
+body:not(.with-bg) > #app > header > #user-bar .btn-user-menu-link:active,
+body:not(.with-bg) > #app > header > #user-menu > a:hover,
+body:not(.with-bg) > #app > header > #user-menu > a:focus,
+body:not(.with-bg) > #app > header > #user-menu > a:active,
+body:not(.with-bg) > #app > header > #user-menu > button:hover,
+body:not(.with-bg) > #app > header > #user-menu > button:focus,
+body:not(.with-bg) > #app > header > #user-menu > button:active,
+body:not(.with-bg) > #app > header > #user-menu .btn-user-menu-link:hover,
+body:not(.with-bg) > #app > header > #user-menu .btn-user-menu-link:focus,
+body:not(.with-bg) > #app > header > #user-menu .btn-user-menu-link:active {
+  background: #2F6690;
+  background-color: #2F6690;
+}
+
+body:not(.with-bg) > #app > header > #app-name > a,
+body:not(.with-bg) > #app > header > #menu-toggle > a,
+body:not(.with-bg) > #app > header > #menu-toggle > a,
+body:not(.with-bg) > #app > header > #user-bar > a,
+body:not(.with-bg) > #app > header > #user-menu > a {
+  height: 49px;
+}
+
+body:not(.with-bg) > #app > header > #app-name > button,
+body:not(.with-bg) > #app > header > #app-name .btn-user-menu-link,
+body:not(.with-bg) > #app > header > #menu-toggle > button,
+body:not(.with-bg) > #app > header > #menu-toggle .btn-user-menu-link,
+body:not(.with-bg) > #app > header > #menu-toggle > button,
+body:not(.with-bg) > #app > header > #menu-toggle .btn-user-menu-link,
+body:not(.with-bg) > #app > header > #user-bar > button,
+body:not(.with-bg) > #app > header > #user-bar .btn-user-menu-link,
+body:not(.with-bg) > #app > header > #user-menu > button,
+body:not(.with-bg) > #app > header > #user-menu .btn-user-menu-link {
+  position: relative;
+  top: -1px;
+}
+
+body:not(.with-bg) > #app > header > #user-bar > .indicator-with-label .indicator-label {
+  background: #16425B;
+  background-color: #16425B;
+}
+
+body:not(.with-bg) > #app > header > #menu-search > .input-group input,
+body:not(.with-bg) > #app > header > #menu-search > .input-group select,
+body:not(.with-bg) > #app > header > #menu-search > .input-group textarea {
+  border-color: #f8f9fa;
+}
+
+body:not(.with-bg) > #app .dropdown-menu,
+body:not(.with-bg) > #app .popover-body,
+body:not(.with-bg) > #app .card,
+body:not(.with-bg) > #app > aside {
+  background: #fff;
+  background: -webkit-gradient(linear, left top, left bottom, from(#fff), color-stop(75%, #f8f9fa), to(#D9DCD6));
+  background: linear-gradient(to bottom, #fff 0%, #f8f9fa 75%, #D9DCD6 100%);
+  filter: progid:DXImageTransform.Microsoft.gradient( startColorstr=$white, endColorstr=$theme-light,GradientType=0 );
+}
+
+body:not(.with-bg) > #app .dropdown-menu > #left-menu-search > .input-group input,
+body:not(.with-bg) > #app .dropdown-menu > #left-menu-search > .input-group select,
+body:not(.with-bg) > #app .dropdown-menu > #left-menu-search > .input-group textarea,
+body:not(.with-bg) > #app .popover-body > #left-menu-search > .input-group input,
+body:not(.with-bg) > #app .popover-body > #left-menu-search > .input-group select,
+body:not(.with-bg) > #app .popover-body > #left-menu-search > .input-group textarea,
+body:not(.with-bg) > #app .card > #left-menu-search > .input-group input,
+body:not(.with-bg) > #app .card > #left-menu-search > .input-group select,
+body:not(.with-bg) > #app .card > #left-menu-search > .input-group textarea,
+body:not(.with-bg) > #app > aside > #left-menu-search > .input-group input,
+body:not(.with-bg) > #app > aside > #left-menu-search > .input-group select,
+body:not(.with-bg) > #app > aside > #left-menu-search > .input-group textarea {
+  border-color: #f8f9fa;
+}
+
+body:not(.with-bg) > #app .breadcrumb {
+  background: #16425B;
+  background-color: #16425B;
+  border-radius: 0;
+}
+
+body:not(.with-bg) > #app .breadcrumb > .active {
+  color: #81C3D7;
+}
+
+body:not(.with-bg) > #app .breadcrumb > li:not(.active),
+body:not(.with-bg) > #app .breadcrumb > li:not(.active).breadcrumb-item,
+body:not(.with-bg) > #app .breadcrumb > li:not(.active) > a,
+body:not(.with-bg) > #app .breadcrumb > li:not(.active).breadcrumb-item > a {
+  color: #D9DCD6;
 }
 

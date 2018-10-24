@@ -53,10 +53,10 @@
     						<div class="col-md-6">
     							<div class="form-group">
     								<label>Start</label>
-    								<input name="from" type="text" psuedo-type="datetime-local" class="form-control form-control{{ $errors->has('from') ? ' is-invalid' : '' }}" value="{{ old('from', $model->from) }}" required autocomplete="off"/>
-    								@if ($errors->has('from'))
+    								<input name="starts_at" type="text" class="form-control form-control{{ $errors->has('starts_at') ? ' is-invalid' : '' }}" value="{{ old('starts_at', $model->starts_at) }}" required autocomplete="off"/>
+    								@if ($errors->has('starts_at'))
 			                            <span class="invalid-feedback" role="alert">
-			                                <strong>{{ $errors->first('from') }}</strong>
+			                                <strong>{{ $errors->first('starts_at') }}</strong>
 			                            </span>
 			                        @endif
     							</div>
@@ -64,10 +64,10 @@
     						<div class="col-md-6">
     							<div class="form-group">
     								<label>Ends</label>
-    								<input name="to" type="text" psuedo-type="datetime-local" class="form-control form-control{{ $errors->has('to') ? ' is-invalid' : '' }}" value="{{ old('to', $model->to) }}" required autocomplete="off"/>
-    								@if ($errors->has('to'))
+    								<input name="ends_at" type="text" class="form-control form-control{{ $errors->has('ends_at') ? ' is-invalid' : '' }}" value="{{ old('ends_at', $model->ends_at) }}" required autocomplete="off"/>
+    								@if ($errors->has('ends_at'))
 			                            <span class="invalid-feedback" role="alert">
-			                                <strong>{{ $errors->first('to') }}</strong>
+			                                <strong>{{ $errors->first('ends_at') }}</strong>
 			                            </span>
 			                        @endif
     							</div>
@@ -97,16 +97,12 @@
     					<h4 class="mb-0">{{ __('Participants') }}</h4>
     				</div>
     				<div class="card-body">
-    				</div>
-    			</form>
-    			<form class="card mb-3" action="{{ route('update-meeting', ['id' => $model->id]) }}" method="POST">
-					@method('PUT')
-    				@csrf
-
-    				<div class="card-header bg-dark text-white">
-    					<h4 class="mb-0">{{ __('External Participants') }}</h4>
-    				</div>
-    				<div class="card-body">
+    					<div class="form-group">
+							<div class="multi-model-search multi-model-search-sm">
+								<div class="selected-results"></div>
+								<input type="search" name="participants" class="form-control" />
+							</div>
+						</div>
     				</div>
     			</form>
 				@else

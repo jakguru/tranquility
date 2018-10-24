@@ -1,0 +1,106 @@
+// $theme-prime: #2F6690;
+// $theme-second: #3A7CA5;
+// $theme-light: #D9DCD6;
+// $theme-dark: #16425B;
+// $theme-highlight: #81C3D7;
+
+.display-4 {
+	font-size: 3.2rem;
+}
+
+body:not(.with-bg) > #app {
+	> header {
+		background: $theme-prime;
+		background: -moz-linear-gradient(top, $theme-prime 0%,  $theme-second 100%);
+		background: -webkit-linear-gradient(top, $theme-prime 0%,$theme-second 100%);
+		background: linear-gradient(to bottom, $theme-prime 0%,$theme-second 100%);
+		filter: progid:DXImageTransform.Microsoft.gradient( startColorstr=$theme-prime, endColorstr=$theme-second,GradientType=0 );
+		color: $theme-light;
+
+		> #app-name,
+		> #menu-toggle,
+		> #menu-toggle,
+		> #user-bar,
+		> #user-menu {
+			color: $theme-light;
+
+			> a,
+			> button,
+			.btn-user-menu-link {
+				color: $theme-light;
+				border: none;
+				height: 48px;
+
+				&:hover,
+				&:focus,
+				&:active {
+					background: $theme-prime;
+					background-color: $theme-prime;
+				}			
+			}
+
+			> a {
+				height: 49px;
+			}
+
+			> button,
+			.btn-user-menu-link {
+				position: relative;
+				top: -1px;
+			}
+		}
+
+		> #user-bar > .indicator-with-label .indicator-label {
+			background: $theme-dark;
+			background-color: $theme-dark;
+		}
+
+		> #menu-search {
+			> .input-group {
+				& input,
+				& select,
+				& textarea {
+					border-color: $light;
+				}
+			}
+		}
+	}
+
+	.dropdown-menu,
+	.popover-body,
+	.card,
+	> aside {
+		background: $white;
+		background: -moz-linear-gradient(top, $white 0%,   $light 75%, $theme-light 100%);
+		background: -webkit-linear-gradient(top, $white 0%, $light 75%,$theme-light 100%);
+		background: linear-gradient(to bottom, $white 0%, $light 75%,$theme-light 100%);
+		filter: progid:DXImageTransform.Microsoft.gradient( startColorstr=$white, endColorstr=$theme-light,GradientType=0 );
+
+		> #left-menu-search {
+			> .input-group {
+				& input,
+				& select,
+				& textarea {
+					border-color: $light;
+				}
+			}
+		}
+	}
+
+	.breadcrumb {
+		background: $theme-dark;
+		background-color: $theme-dark;
+		border-radius: 0;
+
+		> .active {
+			color: $theme-highlight;
+		}
+
+		> li:not(.active),
+		> li:not(.active).breadcrumb-item,
+		> li:not(.active) > a,
+		> li:not(.active).breadcrumb-item > a {
+			color: $theme-light;
+		}
+	}
+}
